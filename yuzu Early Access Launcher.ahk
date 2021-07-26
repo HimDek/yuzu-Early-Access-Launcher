@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="0.2.2-beta"
+versionnumber:="0.2.3-beta"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -114,6 +114,7 @@ CheckUpdates:
 	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .firmware.ver %A_temp%\switch.json') do echo firm=`%l >> %A_temp%\latest.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .firmware.url %A_temp%\switch.json') do echo furl=`%l >> %A_temp%\latest.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .firmware.size %A_temp%\switch.json') do echo fsize=`%l >> %A_temp%\latest.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .keys.url %A_temp%\switch.json') do echo kurl=`%l >> %A_temp%\latest.ini,, Hide UseErrorLevel
 
 	If (ErrorLevel=="ERROR") {
 		MsgBox, % 16+262144, , Error 3.`nTry Running as Administrator.
@@ -170,6 +171,7 @@ GetInfo:
 		IniRead, lfirm, %A_temp%\latest.ini, latest, firm
 		IniRead, furl, %A_temp%\latest.ini, latest, furl
 		IniRead, fsize, %A_temp%\latest.ini, latest, fsize
+		IniRead, kurl, %A_temp%\latest.ini, latest, kurl
 	}
 
 	FileDelete, %A_temp%\latest.ini
@@ -298,7 +300,7 @@ Return
 
 Dprod:
 	FileDelete, %A_temp%\prod.keys
-	UrlDownloadToFile, https://hide-techno-tips.github.io/Nintendo-Switch-Files/prod.keys, %A_temp%\prod.keys
+	UrlDownloadToFile, %kurl%, %A_temp%\prod.keys
 	FileDelete, prod.keys
 	FileMove, %A_temp%\prod.keys, prod.keys, 1
 	GoSub, MoveProd
