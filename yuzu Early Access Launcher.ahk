@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="0.2.1-beta"
+versionnumber:="0.2.2-beta"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -104,7 +104,7 @@ CheckUpdates:
 	FileDelete, %A_temp%\switch.json
 
 	UrlDownloadToFile, https://api.github.com/repos/pineappleEA/pineapple-src/releases/latest, %A_temp%\yuzuea.json
-	UrlDownloadToFile, https://hide-techno-tips.github.io/Nintendo-Switch-Files/api.json, %A_temp%\switch.json
+	UrlDownloadToFile, https://hide-techno-tips.github.io/Nintendo-Switch-Files, %A_temp%\switch.json
 
 	RunWait, cmd.exe /c echo [latest] > %A_temp%\latest.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .tag_name %A_temp%\yuzuea.json') do echo version=`%l >> %A_temp%\latest.ini,, Hide UseErrorLevel
@@ -229,7 +229,7 @@ MainGUI:
 	GUI, Add, Button, xm+420 yp-7 w200 h30 vBs2 gBs2,
 
 	GUI, Font, Q5 s10 Bold
-	GUI, Add, GroupBox, xm yp+35 w620 h65, Help and Support:
+	GUI, Add, GroupBox, xm yp+35 w620 h60, Help and Support:
 	GUI, Font, Q5 s7 Norm
 	GUI, Add, Button, xm+10 yp+20 w190 h30 vHb1 gHb1, View Video Tutorial
 	GUI, Add, Button, xm+210 yp w200 h30 vHb2 gHb2, Support Me
