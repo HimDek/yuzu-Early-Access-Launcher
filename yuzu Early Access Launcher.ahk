@@ -225,7 +225,7 @@ MainGUI:
 	GUI, Font, Q5 s10 Bold
 	GUI, Add, GroupBox, xm yp+40 w620 h75, Help and Support:
 	GUI, Font, Q5 s7 Norm
-	GUI, Add, Link, xm+10 yp+25, <a href="https://youtu.be/fPdPDgNGKI4">View Video Tutorial</a> by the Maker of This Tool, HiDe Techno Tips.
+	GUI, Add, Link, xm+10 yp+25, <a href="https://youtu.be/fPdPDgNGKI4">View Video Tutorial</a> by the Maker of This Launcher, HiDe Techno Tips.
 	GUI, Add, Link, xp yp+20, <a href="https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1">Please Support me by Subscribing to my Youtube Channel.</a>
 
 	GUIButtons("Hide")
