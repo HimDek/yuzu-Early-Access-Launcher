@@ -1,9 +1,11 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 #SingleInstance Force
 #NoTrayIcon
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+version:="v0.1.0-beta"
 
 FileInstall, 7za.exe, %A_temp%\7za.exe, 1
 FileInstall, 7z.NET.dll, %A_temp%\7z.NET.dll, 1
@@ -50,13 +52,49 @@ OnExit("ExitFunc")
 
 Return
 
+UpdateLauncher:
+	GUIControl, Main:, U, Updating Launcher!
+	FileDelete, %A_temp%\launcher.ini
+	
+	UrlDownloadToFile, https://api.github.com/repos/HiDe-Techno-Tips/pineapple-src/releases/latest, %A_temp%\yuzulauncher.json
+	
+	RunWait, cmd.exe /c echo [latest] > %A_temp%\launcher.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .tag_name %A_temp%\yuzulauncher.json') do echo version=`%l >> %A_temp%\launcher.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .assets[0].browser_download_url %A_temp%\yuzulauncher.json') do echo url=`%l >> %A_temp%\launcher.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .assets[0].size %A_temp%\yuzulauncher.json') do echo lsize=`%l >> %A_temp%\launcher.ini,, Hide UseErrorLevel
+	
+	If (ErrorLevel=="ERROR") {
+		MsgBox, % 16+262144, , Error 3.`nTry Running as Administrator.
+		ExitApp
+	}
+	
+	If (FileExist(A_temp . "\launcher.ini")) {
+		IniRead, launcherlatest, %A_temp%\launcher.ini, latest, version
+		IniRead, lurl, %A_temp%\launcher.ini, latest, url
+		IniRead, lsize, %A_temp%\launcher.ini, latest, lsize
+	}
+	
+	FileDelete, %A_temp%\launcher.ini
+	
+	If (version!=launcherlatest) {
+		tempPath:=A_Temp . "\" . A_ScriptName
+		DownloadFile(lurl, tempPath, lsize)
+		Run, %tempPath%, %A_Temp%, UseErrorLevel
+		If (ErrorLevel=="ERROR") {
+			MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
+			ExitApp
+		}
+	}
+Return
+
 CheckUpdates:
+	GoSub, UpdateLauncher
 	GUIControl, Main:, U, Retrieving Metadata!
+
 	FileDelete, %A_temp%\latest.ini
 	FileDelete, %A_temp%\yuzuea.json
 	FileDelete, %A_temp%\switch.json
-	
-	UrlDownloadToFile, https://api.github.com/repos/HiDe-Techno-Tips/pineapple-src/releases/latest, %A_temp%\yuzulauncher.json
+
 	UrlDownloadToFile, https://api.github.com/repos/pineappleEA/pineapple-src/releases/latest, %A_temp%\yuzuea.json
 	UrlDownloadToFile, https://hide-techno-tips.github.io/Nintendo-Switch-Files/api.json, %A_temp%\switch.json
 
