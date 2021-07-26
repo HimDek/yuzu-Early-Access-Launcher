@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-version:="v1.0.0"
+version:="v0.1.2-beta"
 
 FileInstall, 7za.exe, %A_temp%\7za.exe, 1
 FileInstall, 7z.NET.dll, %A_temp%\7z.NET.dll, 1
