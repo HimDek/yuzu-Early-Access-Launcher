@@ -5,7 +5,9 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-version:="v0.1.2-beta"
+versionnumber:="0.2.0-beta"
+version:=StrReplace("vnumber", "number", versionnumber)
+versionname:=StrReplace("Version number", "number", versionnumber)
 
 FileInstall, 7za.exe, %A_temp%\7za.exe, 1
 FileInstall, 7z.NET.dll, %A_temp%\7z.NET.dll, 1
@@ -55,6 +57,7 @@ Return
 UpdateLauncher:
 	GUIControl, Main:, U, Checking for Launcher Updates!
 	FileDelete, %A_temp%\launcher.ini
+	FileDelete, %A_temp%\yuzulauncher.json
 	FileDelete, %A_temp%\%A_ScriptName%
 	
 	UrlDownloadToFile, https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest, %A_temp%\yuzulauncher.json
@@ -76,16 +79,19 @@ UpdateLauncher:
 	}
 	
 	FileDelete, %A_temp%\launcher.ini
-	
-	If (version!=launcherlatest) {
-		tempPath:=A_Temp . "\" . A_ScriptName
-		DownloadFile(lurl, A_ScriptName, lsize)
-		Run, %tempPath%, %A_Temp%, UseErrorLevel
-		If (ErrorLevel=="ERROR") {
-			MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
+	FileDelete, %A_temp%\yuzulauncher.json
+
+	If (launcherlatest!="" && launcherlatest!="ERROR" && launcherlatest!=ERROR && launcherlatest!="NULL" && launcherlatest!=NULL) {
+		If (version!=launcherlatest) {
+			tempPath:=A_Temp . "\" . A_ScriptName
+			DownloadFile(lurl, A_ScriptName, lsize)
+			Run, %tempPath%, %A_Temp%, UseErrorLevel
+			If (ErrorLevel=="ERROR") {
+				MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
+				ExitApp
+			}
 			ExitApp
 		}
-		ExitApp
 	}
 Return
 
@@ -188,7 +194,7 @@ GetInfo:
 Return
 
 MainGUI:
-	GUI, Main:New, -MinimizeBox, yuzu Early Access Launcher
+	GUI, Main:New, -MinimizeBox, yuzu Early Access Launcher %versionname%
 
 	GUI, Add, Picture, xm+105 ym+5 h216 w-1, %A_temp%\logo.png
 	GUI, Font, Q5 s15 Bold
@@ -223,10 +229,12 @@ MainGUI:
 	GUI, Add, Button, xm+525 yp-7 w95 h30 vBs2 gBs2,
 
 	GUI, Font, Q5 s10 Bold
-	GUI, Add, GroupBox, xm yp+40 w620 h75, Help and Support:
+	GUI, Add, GroupBox, xm yp+40 w620 h65, Help and Support:
 	GUI, Font, Q5 s7 Norm
-	GUI, Add, Link, xm+10 yp+25, <a href="https://youtu.be/fPdPDgNGKI4">View Video Tutorial</a> by the Maker of This Launcher, HiDe Techno Tips.
-	GUI, Add, Link, xp yp+20, <a href="https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1">Please Support me by Subscribing to my Youtube Channel.</a>
+	GUI, Add, Button, xm+10 yp+20 w145 h30 vHb1 gHb1, View Video Tutorial
+	GUI, Add, Button, xm+165 yp w140 h30 vHb2 gHb2, Support Me
+	GUI, Add, Button, xm+315 yp w140 h30 vHb3 gHb3, View Repository
+	GUI, Add, Button, xm+465 yp w145 h30 vHb4 gHb4, Report an Issue
 
 	GUIButtons("Hide")
 	GUIControl, Main:Hide, I0
@@ -238,6 +246,22 @@ Return
 
 MainGUIClose:
 	ExitApp
+Return
+
+Hb1:
+	MsgBox, % 0+64+262144, , Not available yet!
+Return
+
+Hb2:
+	Run, "https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1"
+Return
+
+Hb3:
+	Run, "https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher"
+Return
+
+Hb4:
+	Run, "https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/issues/new"
 Return
 
 B1:
