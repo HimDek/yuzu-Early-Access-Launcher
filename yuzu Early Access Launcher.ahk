@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="0.2.0-beta"
+versionnumber:="0.2.1-beta"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -224,17 +224,16 @@ MainGUI:
 	ProgressGUI("Hide")
 
 	GUI, Font, Q5 s11 Norm
-	GUI, Add, Text, xm+5 ym+372 w510 h30 vU0, Error Checking for Updates! Check Your Internet and Refresh.
+	GUI, Add, Text, xm+5 ym+372 w510 h30 vU0,
 	GUI, Font, Q5 s7 Norm
-	GUI, Add, Button, xm+525 yp-7 w95 h30 vBs2 gBs2,
+	GUI, Add, Button, xm+420 yp-7 w200 h30 vBs2 gBs2,
 
 	GUI, Font, Q5 s10 Bold
-	GUI, Add, GroupBox, xm yp+40 w620 h65, Help and Support:
+	GUI, Add, GroupBox, xm yp+35 w620 h65, Help and Support:
 	GUI, Font, Q5 s7 Norm
-	GUI, Add, Button, xm+10 yp+20 w145 h30 vHb1 gHb1, View Video Tutorial
-	GUI, Add, Button, xm+165 yp w140 h30 vHb2 gHb2, Support Me
-	GUI, Add, Button, xm+315 yp w140 h30 vHb3 gHb3, View Repository
-	GUI, Add, Button, xm+465 yp w145 h30 vHb4 gHb4, Report an Issue
+	GUI, Add, Button, xm+10 yp+20 w190 h30 vHb1 gHb1, View Video Tutorial
+	GUI, Add, Button, xm+210 yp w200 h30 vHb2 gHb2, Support Me
+	GUI, Add, Button, xm+420 yp w190 h30 vHb3 gHb3, Report an Issue
 
 	GUIButtons("Hide")
 	GUIControl, Main:Hide, I0
@@ -257,10 +256,6 @@ Hb2:
 Return
 
 Hb3:
-	Run, "https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher"
-Return
-
-Hb4:
 	Run, "https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/issues/new"
 Return
 
@@ -518,19 +513,20 @@ ControlGUI:
 	If (Updates==0) {
 		If (installed=="" || installed=="ERROR") {
 			GUIControl, Main:Show, I0
-			GUIControl, Main:, U0, Error Finding the Latest Version! Check Your Internet and Refresh.
+			GUIControl, Main:, U0, Error retrieving Updates! Check Your Internet and Refresh.
+			GUI, Font, Q5 s10 Bold
+			GUIControl, Main:Font, U0
 		}
 		Else {
 			If (!FileExist("prod.keys")) {
 				GUIControl, Main:, U0, prod.keys not found! Check Your Internet and Refresh.
-				GUI, Font, Q5 s11 cRed Bold
+				GUI, Font, Q5 s10 cRed Bold
 				GUIControl, Main:Font, U0
 			}
 			Else {
-				GUIControl, Main:, U0, Could not verify if prod.keys are latest! Check Your Internet and Refresh.
-				GUI, Font, Q5 s11 Bold
+				GUIControl, Main:, U0, prod.keys may be old! Check Your Internet and Refresh.
+				GUI, Font, Q5 s10 Bold
 				GUIControl, Main:Font, U0
-				GUIControl, Main:Show, U0
 			}
 			GUI, Font, Q5 s12 Norm
 			GUIControl, Main:Font, B2
