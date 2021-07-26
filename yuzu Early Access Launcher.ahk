@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-version:="v0.1.1-beta"
+version:="v1.0.0"
 
 FileInstall, 7za.exe, %A_temp%\7za.exe, 1
 FileInstall, 7z.NET.dll, %A_temp%\7z.NET.dll, 1
@@ -53,8 +53,9 @@ OnExit("ExitFunc")
 Return
 
 UpdateLauncher:
-	GUIControl, Main:, U, Updating Launcher!
+	GUIControl, Main:, U, Checking for Launcher Updates!
 	FileDelete, %A_temp%\launcher.ini
+	FileDelete, %A_temp%\%A_ScriptName%
 	
 	UrlDownloadToFile, https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest, %A_temp%\yuzulauncher.json
 	
