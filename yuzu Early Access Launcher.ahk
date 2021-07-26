@@ -56,7 +56,7 @@ UpdateLauncher:
 	GUIControl, Main:, U, Updating Launcher!
 	FileDelete, %A_temp%\launcher.ini
 	
-	UrlDownloadToFile, https://api.github.com/repos/HiDe-Techno-Tips/pineapple-src/releases/latest, %A_temp%\yuzulauncher.json
+	UrlDownloadToFile, https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest, %A_temp%\yuzulauncher.json
 	
 	RunWait, cmd.exe /c echo [latest] > %A_temp%\launcher.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .tag_name %A_temp%\yuzulauncher.json') do echo version=`%l >> %A_temp%\launcher.ini,, Hide UseErrorLevel
@@ -78,7 +78,7 @@ UpdateLauncher:
 	
 	If (version!=launcherlatest) {
 		tempPath:=A_Temp . "\" . A_ScriptName
-		DownloadFile(lurl, tempPath, lsize)
+		DownloadFile(lurl, A_ScriptName, lsize)
 		Run, %tempPath%, %A_Temp%, UseErrorLevel
 		If (ErrorLevel=="ERROR") {
 			MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
@@ -672,7 +672,7 @@ Download(url, save, total) {
 	FileDelete, %A_temp%\%save%
 	UrlDownloadToFile, %url%, %A_temp%\%save%
 	If (ErrorLevel) {
-		MsgBox, % 16+262144, , Error Downloading %save%.`nCheck your Internet Connection ot try running as Administrator.
+		MsgBox, % 16+262144, , Error Downloading %save%.`nCheck your Internet Connection or try running as Administrator.
 		ExitApp
 	}
 	SetTimer, dlprocess, Off
