@@ -84,6 +84,7 @@ UpdateLauncher:
 			MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
 			ExitApp
 		}
+		ExitApp
 	}
 Return
 
