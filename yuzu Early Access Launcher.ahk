@@ -13,6 +13,8 @@ FileInstall, 7za.exe, %A_temp%\7za.exe, 1
 FileInstall, 7z.NET.dll, %A_temp%\7z.NET.dll, 1
 FileInstall, jq.exe, %A_temp%\jq.exe, 1
 FileInstall, logo.png, %A_temp%\logo.png, 1
+FileInstall, load1.png, %A_temp%\load1.png, 1
+FileInstall, load2.png, %A_temp%\load2.png, 1
 
 yDir:=StrReplace(A_Temp, "Temp", "yuzu")
 If (A_ScriptDir!=yDir) {
@@ -38,6 +40,8 @@ If (A_ScriptDir!=yDir) {
 	FileDelete, %A_temp%\7z.NET.dll
 	FileDelete, %A_temp%\jq.exe
 	FileDelete, %A_temp%\logo.png
+	FileDelete, %A_temp%\load1.png
+	FileDelete, %A_temp%\load2.png
 	ExitApp
 }
 
@@ -815,6 +819,8 @@ ExitFunc() {
 	FileDelete, %A_temp%\7z.NET.dll
 	FileDelete, %A_temp%\jq.exe
 	FileDelete, %A_temp%\logo.png
+	FileDelete, %A_temp%\load1.png
+	FileDelete, %A_temp%\load2.png
 	ExitApp
 }
 
