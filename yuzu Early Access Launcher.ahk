@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="0.2.3-beta"
+versionnumber:="0.2.4-beta"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -233,7 +233,7 @@ MainGUI:
 	GUI, Font, Q5 s10 Bold
 	GUI, Add, GroupBox, xm yp+35 w620 h60, Help and Support:
 	GUI, Font, Q5 s7 Norm
-	GUI, Add, Button, xm+10 yp+20 w190 h30 vHb1 gHb1, View Video Tutorial
+	GUI, Add, Button, xm+10 yp+20 w190 h30 vHb1 gHb1, View Video Guide
 	GUI, Add, Button, xm+210 yp w200 h30 vHb2 gHb2, Support Me
 	GUI, Add, Button, xm+420 yp w190 h30 vHb3 gHb3, Report an Issue
 
@@ -243,6 +243,28 @@ MainGUI:
 	GUIControl, Main:Show, U
 
 	GUI, Main: Show
+	Global OldOutputVarControl
+	SetTimer, ButtonToolTip, 100
+Return
+
+ButtonToolTip:
+	MouseGetPos,,,, OutputVarControl
+	If (OutputVarControl==OldOutputVarControl) {
+		Exit
+	}
+	OldOutputVarControl:=OutputVarControl
+	SetTimer, ButtonToolTipOn, Off
+	ToolTip,
+
+	If (OutputVarControl=="Button11") {
+		ToolTip:="Report an Issue with the Installer."
+		SetTimer, ButtonToolTipOn, -1000
+	}
+	Exit
+
+	ButtonToolTipOn:
+		ToolTip, %ToolTip%
+	Exit
 Return
 
 MainGUIClose:
@@ -254,7 +276,7 @@ Hb1:
 Return
 
 Hb2:
-	Run, "https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1"
+	SetTimer, Sub, -1
 Return
 
 Hb3:
@@ -275,11 +297,37 @@ Return
 
 B12:
 	If (Updates==0) {
-		GoSub, B1
+		If (installed=="" || installed=="ERROR") {
+			GoSub, Dyuzu
+		}
+		Else {
+			GoSub, B1
+		}
 	}
 	If (Updates==1) {
 		GoSub, Dyuzu
 	}
+Return
+
+Sub:
+	Run, "https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1"
+	Loop {
+		CoordMode Pixel, screen
+		ImageSearch, imageX, imageY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 load1.png
+		if (imageY > 1) {
+			Break
+		}
+		ImageSearch, imageX, imageY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 load2.png
+		if (imageY > 1) {
+			Break
+		}
+		sleep 100
+	}
+	SendInput, {Tab}
+	Sleep, 100
+	SendInput, {Tab}
+	Sleep, 100
+	SendInput, {Enter}
 Return
 
 Dyuzu:
@@ -487,27 +535,31 @@ ControlGUI:
 		If (firm=="" || firm=="ERROR") {
 			If (!FileExist(firfile)){
 				GUIControl, Main:, Bs1, Download Firmware %lfirm%
+				GUIControl, Main:Show, Bs1
 			}
 			If (FileExist(firfile)) {
 				GUIControl, Main:, Bs1, Install Firmware %lfirm%
+				GUIControl, Main:Show, Bs1
 			}
 		}
 		Else {
 			If (lfirm==firm) {
 				If (!FileExist(firfile)){
 					GUIControl, Main:, Bs1, ReDownload Firmware %lfirm%
+					GUIControl, Main:Show, Bs1
 				}
 				If (FileExist(firfile)) {
 					GUIControl, Main:, Bs1, ReInstall Firmware %lfirm%
+					GUIControl, Main:Show, Bs1
 				}
 			}
 			Else {
 				GUIControl, Main:, Bs1, Update Firmware to %lfirm%
+				GUIControl, Main:Show, Bs1
 			}
 		}
 		GUIControl, Main:Show, Firm
 		GUIControl, Main:Show, Firmtxt
-		GUIControl, Main:Show, Bs1
 		GUI, Font, Q5 s7 Norm
 		GUIControl, Main:Font, Bs2
 	}
@@ -538,23 +590,25 @@ ControlGUI:
 		If (firm=="" || firm=="ERROR") {
 			If (FileExist(firfile)) {
 				GUIControl, Main:, Bs1, Install Firmware %lfirm%
+				GUIControl, Main:Show, Bs1
 			}
 		}
 		Else {
 			If (lfirm==firm) {
 				If (FileExist(firfile)) {
 					GUIControl, Main:, Bs1, ReInstall Firmware %lfirm%
+					GUIControl, Main:Show, Bs1
 				}
 			}
 			Else {
 				If (FileExist(firfile)) {
 					GUIControl, Main:, Bs1, Install Firmware %lfirm%
+					GUIControl, Main:Show, Bs1
 				}
 			}
 		}
 		GUIControl, Main:Show, Firm
 		GUIControl, Main:Show, Firmtxt
-		GUIControl, Main:Show, Bs1
 		GUIControl, Main:Show, U0
 		GUI, Font, Q5 s11 Bold
 		GUIControl, Main:Font, Bs2
@@ -572,24 +626,23 @@ Extract(file, id) {
 	GUIControl, Main:, Task, Extracting %file%
 	GUIControl, Main:, ST, This may take some time.
 	GUIControl, Main:, ProgressBar, 0
-	GUIControl, Main:, ProgressN, 0`%
-	
-	Sleep, 1000
+	GUIControl, Main:, ProgressN,
+
 	ProgressGUI("Show")
 	SetTimer, Post, 50
 
 	If (id=="yuzu") {
-		If (FileExist("yuzu-windows-msvc-early-access")) {
-			FileRemoveDir, yuzu-windows-msvc-early-access, 1
-			If (ErrorLevel) {
-				MsgBox, % 16+262144, , Error 8.`nTry Running as Administrator.
-				ExitApp
-			}
-		}
 		RunWait, cmd.exe /c %A_temp%\7za.exe x -bsp1 -y %file% > %A_temp%\log.txt, , Hide UseErrorLevel
 		If (ErrorLevel=="ERROR") {
 			MsgBox, % 16+262144, , Error 9.`nTry Running as Administrator.
 			ExitApp
+		}
+		If (FileExist("yuzu-windows-msvc-early-access")) {
+			FileDelete, yuzu-windows-msvc-early-access\yuzu-windows-msvc-source-*.tar.xz
+			If (ErrorLevel) {
+				MsgBox, % 16+262144, , Error 8.`nTry Running as Administrator.
+				ExitApp
+			}
 		}
 	}
 	If (id=="firm") {
@@ -603,7 +656,7 @@ Extract(file, id) {
 	FileDelete, %A_temp%\log.txt
 	GUIControl, Main:, ProgressBar, 100
 	GUIControl, Main:, ProgressN, 100`%
-	Sleep, 1000
+	Sleep, 500
 	ProgressGUI("Hide")
 	}
 	Return
@@ -612,6 +665,13 @@ Extract(file, id) {
 		Loop Read, %A_temp%\log.txt
 		progress = %A_LoopReadLine%
 		progress := SubStr(progress, 1, 3)
+		If (progress=="7-Z" || progress=="Sca" || progress=="0M" || progress=="1 f" || progress=="Ext" || progress=="--" || progress=="Pat" || progress=="Typ" || progress=="Phy" || progress=="Hea" || progress=="Met" || progress=="Sol" || progress=="Blo") {
+			Exit
+		}
+		If (progress=="100" || progress=="Eve" || progress=="Fol" || progress=="Fil" || progress=="Siz" || progress=="Com") {
+			SetTimer, Post, Off
+			Exit
+		}
 		GUIControl, Main:, ProgressBar, %progress%
 		GUIControl, Main:, ProgressN, %progress%`
 	Exit
@@ -676,7 +736,7 @@ DownloadFile(url, save, size) {
 	GUIControl, Main:, Task, Downloading %save%
 	GUIControl, Main:, ST, This will take time depending on your Network speed.
 	GUIControl, Main:, ProgressBar, 0
-	GUIControl, Main:, ProgressN, 0`%
+	GUIControl, Main:, ProgressN,
 	GUIControl, Main:, KB, (0 KiB of %total% %unit% Completed)
 	ProgressGUI("Show")
 
@@ -685,7 +745,7 @@ DownloadFile(url, save, size) {
 	GUIControl, Main:, ProgressBar, 100
 	GUIControl, Main:, ProgressN, 100`%
 	GUIControl, Main:, KB
-	Sleep, 1000
+	Sleep, 500
 	ProgressGUI("Hide")
 	Global DownloadTask:=0
 	Return
