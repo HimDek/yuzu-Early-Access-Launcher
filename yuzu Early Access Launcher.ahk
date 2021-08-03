@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="0.2.4-beta"
+versionnumber:="0.3.0-beta"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -53,6 +53,7 @@ If (ErrorLevel) {
 
 Global DownloadTask:=0
 GoSub MainGUI
+GoSub, SysInfo
 GoSub ControlGUI
 OnExit("ExitFunc")
 
@@ -73,6 +74,8 @@ UpdateLauncher:
 	
 	If (ErrorLevel=="ERROR") {
 		MsgBox, % 16+262144, , Error 3.`nTry Running as Administrator.
+		FileDelete, %A_temp%\launcher.ini
+		FileDelete, %A_temp%\yuzulauncher.json
 		ExitApp
 	}
 	
@@ -91,9 +94,11 @@ UpdateLauncher:
 			DownloadFile(lurl, A_ScriptName, lsize)
 			Run, %tempPath%, %A_Temp%, UseErrorLevel
 			If (ErrorLevel=="ERROR") {
-				MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
+				MsgBox, % 16+262144, , Error 4.`nTry Running as Administrator.
+				FileDelete, %A_temp%\%A_ScriptName%
 				ExitApp
 			}
+			FileDelete, %A_temp%\%A_ScriptName%
 			ExitApp
 		}
 	}
@@ -121,7 +126,9 @@ CheckUpdates:
 	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .keys.url %A_temp%\switch.json') do echo kurl=`%l >> %A_temp%\latest.ini,, Hide UseErrorLevel
 
 	If (ErrorLevel=="ERROR") {
-		MsgBox, % 16+262144, , Error 3.`nTry Running as Administrator.
+		MsgBox, % 16+262144, , Error 5.`nTry Running as Administrator.
+		FileDelete, %A_temp%\yuzuea.json
+		FileDelete, %A_temp%\switch.json
 		ExitApp
 	}
 
@@ -132,14 +139,11 @@ Return
 GetInfo:
 	GUIControl, Main:, U, Checking Files!
 	FileDelete, %A_temp%\downloaded.ini
+	FileDelete, %A_temp%\system.ini
+
 	RunWait, cmd.exe /c echo [downloaded] > %A_temp%\downloaded.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f "tokens=4 delims=-" `%b in ('where "Windows-Yuzu-EA-*.7z"') do echo version=`%~nb >> %A_temp%\downloaded.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f "tokens=3 delims=-" `%b in ('where "Switch-Firmware-*.zip"') do echo firm=`%~nb >> %A_temp%\downloaded.ini,, Hide UseErrorLevel
-
-	If (ErrorLevel=="ERROR") {
-		MsgBox, % 16+262144, , Error 4.`nTry Running as Administrator.
-		ExitApp
-	}
 
 	If (FileExist("installed.ini")) {
 		IniRead, installed, installed.ini, installed, version
@@ -199,54 +203,186 @@ GetInfo:
 	firfile:=StrReplace("Switch-Firmware-latest.zip", "latest", lfirm)
 Return
 
+SysInfo:
+	RunWait, cmd.exe /c echo [system] | find /v "" > %A_Temp%\system.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c wmic OS get OSArchitecture /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c wmic cpu get Name /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c wmic cpu get NumberOfLogicalProcessors /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c wmic cpu get MaxClockSpeed /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c wmic memorychip get Capacity /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
+
+	If (ErrorLevel=="ERROR") {
+		MsgBox, % 16+262144, , Error 6.`nTry Running as Administrator.
+		FileDelete, %A_temp%\system.ini
+		ExitApp
+	}
+	
+	If (FileExist(A_temp . "\system.ini")) {
+		IniRead, OSArchitecture, %A_Temp%\system.ini, system, OSArchitecture
+		IniRead, RAMCapacity, %A_Temp%\system.ini, system, Capacity
+		IniRead, MaxClockSpeed, %A_Temp%\system.ini, system, MaxClockSpeed
+		IniRead, NumberOfLogicalProcessors, %A_Temp%\system.ini, system, NumberOfLogicalProcessors
+		IniRead, CPUName, %A_Temp%\system.ini, system, Name
+	}
+	FileDelete, %A_temp%\system.ini
+	If (OSArchitecture!="64-bit") {
+		Global DownloadTask:=1
+		GUIControl, Main:, U, 32-bit Windows detected. yuzu won't work at all.`nIf you have a 64-bit Processor, try after installing 64-bit Windows.
+		GUIControl, Main:, Bs2, Ok
+		GUIControl, Main:Show, Bs2
+	}
+	
+	RAMAmount:=StrReplace("amount GiB", "amount", RAMCapacity // 1073741824)
+	If (RAMCapacity<8000000000) {
+		GUI, Font, Q5 s7 cOlive Bold
+		GuiControl, Main:Font, RAM
+		GUI, Font, Q5 s7 cBlack Norm
+		RAMStatus:="is not enough for yuzu to load heavy games."
+		If (RAMCapacity<6000000000) {
+			GUI, Font, Q5 s7 cRed Bold
+			GuiControl, Main:Font, RAM
+			GUI, Font, Q5 s7 cBlack Norm
+			RAMStatus:="is not enough for yuzu to load large games."
+			If (RAMCapacity<4000000000) {
+				RAMStatus:="is enough for yuzu to load only light or small games."
+				If (RAMCapacity<2000000000) {
+					RAMStatus:="is not enough for yuzu to load any game."
+				}
+			}
+		}
+	}
+	Else {
+		RAMStatus:="is enough for yuzu to load most games."
+		If (RAMCapacity>12000000000) {
+			RAMStatus:="is enough for yuzu to load even the heaviest game."
+			If (RAMCapacity>16000000000) {
+				RAMStatus:="is more than enough for yuzu."
+			}
+		}
+	}
+	If (NumberOfLogicalProcessors<2) {
+		GUI, Font, Q5 s7 cRed Bold
+		GuiControl, Main:Font, CPU
+		GUI, Font, Q5 s7 cBlack Norm
+		CPUStatus:="is not powerful enough to handle yuzu."
+	}
+	If (NumberOfLogicalProcessors<4) {
+		If (MaxClockSpeed<2000) {
+			GUI, Font, Q5 s7 cRed Bold
+			GuiControl, Main:Font, CPU
+			GUI, Font, Q5 s7 cBlack Norm
+			CPUStatus:="is not powerful enough to handle yuzu."
+		}
+		Else {
+			GUI, Font, Q5 s7 Bold
+			GuiControl, Main:Font, CPU
+			GUI, Font, Q5 s7 Norm
+			CPUStatus:="might handle Single Core Emulation in yuzu."
+			If (MaxClockSpeed>2700) {
+				CPUStatus:="should handle Single Core Emulation in yuzu."
+				If (MaxClockSpeed>3400) {
+					CPUStatus:="will handle Single Core Emulation in yuzu."
+				}
+			}
+		}
+	}
+	Else {
+		If (MaxClockSpeed<2000) {
+			GUI, Font, Q5 s7 Bold
+			GuiControl, Main:Font, CPU
+			GUI, Font, Q5 s7 Norm
+			CPUStatus:="might handle Multi Core Emulation in yuzu."
+			If (MaxClockSpeed<1500) {
+			GUI, Font, Q5 s7 cRed Bold
+			GuiControl, Main:Font, CPU
+			GUI, Font, Q5 s7 cBlack Norm
+				CPUStatus:="is not powerful enough to handle yuzu."
+			}
+		}
+		Else {
+			CPUStatus:="might be powerful enough to handle yuzu."
+			If (MaxClockSpeed>2700) {
+				CPUStatus:="should be powerful enough to handle yuzu."
+				If (MaxClockSpeed>3400) {
+					CPUStatus:="is powerful enough to handle yuzu."
+				}
+			}
+		}
+	}
+	GuiControl, Main:, CPU, CPU: %CPUName%
+	GuiControl, Main:, RAM, RAM: %RAMAmount%
+	GuiControl, Main:, CPU2, This CPU %CPUStatus%
+	GuiControl, Main:, RAM2, This amount of RAM %RAMStatus%
+	GuiControl, Main:Show, Sys
+	GuiControl, Main:Show, CPU
+	GuiControl, Main:Show, RAM
+	GuiControl, Main:Show, CPU2
+	GuiControl, Main:Show, RAM2
+Return
+
 MainGUI:
 	GUI, Main:New, -MinimizeBox, yuzu Early Access Launcher %versionname%
 
-	GUI, Add, Picture, xm+105 ym+5 h216 w-1, %A_temp%\logo.png
+	GUI, Add, Picture, xm+150 ym+5 h216 w-1, %A_temp%\logo.png
 	GUI, Font, Q5 s15 Bold
-	GUI, Add, Text, xm ym+240 w620 h60 0x1 vI0, yuzu Early Access is not Installed!
-	GUI, Add, Text, xm ym+265 w620 h30 0x1 vU, Checking for Latest Version! Please Wait.
+	GUI, Add, Text, xm ym+240 w710 h60 0x1 vI0, yuzu Early Access is not Installed!
+	GUI, Add, Text, xm ym+265 w710 h30 0x1 vU, Processing!
 	GUI, Font, Q5 s11 Norm
 
-	GUI, Add, Button, xm ym+225 w305 h60 vB1 gB1,
-	GUI, Add, Button, xm+315 yp w305 h60 vB2 gB2,
+	GUI, Add, Button, xm ym+225 w350 h60 vB1 gB1,
+	GUI, Add, Button, xm+360 yp w350 h60 vB2 gB2,
 	GUI, Font, Q5 s14 Norm
-	GUI, Add, Button, xm yp w620 h60 vB12 gB12,
+	GUI, Add, Button, xm yp w710 h60 vB12 gB12,
 
 	GUI, Font, Q5 s10 Bold
-	GUI, Add, GroupBox, xm yp+70 w620 h60 vFirm, Firmware:
+	GUI, Add, GroupBox, xm yp+70 w710 h60 vFirm, Firmware:
 	GUI, Font, Q5 s10 Norm
-	GUI, Add, Text, xm+10 yp+25 w420 h30 vFirmtxt,
+	GUI, Add, Text, xm+10 yp+25 w470 h30 vFirmtxt,
 	GUI, Font, Q5 s10 Norm
-	GUI, Add, Button, xm+420 yp-7 w190 h30 vBs1 gDFirm,
+	GUI, Add, Button, xm+480 yp-7 w220 h30 vBs1 gDFirm,
 
 	GUI, Font, Q5 s13 Norm
-	GUI, Add, GroupBox, xm ym+225 w620 h130 vTask
-	GUI, Add, Progress, Section xm+10 yp+30 w600 h15 vProgressBar -Smooth
-	GUI, Add, Text, xm+10 yp+25 w200 h30 vProgressN
-	GUI, Add, Text, xm+210 yp w400 h30 0x2 vKB
+	GUI, Add, GroupBox, xm ym+225 w710 h130 vTask
+	GUI, Add, Progress, Section xm+10 yp+30 w690 h15 vProgressBar -Smooth
+	GUI, Add, Text, xm+10 yp+25 w280 h30 vProgressN
+	GUI, Add, Text, xm+290 yp w400 h30 0x2 vKB
 	GUI, Add, Text, xm+10 yp+40 w410 h30 vST
-	
 	ProgressGUI("Hide")
 
 	GUI, Font, Q5 s11 Norm
-	GUI, Add, Text, xm+5 ym+372 w510 h30 vU0,
+	GUI, Add, Text, xm+5 ym+372 w470 h30 vU0,
 	GUI, Font, Q5 s7 Norm
-	GUI, Add, Button, xm+420 yp-7 w200 h30 vBs2 gBs2,
+	GUI, Add, Button, xm+480 yp-7 w230 h30 vBs2 gBs2,
 
 	GUI, Font, Q5 s10 Bold
-	GUI, Add, GroupBox, xm yp+35 w620 h60, Help and Support:
+	GUI, Add, GroupBox, xm yp+35 w710 h70 vSys, System Info:
 	GUI, Font, Q5 s7 Norm
-	GUI, Add, Button, xm+10 yp+20 w190 h30 vHb1 gHb1, View Video Guide
-	GUI, Add, Button, xm+210 yp w200 h30 vHb2 gHb2, Support Me
-	GUI, Add, Button, xm+420 yp w190 h30 vHb3 gHb3, Report an Issue
+	GUI, Add, Text, xm+10 yp+25 w500 h15 vCPU,
+	GUI, Add, Text, xm+320 yp w380 h15 0x2 vCPU2,
+	GUI, Add, Text, xm+10 yp+20 w500 h15 vRAM,
+	GUI, Add, Text, xm+320 yp w380 h15 0x2 vRAM2,
+
+	GuiControl, Main:HiDe, Sys
+	GuiControl, Main:HiDe, CPU
+	GuiControl, Main:HiDe, RAM
+	GuiControl, Main:HiDe, CPU2
+	GuiControl, Main:HiDe, RAM2
+
+	GUI, Font, Q5 s10 Bold
+	GUI, Add, GroupBox, xm yp+35 w710 h100, Help and Support:
+	GUI, Font, Q5 s7 Norm
+	GUI, Add, Button, xm+10 yp+20 w220 h30 vHb1 gHb1, View Video Guide
+	GUI, Add, Button, xm+240 yp w230 h30 vHb2 gHb2, Support Me
+	GUI, Add, Button, xm+480 yp w220 h30 vHb3 gHb3, Report an Issue
+	GUI, Add, Button, xm+10 yp+40 w220 h30 vHb4 gHb4, Check Compatibility of a Game
+	GUI, Add, Button, xm+240 yp w230 h30 vHb5 gHb5, Ask about a Problem
+	GUI, Add, Button, xm+480 yp w220 h30 vHb6 gHb6, More Information
 
 	GUIButtons("Hide")
 	GUIControl, Main:Hide, I0
 	GUIControl, Main:Hide, U0
 	GUIControl, Main:Show, U
-
-	GUI, Main: Show
+	GUI, Main:Show
 	Global OldOutputVarControl
 	SetTimer, ButtonToolTip, 100
 Return
@@ -260,8 +396,20 @@ ButtonToolTip:
 	SetTimer, ButtonToolTipOn, Off
 	ToolTip,
 
-	If (OutputVarControl=="Button11") {
-		ToolTip:="Report an Issue with the Installer."
+	If (OutputVarControl=="Button12") {
+		ToolTip:="Report an Issue with this Launcher."
+		SetTimer, ButtonToolTipOn, -1000
+	}
+		If (OutputVarControl=="Button13") {
+		ToolTip:="Check the Compatibiliy of different Games in yuzu as reported by Players using different hardwares from all over the World."
+		SetTimer, ButtonToolTipOn, -1000
+	}
+		If (OutputVarControl=="Button14") {
+		ToolTip:="Visit yuzu FAQ page to find the Solutions to Common Problems in yuzu."
+		SetTimer, ButtonToolTipOn, -1000
+	}
+		If (OutputVarControl=="Button15") {
+		ToolTip:="More Information about yuzu and this Launcher."
 		SetTimer, ButtonToolTipOn, -1000
 	}
 	Exit
@@ -287,10 +435,44 @@ Hb3:
 	Run, "https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/issues/new"
 Return
 
+Hb4:
+	Run, "https://yuzu-emu.org/game/"
+Return
+
+Hb5:
+	Run, "https://yuzu-emu.org/wiki/faq/"
+Return
+
+Hb6:
+	GUI, Info:New, -MinimizeBox, yuzu and yuzu Early Access Launcher %versionname% Info
+
+	GUI, Add, Picture, xm+20 ym h216 w-1, %A_temp%\logo.png
+
+	GUI, Font, Q5 s14 Bold
+	GUI, Add, GroupBox, xm ym+210 w460 h140, yuzu
+	GUI, Font, Q5 s13 Norm
+	GUI, Add, Text, xm+10 yp+40, yuzu is an experimental open-source emulator for the`nNintendo Switch Licensed under GPLv2.0.
+	GUI, Font, Q5 s7 Bold
+	GUI, Add, Link, xm+10 yp+60, <a href=""></a><a href="https://yuzu-emu.org/">Website</a> | <a href="https://github.com/yuzu-emu">Source Code</a> | <a href="https://github.com/yuzu-emu/yuzu/graphs/contributors">Contributers</a> | <a href="https://github.com/yuzu-emu/yuzu/blob/master/license.txt">License</a>
+	GUI, Font, Q5 s7 Norm
+	GUI, Add, Text, xm+10 yp+15, "Nintendo Switch" is a trademark of Nintendo`, yuzu is not affiliated with Nintendo in any way.
+
+	GUI, Font, Q5 s14 Bold
+	GUI, Add, GroupBox, xm yp+40 w460 h200, yuzu Early Acces Launcher
+	GUI, Font, Q5 s13 Norm
+	GUI, Add, Text, xm+10 yp+40, %versionname%`n`nThis Launcher can install and keep yuzu Early Access`nalong with prod.key and Firmware updated for free.
+	GUI, Font, Q5 s7 Bold
+	GUI, Add, Link, xm+10 yp+100, <a href=""></a><a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher">Source Code</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://github.com/emuworld/aio/blob/master/prod.keys">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
+	GUI, Font, Q5 s7 Norm
+	GUI, Add, Text, xm+10 yp+15, "yuzu and yuzu Early Access" is developed by Team yuzu.`nThe maker of this Launcher is not affiliated with Nintendo or Team yuzu in any way.
+
+	GUI, Info:Show
+Return
+
 B1:
 	Run, yuzu-windows-msvc-early-access\yuzu.exe, , UseErrorLevel
 	If (ErrorLevel=="ERROR") {
-		MsgBox, % 16+262144, , Error 5.`nTry Running as Administrator.
+		MsgBox, % 16+262144, , Error 7.`nTry Running as Administrator.
 	}
 	ExitApp
 Return
@@ -344,7 +526,7 @@ Dyuzu:
 	Extract(file, "yuzu")
 	IniWrite, %latest%, installed.ini, installed, version
 	If (ErrorLevel) {
-		MsgBox, % 16+262144, , Error 6.`nWe can still continue.
+		MsgBox, % 16+262144, , Error 8.`nWe can still continue.
 	}
 	GUIControl, Main:, U, Refreshing! Please Wait...
 	GoSub, ControlGUI
@@ -395,7 +577,7 @@ ExFirm:
 	Extract(firfile, "firm")
 	IniWrite, %lfirm%, installed.ini, installed, firm
 	If (ErrorLevel) {
-		MsgBox, % 16+262144, , Error 7.`nWe can still continue.
+		MsgBox, % 16+262144, , Error 8.`nWe can still continue.
 	}
 	GUIControl, Main:, U, Refreshing! Please Wait...
 	GoSub, ControlGUI
@@ -403,13 +585,10 @@ Return
 
 Bs2:
 	If (DownloadTask==1) {
-		FileDelete, %file%
 		FileDelete, %A_temp%\%file%
-		FileDelete, %firfile%
 		FileDelete, %A_temp%\%firfile%
 	}
 	If (DownloadTask==0) {
-		GUIControl, , U, Checking for Latest Version! Please Wait...
 		GoSub, ControlGUI
 		Return
 	}
@@ -572,18 +751,19 @@ ControlGUI:
 		If (installed=="" || installed=="ERROR") {
 			GUIControl, Main:Show, I0
 			GUIControl, Main:, U0, Error retrieving Updates! Check Your Internet and Refresh.
-			GUI, Font, Q5 s10 Bold
+			GUI, Font, Q5 s11 Bold
 			GUIControl, Main:Font, U0
 		}
 		Else {
 			If (!FileExist("prod.keys")) {
-				GUIControl, Main:, U0, prod.keys not found! Check Your Internet and Refresh.
-				GUI, Font, Q5 s10 cRed Bold
+				GUIControl, Main:, U0, Could not find prod.keys! Check Your Internet and Refresh.
+				GUI, Font, Q5 s11 cRed Bold
 				GUIControl, Main:Font, U0
+				GUI, Font, Q5 s11 cBlack Bold
 			}
 			Else {
 				GUIControl, Main:, U0, prod.keys may be old! Check Your Internet and Refresh.
-				GUI, Font, Q5 s10 Bold
+				GUI, Font, Q5 s11 Bold
 				GUIControl, Main:Font, U0
 			}
 			GUI, Font, Q5 s12 Norm
@@ -644,7 +824,7 @@ Extract(file, id) {
 		If (FileExist("yuzu-windows-msvc-early-access")) {
 			FileDelete, yuzu-windows-msvc-early-access\yuzu-windows-msvc-source-*.tar.xz
 			If (ErrorLevel) {
-				MsgBox, % 16+262144, , Error 8.`nTry Running as Administrator.
+				MsgBox, % 16+262144, , Error 10.`nTry Running as Administrator.
 				ExitApp
 			}
 		}
@@ -652,7 +832,7 @@ Extract(file, id) {
 	If (id=="firm") {
 		RunWait, cmd.exe /c %A_temp%\7za.exe x -bsp1 -y -o%A_AppData%\yuzu\nand\system\Contents\registered %file% > %A_temp%\log.txt, , Hide UseErrorLevel
 		If (ErrorLevel=="ERROR") {
-			MsgBox, % 16+262144, , Error 10.`nTry Running as Administrator.
+			MsgBox, % 16+262144, , Error 11.`nTry Running as Administrator.
 			ExitApp
 		}
 	}
