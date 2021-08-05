@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="0.3.0-beta"
+versionnumber:="1.0.0"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -13,8 +13,6 @@ FileInstall, 7za.exe, %A_temp%\7za.exe, 1
 FileInstall, 7z.NET.dll, %A_temp%\7z.NET.dll, 1
 FileInstall, jq.exe, %A_temp%\jq.exe, 1
 FileInstall, logo.png, %A_temp%\logo.png, 1
-FileInstall, load1.png, %A_temp%\load1.png, 1
-FileInstall, load2.png, %A_temp%\load2.png, 1
 
 yDir:=StrReplace(A_Temp, "Temp", "yuzu")
 If (A_ScriptDir!=yDir) {
@@ -40,8 +38,6 @@ If (A_ScriptDir!=yDir) {
 	FileDelete, %A_temp%\7z.NET.dll
 	FileDelete, %A_temp%\jq.exe
 	FileDelete, %A_temp%\logo.png
-	FileDelete, %A_temp%\load1.png
-	FileDelete, %A_temp%\load2.png
 	ExitApp
 }
 
@@ -195,7 +191,12 @@ GetInfo:
 	}
 	Else {
 		Updates:=1
-		GUIControl, Main:, U, Updating prod.keys!
+		If (FileExist(A_AppData . "\yuzu\keys\prod.keys")) {
+			GUIControl, Main:, U, Retrieving latest prod.keys!
+		}
+		Else {
+			GUIControl, Main:, U, Downloading prod.keys!
+		}
 		GoSub, Dprod
 	}
 	FileDelete, %A_temp%\downloaded.ini
@@ -428,7 +429,8 @@ Hb1:
 Return
 
 Hb2:
-	SetTimer, Sub, -1
+	Run, "https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1"
+	SetTimer, Sub, -8000
 Return
 
 Hb3:
@@ -496,25 +498,12 @@ B12:
 Return
 
 Sub:
-	Run, "https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1"
-	Loop {
-		CoordMode Pixel, screen
-		ImageSearch, imageX, imageY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 load1.png
-		if (imageY > 1) {
-			Break
-		}
-		ImageSearch, imageX, imageY, 0, 0, A_ScreenWidth, A_ScreenHeight, *100 load2.png
-		if (imageY > 1) {
-			Break
-		}
-		sleep 100
-	}
 	SendInput, {Tab}
 	Sleep, 100
 	SendInput, {Tab}
 	Sleep, 100
 	SendInput, {Enter}
-Return
+Exit
 
 Dyuzu:
 	If (!FileExist(file)) {
@@ -537,10 +526,7 @@ Dprod:
 	UrlDownloadToFile, %kurl%, %A_temp%\prod.keys
 	FileDelete, prod.keys
 	FileMove, %A_temp%\prod.keys, prod.keys, 1
-	GoSub, MoveProd
-Return
 
-MoveProd:
 	If (FileExist("prod.keys")) {
 		FileCreateDir, %A_AppData%\yuzu\keys
 		If (ErrorLevel) {
@@ -654,7 +640,11 @@ ControlGUI:
 			}
 		}
 		Else {
-			B2txt:=StrReplace("ReInstall yuzu Early Access installed", "installed", latest)
+			If (latest==installed) {
+				B2txt:=StrReplace("ReInstall yuzu Early Access installed", "installed", latest)
+			} Else {
+				B2txt:=StrReplace("Install yuzu Early Access installed", "installed", latest)
+			}
 			B12txt:=launch
 		}
 	}
@@ -999,8 +989,6 @@ ExitFunc() {
 	FileDelete, %A_temp%\7z.NET.dll
 	FileDelete, %A_temp%\jq.exe
 	FileDelete, %A_temp%\logo.png
-	FileDelete, %A_temp%\load1.png
-	FileDelete, %A_temp%\load2.png
 	ExitApp
 }
 
