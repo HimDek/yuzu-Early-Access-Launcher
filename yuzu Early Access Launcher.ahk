@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="1.0.0"
+versionnumber:="1.0.1"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -23,12 +23,14 @@ If (A_ScriptDir!=yDir) {
 			ExitApp
 		}
 	}
-	FileCopy, %A_ScriptFullPath%, %yDir%, 1
-	If (ErrorLevel) {
-		MsgBox, % 16+262144, , Error 1.`nTry Running as Administrator.
-		ExitApp
-	}
 	Path:=yDir . "\" . A_ScriptName
+	If (!FileExist(Path)) {
+		FileCopy, %A_ScriptFullPath%, %yDir%, 1
+		If (ErrorLevel) {
+			MsgBox, % 16+262144, , Error 1.`nTry Running as Administrator.
+			ExitApp
+		}
+	}
 	Run, %Path%, %yDir%, UseErrorLevel
 	If (ErrorLevel=="ERROR") {
 		MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
