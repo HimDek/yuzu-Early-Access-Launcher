@@ -111,7 +111,7 @@ CheckUpdates:
 	FileDelete, %A_temp%\switch.json
 
 	UrlDownloadToFile, https://api.github.com/repos/pineappleEA/pineapple-src/releases/latest, %A_temp%\yuzuea.json
-	UrlDownloadToFile, https://hide-techno-tips.github.io/Nintendo-Switch-Files, %A_temp%\switch.json
+	UrlDownloadToFile, https://hide-techno-tips.github.io/Nintendo-Switch-Files/index.json, %A_temp%\switch.json
 
 	RunWait, cmd.exe /c echo [latest] > %A_temp%\latest.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f `%l in ('%A_temp%\jq.exe .tag_name %A_temp%\yuzuea.json') do echo version=`%l >> %A_temp%\latest.ini,, Hide UseErrorLevel
