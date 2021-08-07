@@ -38,8 +38,9 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 <br clear="left"/>
 
 ## How to use:
-* Download and extract the [yuzu_Early_Access_Launcher.zip](https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip) file.
-* Then run the yuzu_Early_Access_Launcher.exe found in it and the Launcher will guide you through the process.
+* Download the [yuzu_Early_Access_Launcher.zip](https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip) file.
+* Extract the downloaded file using the password ` yuzu Early Access `.
+* Then run the yuzu_Early_Access_Launcher.exe file and it will guide you through the rest of the process.
 
 ## System Requirements for yuzu:
 ### Minimum:
