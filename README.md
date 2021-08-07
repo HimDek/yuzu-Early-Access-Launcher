@@ -7,6 +7,7 @@ yuzu is an experimental open-source emulator for the Nintendo Switch Licensed un
 This Launcher can install and keep yuzu Early Access along with prod.key and Firmware updated for free.
 
 <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://github.com/emuworld/aio/blob/master/prod.keys">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
+###### PASSWORD for zip: ```yuzuEarlyAccess```
 
 ## Features:
 * Easy to Use and Straight Forward GUI.
