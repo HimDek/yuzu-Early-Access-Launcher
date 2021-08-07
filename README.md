@@ -10,7 +10,7 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://github.com/emuworld/aio/blob/master/prod.keys">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
 
 
-<a href="https://github.com/HiDe-Techno-Tips/Blackeye-for-Windows/archive/refs/heads/main.zip"> <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" align="left" width="390"> </a>
+<a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip"> <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" align="left" width="390"> </a>
 
 # Password for extracting the zip file is <b>yuzuEarlyAccess</b>
 
