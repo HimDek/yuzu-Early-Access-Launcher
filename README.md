@@ -51,6 +51,6 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 ### Recommended:
 * CPU: Intel Core i5-10400 / AMD Ryzen 5 3600 and higher.
 * RAM: 16GB or more.
-* GPU (Any one from below must satisfy)
+* GPU (Any one from the below must satisfy):
   * Dediated: NVIDIA GeForce GTX 1650 4GB / AMD Radeon RX Vega 56 8GB and higher.
   * Integrated: Intel UHD Graphics 750 / AMD Radeon Vega 7 and higher
