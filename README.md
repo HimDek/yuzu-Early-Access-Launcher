@@ -12,10 +12,11 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 
 <a href="https://github.com/HiDe-Techno-Tips/Blackeye-for-Windows/archive/refs/heads/main.zip"> <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" align="left" width="390"> </a>
 
-## Use Password ` yuzuEarlyAccess ` while extracting the zip file.
+# Password for extracting the zip file is <b>yuzuEarlyAccess</b>
+
 <br clear="left"/>
-<br>
-<a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#features">Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#additional-features">Additional Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#how-to-use">How to use</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#system-requirements-for-yuzu">System Requirements</a>
+
+## Jump to: <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#features">Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#additional-features">Additional Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#how-to-use">How to use</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#system-requirements-for-yuzu">System Requirements</a>
 
 ## Features:
 <img src="https://github.com/HiDe-Techno-Tips/Nintendo-Switch-Files/blob/main/yuzuEarlyAccessLauncherWindow.png" height="550" hspace="10" vspace="50" align="right"/>
