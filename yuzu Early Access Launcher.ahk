@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="1.0.1"
+versionnumber:="1.1.0"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -16,10 +16,10 @@ FileInstall, logo.png, %A_temp%\logo.png, 1
 
 yDir:=StrReplace(A_Temp, "Temp", "yuzu")
 If (A_ScriptDir!=yDir) {
-	If (!FileExist(yDir)) {
+	If (!FileExist(yDir)=="D") {
 		FileCreateDir, %yDir%
 		If (ErrorLevel) {
-			MsgBox, % 16+262144, , Directory %yDir% Could not be Created.`nTry Running as Administrator.
+			MsgBox, % 16+262144, , Directory %yDir% could not be created.`nTry Running as Administrator.
 			ExitApp
 		}
 	}
@@ -41,6 +41,19 @@ If (A_ScriptDir!=yDir) {
 	FileDelete, %A_temp%\jq.exe
 	FileDelete, %A_temp%\logo.png
 	ExitApp
+}
+
+yConfig:=A_AppData . "\yuzu\config\qt-config.Ini"
+If (FileExist(yConfig)) {
+	IniRead, nand, %yConfig%, Data`%20Storage, nand_directory
+	If (FileExist(nand)=="D") {
+		Global reg:=reg:=StrReplace(nand . "system\Contents\registered", "/", "\")
+		FileCreateDir, %reg%
+		If (ErrorLevel) {
+			MsgBox, % 16+262144, , Directory %reg% could not be created.`nTry Running as Administrator.
+			ExitApp
+		}
+	}
 }
 
 FileCreateShortcut, %A_ScriptFullPath%, %A_Desktop%\yuzu Early Access Launcher.lnk, , , Launch yuzu Early Access
@@ -544,20 +557,26 @@ Dprod:
 Return
 
 DFirm:
-	If (Updates==1) {
-		If (FileExist(firfile)) {
+	If (FileExist(nand)!="D") {
+		MsgBox, % 16+262144, , Warning: There is no config file.`nRun yuzu at least once before trying again.
+		Return
+	}
+	If (FileExist(nand)=="D") {
+		If (Updates==1) {
+			If (FileExist(firfile)) {
+				GoSub ExFirm
+			}
+			If (!FileExist(firfile)){
+				FileDelete, %A_temp%\Switch-Firmware*.zip
+				DownloadFile(furl, firfile, fsize)
+				FileDelete, Switch-Firmware*.zip
+				FileMove, %A_temp%\%firfile%, %firfile%, 1
+				GoSub, ExFirm
+			}
+		}
+		If (Updates==0) {
 			GoSub ExFirm
 		}
-		If (!FileExist(firfile)){
-			FileDelete, %A_temp%\Switch-Firmware*.zip
-			DownloadFile(furl, firfile, fsize)
-			FileDelete, Switch-Firmware*.zip
-			FileMove, %A_temp%\%firfile%, %firfile%, 1
-			GoSub, ExFirm
-		}
-	}
-	If (Updates==0) {
-		GoSub ExFirm
 	}
 Return
 
@@ -822,7 +841,8 @@ Extract(file, id) {
 		}
 	}
 	If (id=="firm") {
-		RunWait, cmd.exe /c %A_temp%\7za.exe x -bsp1 -y -o%A_AppData%\yuzu\nand\system\Contents\registered %file% > %A_temp%\log.txt, , Hide UseErrorLevel
+		folder:="""" . reg . """"
+		RunWait, cmd.exe /c %A_temp%\7za.exe x -bsp1 -y -o%folder% %file% > %A_temp%\log.txt, , Hide UseErrorLevel
 		If (ErrorLevel=="ERROR") {
 			MsgBox, % 16+262144, , Error 11.`nTry Running as Administrator.
 			ExitApp
