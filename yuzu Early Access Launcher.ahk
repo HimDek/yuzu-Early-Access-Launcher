@@ -5,7 +5,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="1.1.0"
+versionnumber:="1.1.1"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -16,12 +16,10 @@ FileInstall, logo.png, %A_temp%\logo.png, 1
 
 yDir:=StrReplace(A_Temp, "Temp", "yuzu")
 If (A_ScriptDir!=yDir) {
-	If (!FileExist(yDir)=="D") {
-		FileCreateDir, %yDir%
-		If (ErrorLevel) {
-			MsgBox, % 16+262144, , Directory %yDir% could not be created.`nTry Running as Administrator.
-			ExitApp
-		}
+	FileCreateDir, %yDir%
+	If (ErrorLevel) {
+		MsgBox, % 16+262144, , Directory %yDir% could not be created.`nTry Running as Administrator.
+		ExitApp
 	}
 	Path:=yDir . "\" . A_ScriptName
 	If (!FileExist(Path)) {
@@ -41,19 +39,6 @@ If (A_ScriptDir!=yDir) {
 	FileDelete, %A_temp%\jq.exe
 	FileDelete, %A_temp%\logo.png
 	ExitApp
-}
-
-yConfig:=A_AppData . "\yuzu\config\qt-config.Ini"
-If (FileExist(yConfig)) {
-	IniRead, nand, %yConfig%, Data`%20Storage, nand_directory
-	If (FileExist(nand)=="D") {
-		Global reg:=reg:=StrReplace(nand . "system\Contents\registered", "/", "\")
-		FileCreateDir, %reg%
-		If (ErrorLevel) {
-			MsgBox, % 16+262144, , Directory %reg% could not be created.`nTry Running as Administrator.
-			ExitApp
-		}
-	}
 }
 
 FileCreateShortcut, %A_ScriptFullPath%, %A_Desktop%\yuzu Early Access Launcher.lnk, , , Launch yuzu Early Access
@@ -145,6 +130,24 @@ CheckUpdates:
 
 	FileDelete, %A_temp%\yuzuea.json
 	FileDelete, %A_temp%\switch.json
+Return
+
+GetReg:
+	yConfig:=A_AppData . "\yuzu\config\qt-config.Ini"
+	If (FileExist(yConfig)) {
+		IniRead, nand, %yConfig%, Data`%20Storage, nand_directory
+		If (FileExist(nand)=="D") {
+			Global reg:=StrReplace(nand . "system\Contents\registered", "/", "\")
+			FileCreateDir, %reg%
+			If (ErrorLevel) {
+				MsgBox, % 16+262144, , Directory %reg% could not be created.`nTry Running as Administrator.
+			}
+		} Else {
+			MsgBox, % 16+262144, , Error. Directory %nand% doesnot exist.
+		}
+	} Else {
+		MsgBox, % 16+262144, , Warning: There is no config file.`nRun yuzu at least once before trying again.
+	}
 Return
 
 GetInfo:
@@ -526,6 +529,10 @@ Dyuzu:
 		DownloadFile(url, file, ysize)
 		FileDelete, Windows-Yuzu-EA-*.7z
 		FileMove, %A_temp%\%file%, %file%, 1
+		If (ErrorLevel) {
+			MsgBox, % 16+262144, , Error Moving %A_temp%\%file% to %ydir%.`nTry Running as Administrator.
+			ExitApp
+		}
 	}
 	Extract(file, "yuzu")
 	IniWrite, %latest%, installed.ini, installed, version
@@ -539,29 +546,32 @@ Return
 Dprod:
 	FileDelete, %A_temp%\prod.keys
 	UrlDownloadToFile, %kurl%, %A_temp%\prod.keys
+	If (ErrorLevel) {
+		MsgBox, % 16+262144, , Error Downloading prod.keys.`nCheck your Internet Connection or try running as Administrator.
+		Return
+	}
 	FileDelete, prod.keys
 	FileMove, %A_temp%\prod.keys, prod.keys, 1
+	If (ErrorLevel) {
+		MsgBox, % 16+262144, , Error Moving %A_temp%\prod.keys to %ydir%.`nTry Running as Administrator.
+		Return
+	}
 
 	If (FileExist("prod.keys")) {
 		FileCreateDir, %A_AppData%\yuzu\keys
 		If (ErrorLevel) {
 			MsgBox, % 16+262144, , Directory %A_AppData%\yuzu\keys Could not be Created.`nTry Running as Administrator.
-			ExitApp
+			Return
 		}
 		FileCopy, prod.keys, %A_AppData%\yuzu\keys ,1
 		If (ErrorLevel) {
 			MsgBox, % 16+262144, , Error Moving keys to %A_AppData%\yuzu\keys.`nTry Running as Administrator.
-			ExitApp
+			Return
 		}
 	}
 Return
 
 DFirm:
-	If (FileExist(nand)!="D") {
-		MsgBox, % 16+262144, , Warning: There is no config file.`nRun yuzu at least once before trying again.
-		Return
-	}
-	If (FileExist(nand)=="D") {
 		If (Updates==1) {
 			If (FileExist(firfile)) {
 				GoSub ExFirm
@@ -571,23 +581,34 @@ DFirm:
 				DownloadFile(furl, firfile, fsize)
 				FileDelete, Switch-Firmware*.zip
 				FileMove, %A_temp%\%firfile%, %firfile%, 1
+				If (ErrorLevel) {
+					MsgBox, % 16+262144, , Error Moving %A_temp%\%firfile% to %ydir%.`nTry Running as Administrator.
+					ExitApp
+				}
 				GoSub, ExFirm
 			}
 		}
 		If (Updates==0) {
 			GoSub ExFirm
 		}
-	}
 Return
 
 ExFirm:
-	Extract(firfile, "firm")
-	IniWrite, %lfirm%, installed.ini, installed, firm
-	If (ErrorLevel) {
-		MsgBox, % 16+262144, , Error 8.`nWe can still continue.
+	GoSub, GetReg
+	If (FileExist(reg)!="D") {
+		MsgBox, % 16+262144, , Error. Directory %reg% doesnot exist.
+		GoSub, ControlGUI
 	}
-	GUIControl, Main:, U, Refreshing! Please Wait...
-	GoSub, ControlGUI
+	If (FileExist(reg)=="D") {
+		reg:="""" .  reg . """"
+		Extract(firfile, "firm")
+		IniWrite, %lfirm%, installed.ini, installed, firm
+		If (ErrorLevel) {
+			MsgBox, % 16+262144, , Error 9.`nWe can still continue.
+		}
+		GUIControl, Main:, U, Refreshing! Please Wait...
+		GoSub, ControlGUI
+	}
 Return
 
 Bs2:
@@ -829,20 +850,15 @@ Extract(file, id) {
 	If (id=="yuzu") {
 		RunWait, cmd.exe /c %A_temp%\7za.exe x -bsp1 -y %file% > %A_temp%\log.txt, , Hide UseErrorLevel
 		If (ErrorLevel=="ERROR") {
-			MsgBox, % 16+262144, , Error 9.`nTry Running as Administrator.
+			MsgBox, % 16+262144, , Error 10.`nTry Running as Administrator.
 			ExitApp
 		}
 		If (FileExist("yuzu-windows-msvc-early-access")) {
 			FileDelete, yuzu-windows-msvc-early-access\yuzu-windows-msvc-source-*.tar.xz
-			If (ErrorLevel) {
-				MsgBox, % 16+262144, , Error 10.`nTry Running as Administrator.
-				ExitApp
-			}
 		}
 	}
 	If (id=="firm") {
-		folder:="""" . reg . """"
-		RunWait, cmd.exe /c %A_temp%\7za.exe x -bsp1 -y -o%folder% %file% > %A_temp%\log.txt, , Hide UseErrorLevel
+		RunWait, cmd.exe /c %A_temp%\7za.exe x -bsp1 -y -o%reg% %file% > %A_temp%\log.txt, , Hide UseErrorLevel
 		If (ErrorLevel=="ERROR") {
 			MsgBox, % 16+262144, , Error 11.`nTry Running as Administrator.
 			ExitApp
