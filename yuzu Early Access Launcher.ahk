@@ -29,6 +29,13 @@ If (A_ScriptDir!=yDir) {
 			ExitApp
 		}
 	}
+	If (A_ScriptDir==A_Temp) {
+		FileCopy, %A_ScriptFullPath%, %yDir%, 1
+		If (ErrorLevel) {
+			MsgBox, % 16+262144, , Error 1.`nTry Running as Administrator.
+			ExitApp
+		}
+	}
 	Run, %Path%, %yDir%, UseErrorLevel
 	If (ErrorLevel=="ERROR") {
 		MsgBox, % 16+262144, , Error 2.`nTry Running as Administrator.
