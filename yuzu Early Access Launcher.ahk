@@ -132,24 +132,6 @@ CheckUpdates:
 	FileDelete, %A_temp%\switch.json
 Return
 
-GetReg:
-	yConfig:=A_AppData . "\yuzu\config\qt-config.Ini"
-	If (FileExist(yConfig)) {
-		IniRead, nand, %yConfig%, Data`%20Storage, nand_directory
-		If (FileExist(nand)=="D") {
-			Global reg:=StrReplace(nand . "system\Contents\registered", "/", "\")
-			FileCreateDir, %reg%
-			If (ErrorLevel) {
-				MsgBox, % 16+262144, , Directory %reg% could not be created.`nTry Running as Administrator.
-			}
-		} Else {
-			MsgBox, % 16+262144, , Error. Directory %nand% doesnot exist.
-		}
-	} Else {
-		MsgBox, % 16+262144, , Warning: There is no config file.`nRun yuzu at least once before trying again.
-	}
-Return
-
 GetInfo:
 	GUIControl, Main:, U, Checking Files!
 	FileDelete, %A_temp%\downloaded.ini
@@ -443,12 +425,11 @@ MainGUIClose:
 Return
 
 Hb1:
-	MsgBox, % 0+64+262144, , Not available yet!
+	Run, "https://www.youtube.com/watch?v=nxNkwPrHAlo"
 Return
 
 Hb2:
 	Run, "https://www.youtube.com/channel/UCy3fBVKd0RMY05CgiiuGqSA?sub_confirmation=1"
-	SetTimer, Sub, -8000
 Return
 
 Hb3:
@@ -515,14 +496,6 @@ B12:
 	}
 Return
 
-Sub:
-	SendInput, {Tab}
-	Sleep, 100
-	SendInput, {Tab}
-	Sleep, 100
-	SendInput, {Enter}
-Exit
-
 Dyuzu:
 	If (!FileExist(file)) {
 		FileDelete, %A_temp%\Windows-Yuzu-EA-*.7z
@@ -539,7 +512,6 @@ Dyuzu:
 	If (ErrorLevel) {
 		MsgBox, % 16+262144, , Error 8.`nWe can still continue.
 	}
-	GUIControl, Main:, U, Refreshing! Please Wait...
 	GoSub, ControlGUI
 Return
 
@@ -597,7 +569,6 @@ ExFirm:
 	GoSub, GetReg
 	If (FileExist(reg)!="D") {
 		MsgBox, % 16+262144, , Error. Directory %reg% doesnot exist.
-		GoSub, ControlGUI
 	}
 	If (FileExist(reg)=="D") {
 		reg:="""" .  reg . """"
@@ -606,9 +577,8 @@ ExFirm:
 		If (ErrorLevel) {
 			MsgBox, % 16+262144, , Error 9.`nWe can still continue.
 		}
-		GUIControl, Main:, U, Refreshing! Please Wait...
-		GoSub, ControlGUI
 	}
+	GoSub, ControlGUI
 Return
 
 Bs2:
@@ -621,6 +591,24 @@ Bs2:
 		Return
 	}
 	Reload
+Return
+
+GetReg:
+	yConfig:=A_AppData . "\yuzu\config\qt-config.Ini"
+	If (FileExist(yConfig)) {
+		IniRead, nand, %yConfig%, Data`%20Storage, nand_directory
+		If (FileExist(nand)=="D") {
+			Global reg:=StrReplace(nand . "system\Contents\registered", "/", "\")
+			FileCreateDir, %reg%
+			If (ErrorLevel) {
+				MsgBox, % 16+262144, , Directory %reg% could not be created.`nTry Running as Administrator.
+			}
+		} Else {
+			MsgBox, % 16+262144, , Error. Directory %nand% doesnot exist.
+		}
+	} Else {
+		MsgBox, % 16+262144, , Warning: There is no config file.`nRun yuzu at least once before trying again.
+	}
 Return
 
 ControlGUI:
