@@ -1,11 +1,11 @@
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 #SingleInstance Force
 #NoTrayIcon
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-versionnumber:="1.1.1"
+versionnumber:="1.1.2"
 version:=StrReplace("vnumber", "number", versionnumber)
 versionname:=StrReplace("Version number", "number", versionnumber)
 
@@ -143,6 +143,7 @@ GetInfo:
 	GUIControl, Main:, U, Checking Files!
 	FileDelete, %A_temp%\downloaded.ini
 	FileDelete, %A_temp%\system.ini
+	FileDelete, %A_Temp%\RAMInfo.ini
 
 	RunWait, cmd.exe /c echo [downloaded] > %A_temp%\downloaded.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c for /f "tokens=4 delims=-" `%b in ('where "Windows-Yuzu-EA-*.7z"') do echo version=`%~nb >> %A_temp%\downloaded.ini,, Hide UseErrorLevel
@@ -217,22 +218,24 @@ SysInfo:
 	RunWait, cmd.exe /c wmic cpu get Name /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c wmic cpu get NumberOfLogicalProcessors /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
 	RunWait, cmd.exe /c wmic cpu get MaxClockSpeed /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
-	RunWait, cmd.exe /c wmic memorychip get Capacity /format:list | find /v "" >> %A_Temp%\system.ini,, Hide UseErrorLevel
+	RunWait, cmd.exe /c systeminfo | find "Total Physical Memory:" > %A_Temp%\RAMInfo.ini,, Hide UseErrorLevel
 
 	If (ErrorLevel=="ERROR") {
 		MsgBox, % 16+262144, , Error 6.`nTry Running as Administrator.
 		FileDelete, %A_temp%\system.ini
+		FileDelete, %A_Temp%\RAMInfo.ini
 		ExitApp
 	}
 	
 	If (FileExist(A_temp . "\system.ini")) {
 		IniRead, OSArchitecture, %A_Temp%\system.ini, system, OSArchitecture
-		IniRead, RAMCapacity, %A_Temp%\system.ini, system, Capacity
 		IniRead, MaxClockSpeed, %A_Temp%\system.ini, system, MaxClockSpeed
 		IniRead, NumberOfLogicalProcessors, %A_Temp%\system.ini, system, NumberOfLogicalProcessors
 		IniRead, CPUName, %A_Temp%\system.ini, system, Name
+		FileRead, RAMCapacity, %A_Temp%\RAMInfo.ini
 	}
 	FileDelete, %A_temp%\system.ini
+	FileDelete, %A_Temp%\RAMInfo.ini
 	If (OSArchitecture!="64-bit") {
 		Global DownloadTask:=1
 		GUIControl, Main:, U, 32-bit Windows detected. yuzu won't work at all.`nIf you have a 64-bit Processor, try after installing 64-bit Windows.
@@ -240,20 +243,22 @@ SysInfo:
 		GUIControl, Main:Show, Bs2
 	}
 	
-	RAMAmount:=StrReplace("amount GiB", "amount", RAMCapacity // 1073741824)
-	If (RAMCapacity<8000000000) {
+	RAMCapacity := StrReplace(StrReplace(StrReplace(StrReplace(RAMCapacity, "Total Physical Memory:", ""), ",", ""), "MB", ""), " ","")
+	RAMCapacity += 0
+	RAMAmount := StrReplace("amount GiB", "amount", Round(RAMCapacity / 1024, 0))
+	If (RAMCapacity<8000) {
 		GUI, Font, Q5 s7 cOlive Bold
 		GuiControl, Main:Font, RAM
 		GUI, Font, Q5 s7 cBlack Norm
 		RAMStatus:="is not enough for yuzu to load heavy games."
-		If (RAMCapacity<6000000000) {
+		If (RAMCapacity<6000) {
 			GUI, Font, Q5 s7 cRed Bold
 			GuiControl, Main:Font, RAM
 			GUI, Font, Q5 s7 cBlack Norm
 			RAMStatus:="is not enough for yuzu to load large games."
-			If (RAMCapacity<4000000000) {
+			If (RAMCapacity<4000) {
 				RAMStatus:="is enough for yuzu to load only light or small games."
-				If (RAMCapacity<2000000000) {
+				If (RAMCapacity<2000) {
 					RAMStatus:="is not enough for yuzu to load any game."
 				}
 			}
@@ -261,9 +266,9 @@ SysInfo:
 	}
 	Else {
 		RAMStatus:="is enough for yuzu to load most games."
-		If (RAMCapacity>12000000000) {
+		If (RAMCapacity>12000) {
 			RAMStatus:="is enough for yuzu to load even the heaviest game."
-			If (RAMCapacity>16000000000) {
+			If (RAMCapacity>16000) {
 				RAMStatus:="is more than enough for yuzu."
 			}
 		}
@@ -927,10 +932,10 @@ ProgressGUI(str) {
 DownloadFile(url, save, size) {
 	Global DownloadTask:=1
 
-	total:= Round(size / 1024)
+	total:= Round(size / 1024, 2)
 	unit := "KiB"
 	if (size>=1048576) {
-		total := Round(size / 1048576)
+		total := Round(size / 1048576, 2)
 		unit := "MiB"
 	}
 
@@ -992,25 +997,25 @@ SetCounter(current, size, before) {
 	GUIControl, Main:, ProgressN, %progressN% `%
 	GUIControl, Main:, KB, (%total% %unit% of %total% %unit% Completed)
 
-	done := Round(current // 1024)
+	done := Round(current / 1024, 2)
 	dunit := "KiB"
 	if (current>=1048576) {
-		done := Round(current // 1048576)
+		done := Round(current / 1048576, 2)
 		dunit := "MiB"
 	}
 
-	total := Round(size // 1024)
+	total := Round(size / 1024, 2)
 	tunit := "KiB"
 	if (size>=1048576) {
-		total := Round(size // 1048576)
+		total := Round(size / 1048576, 2)
 		tunit := "MiB"
 	}
 
 	speed := (current - before) * 4
-	uspeed := Round(speed // 1024)
+	uspeed := Round(speed / 1024, 2)
 	sunit := "KiB/s"
 	if (speed>=1048576) {
-		uspeed := Round((speed // 1048576), 1)
+		uspeed := Round(speed / 1048576, 2)
 		sunit := "MiB/s"
 	}
 	GUIControl, Main:, KB, %uspeed% %sunit% (%done% %dunit% of %total% %tunit% Completed)
