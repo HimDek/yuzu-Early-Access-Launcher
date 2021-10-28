@@ -87,7 +87,7 @@ UpdateLauncher:
 		IniRead, lurl, %A_temp%\launcher.ini, latest, url
 		IniRead, lsize, %A_temp%\launcher.ini, latest, lsize
 	}
-	
+
 	FileDelete, %A_temp%\launcher.ini
 	FileDelete, %A_temp%\yuzulauncher.json
 
