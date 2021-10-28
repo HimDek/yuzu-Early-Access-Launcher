@@ -1,5 +1,6 @@
 test.*
 tmp.*
+*.zip
 yuzu Early Access Launcher.exe
 .vscode
 .vs
