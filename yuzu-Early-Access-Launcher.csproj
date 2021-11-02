@@ -212,9 +212,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <Content Include="FodyWeavers.xml" />
     <Content Include="icon.ico" />
     <None Include="logo.png" />
   </ItemGroup>
