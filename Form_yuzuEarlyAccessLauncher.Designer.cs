@@ -58,16 +58,27 @@ namespace yuzu_Early_Access_Launcher
             this.button_Video = new System.Windows.Forms.Button();
             this.backgroundWorker_Check = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker_SystemInfo = new System.ComponentModel.BackgroundWorker();
-            this.button_Refresh = new System.Windows.Forms.Button();
             this.label_Info = new System.Windows.Forms.Label();
             this.backgroundWorker_Download = new System.ComponentModel.BackgroundWorker();
             this.timer_ExtractProgress = new System.Windows.Forms.Timer(this.components);
             this.timer_Refresh = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox_Settings = new System.Windows.Forms.PictureBox();
+            this.groupBox_Settings = new System.Windows.Forms.GroupBox();
+            this.checkBox_Exit = new System.Windows.Forms.CheckBox();
+            this.checkBox_DelFirm = new System.Windows.Forms.CheckBox();
+            this.checkBox_Delyuzu = new System.Windows.Forms.CheckBox();
+            this.label_ThemeInfo = new System.Windows.Forms.Label();
+            this.comboBox_Theme = new System.Windows.Forms.ComboBox();
+            this.label_Theme = new System.Windows.Forms.Label();
+            this.pictureBox_Refresh = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Logo)).BeginInit();
             this.groupBox_Progress.SuspendLayout();
             this.groupBox_Firmware.SuspendLayout();
             this.groupBox_SystemInfo.SuspendLayout();
             this.groupBox_HelpandSupport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Settings)).BeginInit();
+            this.groupBox_Settings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Refresh)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox_Logo
@@ -155,7 +166,7 @@ namespace yuzu_Early_Access_Launcher
             this.label_Time.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_Time.Location = new System.Drawing.Point(7, 79);
             this.label_Time.Name = "label_Time";
-            this.label_Time.Size = new System.Drawing.Size(459, 30);
+            this.label_Time.Size = new System.Drawing.Size(460, 30);
             this.label_Time.TabIndex = 3;
             this.label_Time.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -227,7 +238,7 @@ namespace yuzu_Early_Access_Launcher
             // label_RAMInfo
             // 
             this.label_RAMInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_RAMInfo.Location = new System.Drawing.Point(239, 40);
+            this.label_RAMInfo.Location = new System.Drawing.Point(240, 40);
             this.label_RAMInfo.Name = "label_RAMInfo";
             this.label_RAMInfo.Size = new System.Drawing.Size(460, 23);
             this.label_RAMInfo.TabIndex = 3;
@@ -245,7 +256,7 @@ namespace yuzu_Early_Access_Launcher
             // label_RAMCapacity
             // 
             this.label_RAMCapacity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_RAMCapacity.Location = new System.Drawing.Point(6, 40);
+            this.label_RAMCapacity.Location = new System.Drawing.Point(7, 40);
             this.label_RAMCapacity.Name = "label_RAMCapacity";
             this.label_RAMCapacity.Size = new System.Drawing.Size(227, 23);
             this.label_RAMCapacity.TabIndex = 2;
@@ -271,7 +282,7 @@ namespace yuzu_Early_Access_Launcher
             this.groupBox_HelpandSupport.Controls.Add(this.button_Support);
             this.groupBox_HelpandSupport.Controls.Add(this.button_Video);
             this.groupBox_HelpandSupport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox_HelpandSupport.Location = new System.Drawing.Point(12, 481);
+            this.groupBox_HelpandSupport.Location = new System.Drawing.Point(12, 494);
             this.groupBox_HelpandSupport.Name = "groupBox_HelpandSupport";
             this.groupBox_HelpandSupport.Size = new System.Drawing.Size(706, 97);
             this.groupBox_HelpandSupport.TabIndex = 8;
@@ -356,24 +367,12 @@ namespace yuzu_Early_Access_Launcher
             this.backgroundWorker_SystemInfo.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_SystemInfo_DoWork);
             this.backgroundWorker_SystemInfo.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_SystemInfo_RunWorkerCompleted);
             // 
-            // button_Refresh
-            // 
-            this.button_Refresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_Refresh.Location = new System.Drawing.Point(485, 362);
-            this.button_Refresh.Name = "button_Refresh";
-            this.button_Refresh.Size = new System.Drawing.Size(233, 30);
-            this.button_Refresh.TabIndex = 6;
-            this.button_Refresh.Text = "Refresh";
-            this.button_Refresh.UseVisualStyleBackColor = true;
-            this.button_Refresh.Visible = false;
-            this.button_Refresh.Click += new System.EventHandler(this.Button_Refresh_Click);
-            // 
             // label_Info
             // 
             this.label_Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_Info.Location = new System.Drawing.Point(15, 359);
+            this.label_Info.Location = new System.Drawing.Point(12, 359);
             this.label_Info.Name = "label_Info";
-            this.label_Info.Size = new System.Drawing.Size(464, 36);
+            this.label_Info.Size = new System.Drawing.Size(622, 36);
             this.label_Info.TabIndex = 5;
             this.label_Info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_Info.Visible = false;
@@ -393,21 +392,145 @@ namespace yuzu_Early_Access_Launcher
             this.timer_Refresh.Interval = 1000;
             this.timer_Refresh.Tick += new System.EventHandler(this.Timer_Refresh_Tick);
             // 
+            // pictureBox_Settings
+            // 
+            this.pictureBox_Settings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox_Settings.BackgroundImage")));
+            this.pictureBox_Settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox_Settings.Location = new System.Drawing.Point(682, 359);
+            this.pictureBox_Settings.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.pictureBox_Settings.Name = "pictureBox_Settings";
+            this.pictureBox_Settings.Size = new System.Drawing.Size(36, 36);
+            this.pictureBox_Settings.TabIndex = 9;
+            this.pictureBox_Settings.TabStop = false;
+            this.pictureBox_Settings.Click += new System.EventHandler(this.pictureBox_Settings_Click);
+            // 
+            // groupBox_Settings
+            // 
+            this.groupBox_Settings.Controls.Add(this.checkBox_Exit);
+            this.groupBox_Settings.Controls.Add(this.checkBox_DelFirm);
+            this.groupBox_Settings.Controls.Add(this.checkBox_Delyuzu);
+            this.groupBox_Settings.Controls.Add(this.label_ThemeInfo);
+            this.groupBox_Settings.Controls.Add(this.comboBox_Theme);
+            this.groupBox_Settings.Controls.Add(this.label_Theme);
+            this.groupBox_Settings.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox_Settings.Location = new System.Drawing.Point(12, 399);
+            this.groupBox_Settings.Name = "groupBox_Settings";
+            this.groupBox_Settings.Size = new System.Drawing.Size(706, 89);
+            this.groupBox_Settings.TabIndex = 9;
+            this.groupBox_Settings.TabStop = false;
+            this.groupBox_Settings.Text = "Settings:";
+            this.groupBox_Settings.Visible = false;
+            // 
+            // checkBox_Exit
+            // 
+            this.checkBox_Exit.AutoSize = true;
+            this.checkBox_Exit.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_Exit.Location = new System.Drawing.Point(357, 58);
+            this.checkBox_Exit.Name = "checkBox_Exit";
+            this.checkBox_Exit.Size = new System.Drawing.Size(334, 21);
+            this.checkBox_Exit.TabIndex = 6;
+            this.checkBox_Exit.Text = "Exit Launcher after launching yuzu Early Access:";
+            this.checkBox_Exit.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Exit.UseVisualStyleBackColor = true;
+            this.checkBox_Exit.CheckedChanged += new System.EventHandler(this.checkBox_Exit_CheckedChanged);
+            // 
+            // checkBox_DelFirm
+            // 
+            this.checkBox_DelFirm.AutoSize = true;
+            this.checkBox_DelFirm.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_DelFirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_DelFirm.Location = new System.Drawing.Point(360, 40);
+            this.checkBox_DelFirm.Name = "checkBox_DelFirm";
+            this.checkBox_DelFirm.Size = new System.Drawing.Size(331, 21);
+            this.checkBox_DelFirm.TabIndex = 5;
+            this.checkBox_DelFirm.Text = "Delete Switch Firmware archive after Installation:";
+            this.checkBox_DelFirm.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_DelFirm.UseVisualStyleBackColor = true;
+            this.checkBox_DelFirm.CheckedChanged += new System.EventHandler(this.checkBox_DelFirm_CheckedChanged);
+            // 
+            // checkBox_Delyuzu
+            // 
+            this.checkBox_Delyuzu.AutoSize = true;
+            this.checkBox_Delyuzu.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Delyuzu.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox_Delyuzu.Location = new System.Drawing.Point(346, 22);
+            this.checkBox_Delyuzu.Name = "checkBox_Delyuzu";
+            this.checkBox_Delyuzu.Size = new System.Drawing.Size(345, 21);
+            this.checkBox_Delyuzu.TabIndex = 4;
+            this.checkBox_Delyuzu.Text = "Delete yuzu Early Access archive after Installation:";
+            this.checkBox_Delyuzu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Delyuzu.UseVisualStyleBackColor = true;
+            this.checkBox_Delyuzu.CheckedChanged += new System.EventHandler(this.checkBox_Delyuzu_CheckedChanged);
+            // 
+            // label_ThemeInfo
+            // 
+            this.label_ThemeInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_ThemeInfo.Location = new System.Drawing.Point(7, 56);
+            this.label_ThemeInfo.Name = "label_ThemeInfo";
+            this.label_ThemeInfo.Size = new System.Drawing.Size(239, 24);
+            this.label_ThemeInfo.TabIndex = 3;
+            this.label_ThemeInfo.Text = "New theme will be applied on restart.";
+            this.label_ThemeInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_ThemeInfo.Visible = false;
+            // 
+            // comboBox_Theme
+            // 
+            this.comboBox_Theme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBox_Theme.FormattingEnabled = true;
+            this.comboBox_Theme.Items.AddRange(new object[] {
+            "Same as yuzu",
+            "Light",
+            "Dark",
+            "Midnight Blue"});
+            this.comboBox_Theme.Location = new System.Drawing.Point(70, 29);
+            this.comboBox_Theme.Name = "comboBox_Theme";
+            this.comboBox_Theme.Size = new System.Drawing.Size(170, 24);
+            this.comboBox_Theme.TabIndex = 2;
+            this.comboBox_Theme.SelectedIndexChanged += new System.EventHandler(this.comboBox_Theme_SelectedIndexChanged);
+            this.comboBox_Theme.DropDownClosed += new System.EventHandler(this.comboBox_Theme_DropDownClosed);
+            // 
+            // label_Theme
+            // 
+            this.label_Theme.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_Theme.Location = new System.Drawing.Point(7, 25);
+            this.label_Theme.Name = "label_Theme";
+            this.label_Theme.Size = new System.Drawing.Size(57, 28);
+            this.label_Theme.TabIndex = 1;
+            this.label_Theme.Text = "Theme:";
+            this.label_Theme.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pictureBox_Refresh
+            // 
+            this.pictureBox_Refresh.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox_Refresh.BackgroundImage")));
+            this.pictureBox_Refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox_Refresh.Location = new System.Drawing.Point(640, 359);
+            this.pictureBox_Refresh.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.pictureBox_Refresh.Name = "pictureBox_Refresh";
+            this.pictureBox_Refresh.Size = new System.Drawing.Size(36, 36);
+            this.pictureBox_Refresh.TabIndex = 10;
+            this.pictureBox_Refresh.TabStop = false;
+            this.pictureBox_Refresh.Visible = false;
+            this.pictureBox_Refresh.Click += new System.EventHandler(this.pictureBox_Refresh_Click);
+            // 
             // Form_yuzuEarlyAccessLauncher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(730, 590);
+            this.ClientSize = new System.Drawing.Size(730, 603);
+            this.Controls.Add(this.pictureBox_Refresh);
+            this.Controls.Add(this.pictureBox_Settings);
             this.Controls.Add(this.label_Info);
             this.Controls.Add(this.groupBox_HelpandSupport);
-            this.Controls.Add(this.groupBox_SystemInfo);
             this.Controls.Add(this.pictureBox_Logo);
-            this.Controls.Add(this.button_Refresh);
             this.Controls.Add(this.button_Launch);
             this.Controls.Add(this.button_Download);
-            this.Controls.Add(this.label_Message);
             this.Controls.Add(this.groupBox_Progress);
             this.Controls.Add(this.groupBox_Firmware);
+            this.Controls.Add(this.label_Message);
+            this.Controls.Add(this.groupBox_Settings);
+            this.Controls.Add(this.groupBox_SystemInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -419,6 +542,10 @@ namespace yuzu_Early_Access_Launcher
             this.groupBox_Firmware.ResumeLayout(false);
             this.groupBox_SystemInfo.ResumeLayout(false);
             this.groupBox_HelpandSupport.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Settings)).EndInit();
+            this.groupBox_Settings.ResumeLayout(false);
+            this.groupBox_Settings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Refresh)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -452,10 +579,18 @@ namespace yuzu_Early_Access_Launcher
         private System.Windows.Forms.Button button_Compatibility;
         private System.ComponentModel.BackgroundWorker backgroundWorker_Check;
         private System.ComponentModel.BackgroundWorker backgroundWorker_SystemInfo;
-        private System.Windows.Forms.Button button_Refresh;
         private System.Windows.Forms.Label label_Info;
         private System.ComponentModel.BackgroundWorker backgroundWorker_Download;
         private System.Windows.Forms.Timer timer_ExtractProgress;
         private System.Windows.Forms.Timer timer_Refresh;
+        private System.Windows.Forms.PictureBox pictureBox_Settings;
+        private System.Windows.Forms.GroupBox groupBox_Settings;
+        private System.Windows.Forms.Label label_Theme;
+        private System.Windows.Forms.ComboBox comboBox_Theme;
+        private System.Windows.Forms.PictureBox pictureBox_Refresh;
+        private System.Windows.Forms.Label label_ThemeInfo;
+        private System.Windows.Forms.CheckBox checkBox_Exit;
+        private System.Windows.Forms.CheckBox checkBox_DelFirm;
+        private System.Windows.Forms.CheckBox checkBox_Delyuzu;
     }
 }
