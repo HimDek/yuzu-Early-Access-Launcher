@@ -19,17 +19,77 @@ namespace yuzu_Early_Access_Launcher
     public partial class Form_yuzuEarlyAccessLauncher : Form
     {
         static readonly String path = Path.GetDirectoryName(Application.ExecutablePath), UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        String version= "", VersionName = "", file = "", firfile = "", launcherlatest = "", lurl = "", lsize = "", latest = "", url = "", ysize = "", kurl = "", lfirm = "", furl = "", fsize = "", installed = "", firm = "", CPU = "", reg = "", xsdir = "";
-        bool Internet, Downloading = false;
+        String version = "", VersionName = "", theme= "", file = "", firfile = "", launcherlatest = "", lurl = "", lsize = "", latest = "", url = "", ysize = "", kurl = "", lfirm = "", furl = "", fsize = "", installed = "", firm = "", reg = "", xsdir = "";
+        bool Internet, Downloading = false, DeleteyuzuArchive = false, DeleteFirmwareArchive = false, ExitLauncher = true;
         long xdsize = 0;
-        double GHz, MemSize = 0;
+        Color Back, Fore;
         StreamWriter log;
+        Ini ini = new Ini("launcher.ini");
 
-        public Form_yuzuEarlyAccessLauncher(String ver)
+        public Form_yuzuEarlyAccessLauncher(String ver, String Theme, Color BackColor, Color ForeColor, Color ConBack, Color ConBackBox)
         {
             InitializeComponent();
 
-            Directory.SetCurrentDirectory(path);
+            Back = BackColor;
+            Fore = ForeColor;
+            theme = Theme;
+
+            groupBox_Progress.ForeColor = Fore;
+            groupBox_Firmware.ForeColor = Fore;
+            groupBox_SystemInfo.ForeColor = Fore;
+            groupBox_Settings.ForeColor = Fore;
+            groupBox_HelpandSupport.ForeColor = Fore;
+            comboBox_Theme.ForeColor = Fore;
+            button_Launch.BackColor = ConBack;
+            button_Download.BackColor = ConBack;
+            button_Cancel.BackColor = ConBack;
+            button_Firmware.BackColor = ConBack;
+            button_Video.BackColor = ConBack;
+            button_Support.BackColor = ConBack;
+            button_Report.BackColor = ConBack;
+            button_Compatibility.BackColor = ConBack;
+            button_FAQ.BackColor = ConBack;
+            button_About.BackColor = ConBack;
+            comboBox_Theme.BackColor = ConBackBox;
+
+            if (ini.Read("DeleteyuzuArchive", "settings") == "true" || ini.Read("DeleteyuzuArchive", "settings") == "True")
+            {
+                DeleteyuzuArchive = true;
+            }
+            else
+            {
+                ini.Write("DeleteyuzuArchive", DeleteyuzuArchive.ToString(), "settings");
+            }
+
+            if (ini.Read("DeleteFirmwareArchive", "settings") == "true" || ini.Read("DeleteFirmwareArchive", "settings") == "True")
+            {
+                DeleteFirmwareArchive = true;
+            }
+            else
+            {
+                ini.Write("DeleteFirmwareArchive", DeleteFirmwareArchive.ToString(), "settings");
+            }
+
+            if (ini.Read("ExitLauncher", "settings") == "false" || ini.Read("ExitLauncher", "settings") == "False")
+            {
+                ExitLauncher = false;
+            }
+            else
+            {
+                ini.Write("ExitLauncher", ExitLauncher.ToString(), "settings");
+            }
+
+            String themeini = ini.Read("theme", "settings");
+            if (themeini != "Light" && themeini != "Dark" && themeini != "Midnight Blue")
+            {
+                themeini = "Same as yuzu";
+            }
+            comboBox_Theme.Text = themeini;
+            label_ThemeInfo.Visible = false;
+            checkBox_Delyuzu.Checked = DeleteyuzuArchive;
+            checkBox_DelFirm.Checked = DeleteFirmwareArchive;
+            checkBox_Exit.Checked = ExitLauncher;
+
             log = System.IO.File.CreateText("Launcher.log");
             if (System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\config\\qt-config.ini"))
             {
@@ -103,7 +163,10 @@ namespace yuzu_Early_Access_Launcher
         private void Button_Launch_Click(object sender, EventArgs e)
         {
             Process.Start("yuzu-windows-msvc-early-access\\yuzu.exe");
-            Environment.Exit(0);
+            if (ExitLauncher)
+            {
+                Environment.Exit(0);
+            }
         }
 
         private void Button_Download_Click(object sender, EventArgs e)
@@ -122,7 +185,25 @@ namespace yuzu_Early_Access_Launcher
             Environment.Exit(0);
         }
 
-        private void Button_Refresh_Click(object sender, EventArgs e)
+        private void checkBox_Exit_CheckedChanged(object sender, EventArgs e)
+        {
+            ExitLauncher = checkBox_Exit.Checked;
+            ini.Write("ExitLauncher", ExitLauncher.ToString(), "settings");
+        }
+
+        private void checkBox_DelFirm_CheckedChanged(object sender, EventArgs e)
+        {
+            DeleteFirmwareArchive = checkBox_DelFirm.Checked;
+            ini.Write("DeleteFirmwareArchive", DeleteFirmwareArchive.ToString(), "settings");
+        }
+
+        private void checkBox_Delyuzu_CheckedChanged(object sender, EventArgs e)
+        {
+            DeleteyuzuArchive = checkBox_Delyuzu.Checked;
+            ini.Write("DeleteyuzuArchive", DeleteyuzuArchive.ToString(), "settings");
+        }
+
+        private void pictureBox_Refresh_Click(object sender, EventArgs e)
         {
             log.WriteLine("\nRefreshing");
             groupBox_Progress.Visible = false;
@@ -131,8 +212,56 @@ namespace yuzu_Early_Access_Launcher
             button_Download.Visible = false;
             label_Message.Visible = false;
             label_Info.Visible = false;
-            button_Refresh.Visible = false;
+            pictureBox_Refresh.Visible = false;
             backgroundWorker_Check.RunWorkerAsync();
+        }
+
+        private void pictureBox_Settings_Click(object sender, EventArgs e)
+        {
+            groupBox_SystemInfo.Visible = groupBox_Settings.Visible;
+            groupBox_Settings.Visible = !groupBox_Settings.Visible;
+        }
+
+        private void comboBox_Theme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            String newtheme = comboBox_Theme.Text;
+            if (newtheme == "Same as yuzu")
+            {
+                if (System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\config\\qt-config.ini"))
+                {
+                    Ini yini = new Ini(UserProfile + "\\AppData\\Roaming\\yuzu\\config\\qt-config.ini");
+                    newtheme = yini.Read("theme", "UI");
+                }
+                else
+                {
+                    newtheme = "Light";
+                }
+            }
+            if (newtheme == "qdarkstyle" || newtheme == "colorful_dark")
+            {
+                newtheme = "Dark";
+            }
+            if (newtheme == "qdarkstyle_midnight_blue" || newtheme == "colorful_midnight_blue")
+            {
+                newtheme = "Midnight Blue";
+            }
+            
+            if (theme != newtheme)
+            {
+                label_ThemeInfo.Visible = true;
+                
+            }
+            else
+            {
+                label_ThemeInfo.Visible = false;
+            }
+
+            ini.Write("theme", comboBox_Theme.Text, "settings");
+        }
+
+        private void comboBox_Theme_DropDownClosed(object sender, EventArgs e)
+        {
+            pictureBox_Settings.Focus();
         }
 
         private void Button_Video_Click(object sender, EventArgs e)
@@ -164,6 +293,8 @@ namespace yuzu_Early_Access_Launcher
         {
             var AboutBox = new Form_AboutBox(version)
             {
+                BackColor = Back,
+                ForeColor = Fore,
                 Owner = this,
                 Text = "About yuzu Early Access and yuzu Early Access Launcher Version " + version.Replace('-', ' ')
             };
@@ -180,12 +311,15 @@ namespace yuzu_Early_Access_Launcher
             button_Download.Visible = false;
             label_Message.Visible = false;
             label_Info.Visible = false;
-            button_Refresh.Visible = false;
+            pictureBox_Refresh.Visible = false;
             backgroundWorker_Check.RunWorkerAsync();
         }
 
         private void BackgroundWorker_SystemInfo_DoWork(object sender, DoWorkEventArgs e)
         {
+            double GHz = 0, RAM = 0;
+            String CPU = "";
+
             ManagementClass mc = new ManagementClass("win32_processor");
             foreach (ManagementObject mo in mc.GetInstances())
             {
@@ -201,15 +335,19 @@ namespace yuzu_Early_Access_Launcher
             foreach (ManagementObject obj in oCollection)
             {
                 long mCap = Convert.ToInt64(obj["Capacity"]);
-                MemSize += mCap;
+                RAM += mCap;
             }
-            MemSize = MemSize / 1024 / 1024;
+
+            e.Result = new Tuple<String, double, double>(CPU, GHz, RAM / 1024 / 1024);
         }
 
         private void BackgroundWorker_SystemInfo_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            Tuple<String, double, double> Result = e.Result as Tuple<String, double, double>;
+            String CPU = Result.Item1;
+            double GHz = Result.Item2, RAM = Result.Item3;
             label_CPUName.Text = "CPU: " + CPU.Split('@')[0] + "@ " + GHz.ToString("0.0") + " GHz";
-            label_RAMCapacity.Text = "RAM: " + (MemSize / 1024).ToString("0.0") + " GB";
+            label_RAMCapacity.Text = "RAM: " + (RAM / 1024).ToString("0.0") + " GB";
             int NumberOfLogicalProcessors = Environment.ProcessorCount;
             double MaxClockSpeed = GHz * 1000;
 
@@ -268,20 +406,20 @@ namespace yuzu_Early_Access_Launcher
                 }
             }
 
-            if (MemSize < 8000)
+            if (RAM < 8000)
             {
                 label_RAMInfo.Font = new Font(label_RAMInfo.Font.Name, label_RAMInfo.Font.Size, FontStyle.Bold);
                 label_RAMInfo.Text = "This amount of RAM is not enough for yuzu to load heavy games.";
-                if (MemSize < 6000)
+                if (RAM < 6000)
                 {
                     label_RAMInfo.Font = new Font(label_RAMInfo.Font.Name, label_RAMInfo.Font.Size, FontStyle.Regular);
                     label_RAMInfo.Text = "This amount of RAM is not enough for yuzu to load large games.";
-                    if (MemSize < 4000)
+                    if (RAM < 4000)
                     {
                         label_RAMInfo.Font = new Font(label_RAMInfo.Font.Name, label_RAMInfo.Font.Size, FontStyle.Bold);
                         label_RAMInfo.ForeColor = Color.Red;
                         label_RAMInfo.Text = "This amount of RAM is enough for yuzu to load only light or small games.";
-                        if (MemSize < 2000)
+                        if (RAM < 2000)
                         {
                             label_RAMInfo.Text = "This amount of RAM is not enough for yuzu to load any game.";
                         }
@@ -291,10 +429,10 @@ namespace yuzu_Early_Access_Launcher
             else
             {
                 label_RAMInfo.Text = "This amount of RAM is enough for yuzu to load most games.";
-                if (MemSize > 12000)
+                if (RAM > 12000)
                 {
                     label_RAMInfo.Text = "This amount of RAM is enough for yuzu to load even the heaviest game.";
-                    if (MemSize > 16000)
+                    if (RAM > 16000)
                     {
                         label_RAMInfo.Text = "This amount of RAM is more than enough for yuzu.";
                     }
@@ -416,23 +554,6 @@ namespace yuzu_Early_Access_Launcher
 
             backgroundWorker_Check.ReportProgress(6);
 
-            if (!Internet)
-            {
-                
-                launcherlatest = version;
-
-                try
-                {
-                    latest = Directory.GetFiles(path, "Windows-Yuzu-EA-*.7z").Last().Split('\\').Last().Split('-', '.')[3];
-                    lfirm = Directory.GetFiles(path, "Switch-Firmware-*.zip").Last().Split('\\').Last().Split('-', '.')[2] + "." + Directory.GetFiles(path, "Switch-Firmware-*.zip").Last().Split('\\').Last().Split('-', '.')[3] + "." + Directory.GetFiles(path, "Switch-Firmware-*.zip").Last().Split('\\').Last().Split('-', '.')[4];
-                }
-                catch (Exception)
-                {
-                    latest = "";
-                    lfirm = "";
-                }
-            }
-
             if (System.IO.File.Exists("prod.keys"))
             {
                 if (Directory.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys"))
@@ -445,19 +566,18 @@ namespace yuzu_Early_Access_Launcher
                 log.WriteLine(" Done");
             }
 
-            if (System.IO.File.Exists("installed.ini"))
+            if (System.IO.File.Exists("launcher.ini"))
             {
-                log.WriteLine("Reading \"" + path + "\\installed.ini\"");
-                var ini = new Ini("installed.ini");
+                log.WriteLine("Reading \"" + path + "\\launcher.ini\"");
                 installed = ini.Read("version", "installed");
                 firm = ini.Read("firm", "installed");
                 if (installed != "")
                 {
-                    log.WriteLine(" Detected yuzu Early Access " + installed + " from \"" + path + "\\installed.ini\"");
+                    log.WriteLine(" Detected yuzu Early Access " + installed + " from \"" + path + "\\launcher.ini\"");
                 }
                 if (firm != "")
                 {
-                    log.WriteLine(" Detected Switch Firmware " + firm + " from \"" + path + "\\installed.ini\"");
+                    log.WriteLine(" Detected Switch Firmware " + firm + " from \"" + path + "\\launcher.ini\"");
                 }
 
                 try
@@ -474,6 +594,7 @@ namespace yuzu_Early_Access_Launcher
                     firm = "";
                 }
             }
+
             if (installed == "")
             {
                 log.WriteLine(" Checking for \"" + path + "\\yuzu-windows-msvc-early-access\\yuzu.exe\"");
@@ -491,56 +612,101 @@ namespace yuzu_Early_Access_Launcher
                     installed = "";
                 }
             }
-            if (installed == "" || installed == "pre" || !Internet)
-            {
-                String oldlatest = latest;
 
-                try
+            if (installed == "")
+            {
+                installed = "0";
+            }
+            if (firm == "")
+            {
+                firm = "0.0.0";
+            }
+
+            String latestfileVer = installed;
+            String latestfirfileVer = firm;
+
+            log.WriteLine("Checking Files");
+            for (int i = 0; i < 2; i++)
+            {
+                foreach (string f in Directory.EnumerateFiles(path, "Windows-Yuzu-EA-*.7z"))
                 {
-                    latest = Directory.GetFiles(path, "Windows-Yuzu-EA-*.7z").Last().Split('\\').Last().Split('-', '.')[3];
-                }
-                catch (Exception)
-                {
-                    latest = oldlatest;
+                    int fVer = int.Parse(f.Split('\\').Last().Split('-', '.')[3]);
+
+                    if (fVer < int.Parse(latestfileVer))
+                    {
+                        System.IO.File.Delete(f);
+                    }
+                    else
+                    {
+                        latestfileVer = fVer.ToString();
+                    }
+
+                    if (int.Parse(latestfileVer) > int.Parse(latest) || int.Parse(latestfileVer) > int.Parse(installed) || !Internet)
+                    {
+                        latest = latestfileVer;
+                    }
+
+                    if (Internet)
+                    {
+                        if (DeleteyuzuArchive)
+                        {
+                            if ((fVer < int.Parse(latestfileVer) && fVer < int.Parse(latest)) || int.Parse(latestfileVer) == int.Parse(installed))
+                            {
+                                System.IO.File.Delete(f);
+                            }
+                        }
+                    }
                 }
             }
-            if (firm == "" || !Internet)
-            {
-                String oldlfirm = lfirm;
 
-                try
+            for (int i = 0; i < 2; i++)
+            {
+                foreach (string f in Directory.EnumerateFiles(path, "Switch-Firmware-*.zip"))
                 {
-                    lfirm = Directory.GetFiles(path, "Switch-Firmware-*.zip").Last().Split('\\').Last().Split('-', '.')[2] + "." + Directory.GetFiles(path, "Switch-Firmware-*.zip").Last().Split('\\').Last().Split('-', '.')[3] + "." + Directory.GetFiles(path, "Switch-Firmware-*.zip").Last().Split('\\').Last().Split('-', '.')[4];
+                    Version fVer = Version.Parse(f.Split('\\').Last().Split('-', '.')[2] + "." + f.Split('\\').Last().Split('-', '.')[3] + "." + f.Split('\\').Last().Split('-', '.')[4]);
+
+                    if (fVer < Version.Parse(latestfirfileVer))
+                    {
+                        System.IO.File.Delete(f);
+                    }
+                    else
+                    {
+                        latestfirfileVer = fVer.ToString();
+                    }
+
+                    if (Version.Parse(latestfirfileVer) > Version.Parse(lfirm) || Version.Parse(latestfirfileVer) > Version.Parse(firm) || !Internet)
+                    {
+                        lfirm = latestfirfileVer;
+                    }
+
+                    if (Internet)
+                    {
+                        if (DeleteFirmwareArchive)
+                        {
+                            if ((fVer < Version.Parse(latestfirfileVer) && fVer < Version.Parse(lfirm)) || Version.Parse(latestfirfileVer) == Version.Parse(firm))
+                            {
+                                System.IO.File.Delete(f);
+                            }
+                        }
+                    }
                 }
-                catch (Exception)
-                {
-                    lfirm = oldlfirm;
-                }
+            }
+
+            if (installed == "0")
+            {
+                installed = "";
+            }
+            if (firm == "0.0.0")
+            {
+                firm = "";
             }
 
             file = "Windows-Yuzu-EA-" + latest + ".7z";
             firfile = "Switch-Firmware-" + lfirm + ".zip";
 
-            log.WriteLine("Checking Files");
-            foreach (string f in Directory.EnumerateFiles(path, "Windows-Yuzu-EA-*.7z"))
-            {
-                if (f.Split('\\').Last() != file && f.Split('\\').Last() != "Windows-Yuzu-EA-" + installed + ".7z")
-                {
-                    System.IO.File.Delete(f);
-                }
-            }
-
-            foreach (string f in Directory.EnumerateFiles(path, "Switch-Firmware-*.zip"))
-            {
-                if (f.Split('\\').Last() != firfile && f.Split('\\').Last() != "Switch-Firmware-" + firm + ".zip")
-                {
-                    System.IO.File.Delete(f);
-                }
-            }
-
             if (System.IO.File.Exists(file))
             {
-                log.WriteLine(" Found file \"" + path + "\\Windows-Yuzu-EA-" + latest + ".7z\"");
+                log.WriteLine(" Latest found yuzu Early Access file: \"" + path + "\\Windows-Yuzu-EA-" + latest + ".7z\"");
             }
             else
             {
@@ -548,7 +714,7 @@ namespace yuzu_Early_Access_Launcher
             }
             if (System.IO.File.Exists(firfile))
             {
-                log.WriteLine(" Found file \"" + path + "\\Switch-Firmware-" + lfirm + ".zip\"");
+                log.WriteLine(" Latest found Switch Firmware file: \"" + path + "\\Switch-Firmware-" + lfirm + ".zip\"");
             }
             else
             {
@@ -618,7 +784,6 @@ namespace yuzu_Early_Access_Launcher
             button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
             button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Regular);
             button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Regular);
-            button_Refresh.Font = new Font(button_Refresh.Font.Name, button_Refresh.Font.Size, FontStyle.Regular);
             label_Info.ForeColor = Color.Black;
             label_Info.Font = new Font(label_Info.Font.Name, label_Info.Font.Size, FontStyle.Regular);
             label_Info.Text = "";
@@ -759,7 +924,6 @@ namespace yuzu_Early_Access_Launcher
                     label_Info.ForeColor = Color.Red;
                     label_Info.Text = "Error retrieving Updates! Check Your Internet and Refresh";
                     label_Info.Visible = true;
-                    button_Refresh.Font = new Font(button_Refresh.Font.Name, button_Refresh.Font.Size, FontStyle.Bold);
                 }
                 else
                 {
@@ -792,14 +956,12 @@ namespace yuzu_Early_Access_Launcher
                         label_Info.ForeColor = Color.Red;
                         label_Info.Text = "Could not find prod.keys! Check Your Internet and Refresh.";
                         label_Info.Visible = true;
-                        button_Refresh.Font = new Font(button_Refresh.Font.Name, button_Refresh.Font.Size, FontStyle.Bold);
                     }
                     else
                     {
                         label_Info.Font = new Font(label_Info.Font.Name, label_Info.Font.Size, FontStyle.Bold);
                         label_Info.Text = "prod.keys may be old! Check Your Internet and Refresh.";
                         label_Info.Visible = true;
-                        button_Refresh.Font = new Font(button_Refresh.Font.Name, button_Refresh.Font.Size, FontStyle.Bold);
                     }
                 }
                 if (firm == "")
@@ -850,7 +1012,7 @@ namespace yuzu_Early_Access_Launcher
                 label_Firmware.Font = new Font(label_Firmware.Font.Name, label_Firmware.Font.Size, FontStyle.Bold);
                 label_Firmware.Text = "Firmware is not Installed. Some Games may not work.";
             }
-            button_Refresh.Visible = true;
+            pictureBox_Refresh.Visible = true;
         }
 
         private void BackgroundWorker_Download_DoWork(object sender, DoWorkEventArgs e)
@@ -916,8 +1078,7 @@ namespace yuzu_Early_Access_Launcher
                     Directory.Move("Temp\\yuzu-windows-msvc-early-access", path + "\\yuzu-windows-msvc-early-access");
                     log.WriteLine(" Done");
                     Directory.Delete("Temp", true);
-                    var Iini = new Ini("installed.ini");
-                    Iini.Write("version", latest, "installed");
+                    ini.Write("version", latest, "installed");
                 }
             }
             if (e.ProgressPercentage == 3)
@@ -956,8 +1117,7 @@ namespace yuzu_Early_Access_Launcher
                         }
                         Directory.CreateDirectory(reg);
                         await Extract(path + "\\" + firfile, reg);
-                        var Iini = new Ini("installed.ini");
-                        Iini.Write("firm", lfirm, "installed");
+                        ini.Write("firm", lfirm, "installed");
                     }
                 }
             }
@@ -974,7 +1134,7 @@ namespace yuzu_Early_Access_Launcher
                 button_Download.Visible = false;
                 groupBox_Firmware.Visible = false;
                 label_Info.Visible = false;
-                button_Refresh.Visible = false;
+                pictureBox_Refresh.Visible = false;
 
                 string[] sfile = dsave.Split('\\');
                 groupBox_Progress.Text = "Downloading " + sfile[6];
@@ -1048,7 +1208,7 @@ namespace yuzu_Early_Access_Launcher
             button_Download.Visible = false;
             groupBox_Firmware.Visible = false;
             label_Info.Visible = false;
-            button_Refresh.Visible = false;
+            pictureBox_Refresh.Visible = false;
             groupBox_Progress.Text = "Extracting " + xfile.Split('\\').Last();
             label_Time.Text = "This may take some time.";
             groupBox_Progress.Visible = true;
