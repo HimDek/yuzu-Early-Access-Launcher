@@ -206,12 +206,33 @@ namespace yuzu_Early_Access_Launcher
         private void pictureBox_Refresh_Click(object sender, EventArgs e)
         {
             log.WriteLine("\nRefreshing");
-            groupBox_Progress.Visible = false;
-            groupBox_Firmware.Visible = false;
+
+            progressBar1.Value = 0;
+            label_Progress.Text = progressBar1.Value.ToString() + "%";
+
             button_Launch.Visible = false;
             button_Download.Visible = false;
-            label_Message.Visible = false;
+            button_Firmware.Visible = true;
+            button_Cancel.Visible = true;
+
+            button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
+            button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Regular);
+            button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Regular);
+
+            button_Launch.Size = new Size(350, 60);
+            button_Download.Size = new Size(350, 60);
+            button_Download.Location = new Point(368, 225);
+            
+            groupBox_Progress.Visible = false;
+            groupBox_Firmware.Visible = false;
+
+            label_Info.Text = "";
+            label_Speed.Visible = true;
             label_Info.Visible = false;
+            label_Info.ForeColor = Fore;
+            label_Info.Font = new Font(label_Info.Font.Name, label_Info.Font.Size, FontStyle.Regular);
+            label_Firmware.Font = new Font(label_Firmware.Font.Name, label_Firmware.Font.Size, FontStyle.Regular);
+
             pictureBox_Refresh.Visible = false;
             backgroundWorker_Check.RunWorkerAsync();
         }
@@ -303,16 +324,8 @@ namespace yuzu_Early_Access_Launcher
 
         private void Timer_Refresh_Tick(object sender, EventArgs e)
         {
-            log.WriteLine("\nRefreshing");
             timer_Refresh.Enabled = false;
-            groupBox_Progress.Visible = false;
-            groupBox_Firmware.Visible = false;
-            button_Launch.Visible = false;
-            button_Download.Visible = false;
-            label_Message.Visible = false;
-            label_Info.Visible = false;
-            pictureBox_Refresh.Visible = false;
-            backgroundWorker_Check.RunWorkerAsync();
+            pictureBox_Refresh_Click(sender, e);
         }
 
         private void BackgroundWorker_SystemInfo_DoWork(object sender, DoWorkEventArgs e)
@@ -621,6 +634,14 @@ namespace yuzu_Early_Access_Launcher
             {
                 firm = "0.0.0";
             }
+            if (latest == "")
+            {
+                latest = "0";
+            }
+            if (lfirm == "")
+            {
+                lfirm = "0.0.0";
+            }
 
             String latestfileVer = installed;
             String latestfirfileVer = firm;
@@ -645,7 +666,7 @@ namespace yuzu_Early_Access_Launcher
                     {
                         latest = latestfileVer;
                     }
-
+                    
                     if (Internet)
                     {
                         if (DeleteyuzuArchive)
@@ -700,6 +721,14 @@ namespace yuzu_Early_Access_Launcher
             {
                 firm = "";
             }
+            if (latest == "0")
+            {
+                latest = "";
+            }
+            if (lfirm == "0.0.0")
+            {
+                lfirm = "";
+            }
 
             file = "Windows-Yuzu-EA-" + latest + ".7z";
             firfile = "Switch-Firmware-" + lfirm + ".zip";
@@ -721,7 +750,7 @@ namespace yuzu_Early_Access_Launcher
                 log.WriteLine(" Not found file \"" + path + "\\Switch-Firmware-" + lfirm + ".zip\"");
             }
 
-            if (version != launcherlatest)
+            if (Internet && version != launcherlatest)
             {
                 Downloading = true;
                 backgroundWorker_Check.ReportProgress(7);
@@ -778,34 +807,15 @@ namespace yuzu_Early_Access_Launcher
         private void BackgroundWorker_Check_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             log.WriteLine("Updating UI");
-            progressBar1.Value = 0;
-            label_Progress.Text = progressBar1.Value.ToString() + "%";
             label_Message.Visible = false;
-            button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
-            button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Regular);
-            button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Regular);
-            label_Info.ForeColor = Color.Black;
-            label_Info.Font = new Font(label_Info.Font.Name, label_Info.Font.Size, FontStyle.Regular);
-            label_Info.Text = "";
-            label_Firmware.Font = new Font(label_Firmware.Font.Name, label_Firmware.Font.Size, FontStyle.Regular);
-            button_Launch.Size = new Size(350, 60);
-            button_Download.Size = new Size(350, 60);
-            button_Download.Location = new Point(368, 225);
-            button_Cancel.Visible = true;
-            button_Firmware.Visible = true;
-            label_Speed.Visible = true;
 
-            if (installed == "pre")
+            if (installed != "")
             {
                 button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Bold);
-                button_Launch.Text = "Launch yuzu Early Access";
-            }
-            else
-            {
-                if (installed != "")
+                button_Launch.Text = "Launch yuzu Early Access " + installed;
+                if (installed == "pre")
                 {
-                    button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Bold);
-                    button_Launch.Text = "Launch yuzu Early Access " + installed;
+                    button_Launch.Text = "Launch yuzu Early Access";
                 }
             }
 
@@ -815,20 +825,16 @@ namespace yuzu_Early_Access_Launcher
                 {
                     if (System.IO.File.Exists(file))
                     {
-                        button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
-                        button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
                         button_Download.Text = "Install yuzu Early Access " + latest;
                     }
                     else
                     {
-                        button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
-                        button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
                         button_Download.Text = "Download yuzu Early Access " + latest;
                     }
+                    button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
+                    button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
                     button_Download.Size = new Size(706, 60);
                     button_Download.Location = new Point(12, 225);
-                    button_Launch.Visible = false;
-                    button_Download.Visible = true;
                 }
                 else
                 {
@@ -837,58 +843,54 @@ namespace yuzu_Early_Access_Launcher
                         if (System.IO.File.Exists(file))
                         {
                             button_Download.Text = "ReInstall yuzu Early Access " + latest;
-                            button_Download.Visible = true;
                         }
                         else
                         {
                             button_Download.Text = "ReDownload yuzu Early Access " + latest;
-                            button_Download.Visible = true;
                         }
                     }
                     else
                     {
                         if (System.IO.File.Exists(file))
                         {
-                            button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
-                            button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
                             button_Download.Text = "Update to yuzu Early Access " + latest;
-                            button_Download.Visible = true;
                         }
                         else
                         {
-                            button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
-                            button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
                             button_Download.Text = "Download yuzu Early Access " + latest;
-                            button_Download.Visible = true;
                         }
+                        button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
+                        button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
                     }
+
                     button_Launch.Visible = true;
                 }
 
+                button_Download.Visible = true;
+
                 if (firm == "")
                 {
-                    if (!System.IO.File.Exists(firfile))
-                    {
-                        button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Bold);
-                        button_Firmware.Text = "Download Firmware " + lfirm;
-                    }
                     if (System.IO.File.Exists(firfile))
                     {
-                        button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Bold);
                         button_Firmware.Text = "Install Firmware " + lfirm;
                     }
+                    else
+                    {
+                        button_Firmware.Text = "Download Firmware " + lfirm;
+                    }
+                    button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Bold);
                 }
                 else
                 {
                     if (lfirm == firm)
                     {
-                        if (!System.IO.File.Exists(firfile))
-                        {
-                            button_Firmware.Text = "ReDownload Firmware " + lfirm;
-                        }
                         if (System.IO.File.Exists(firfile))
                         {
                             button_Firmware.Text = "ReInstall Firmware " + lfirm;
+                        }
+                        else
+                        {
+                            button_Firmware.Text = "ReDownload Firmware " + lfirm;
                         }
                     }
                     else
@@ -911,7 +913,6 @@ namespace yuzu_Early_Access_Launcher
                         button_Download.Text = "Install yuzu Early Access " + latest;
                         button_Download.Size = new Size(706, 60);
                         button_Download.Location = new Point(12, 225);
-                        button_Launch.Visible = false;
                         button_Download.Visible = true;
                     }
                     else
@@ -922,7 +923,7 @@ namespace yuzu_Early_Access_Launcher
                     }
                     label_Info.Font = new Font(label_Info.Font.Name, label_Info.Font.Size, FontStyle.Bold);
                     label_Info.ForeColor = Color.Red;
-                    label_Info.Text = "Error retrieving Updates! Check Your Internet and Refresh";
+                    label_Info.Text = "Error retrieving Updates! Check Your Internet and Refresh.";
                     label_Info.Visible = true;
                 }
                 else
@@ -930,79 +931,57 @@ namespace yuzu_Early_Access_Launcher
                     if (latest == installed)
                     {
                         button_Download.Text = "ReInstall yuzu Early Access " + latest;
-                        button_Download.Visible = true;
                     }
                     else
                     {
                         button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
                         button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
                         button_Download.Text = "Install yuzu Early Access " + latest;
-                        button_Download.Visible = true;
                     }
-                    if (!System.IO.File.Exists(file))
-                    {
-                        button_Launch.Size = new Size(706, 60);
-                        button_Launch.Visible = true;
-                        button_Download.Visible = false;
-                    }
+                    
                     if (System.IO.File.Exists(file))
                     {
-                        button_Launch.Visible = true;
                         button_Download.Visible = true;
                     }
+                    else
+                    {
+                        button_Launch.Size = new Size(706, 60);
+                    }
+
                     if (!System.IO.File.Exists("prod.keys") && !System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys"))
                     {
                         label_Info.Font = new Font(label_Info.Font.Name, label_Info.Font.Size, FontStyle.Bold);
                         label_Info.ForeColor = Color.Red;
                         label_Info.Text = "Could not find prod.keys! Check Your Internet and Refresh.";
-                        label_Info.Visible = true;
                     }
                     else
                     {
                         label_Info.Font = new Font(label_Info.Font.Name, label_Info.Font.Size, FontStyle.Bold);
                         label_Info.Text = "prod.keys may be old! Check Your Internet and Refresh.";
-                        label_Info.Visible = true;
                     }
+
+                    button_Launch.Visible = true;
+                    label_Info.Visible = true;
                 }
-                if (firm == "")
+
+                if (System.IO.File.Exists(firfile))
                 {
-                    if (System.IO.File.Exists(firfile))
+                    if (lfirm == firm)
+                    {
+                        button_Firmware.Text = "ReInstall Firmware " + lfirm;
+                    }
+                    else
                     {
                         button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Bold);
                         button_Firmware.Text = "Install Firmware " + lfirm;
                     }
-                    if (!System.IO.File.Exists(firfile))
-                    {
-                        button_Firmware.Visible = false;
-                    }
                 }
                 else
                 {
-                    if (lfirm == firm)
-                    {
-                        if (System.IO.File.Exists(firfile))
-                        {
-                            button_Firmware.Text = "ReInstall Firmware " + lfirm;
-                        }
-                        if (!System.IO.File.Exists(firfile))
-                        {
-                            button_Firmware.Visible = false;
-                        }
-                    }
-                    else
-                    {
-                        if (System.IO.File.Exists(firfile))
-                        {
-                            button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Bold);
-                            button_Firmware.Text = "Install Firmware " + lfirm;
-                        }
-                        if (!System.IO.File.Exists(firfile))
-                        {
-                            button_Firmware.Visible = false;
-                        }
-                    }
+                    button_Firmware.Visible = false;
                 }
             }
+
             if (firm != "")
             {
                 label_Firmware.Text = "Installed Version: " + firm;
