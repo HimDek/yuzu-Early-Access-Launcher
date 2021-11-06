@@ -10,9 +10,9 @@ namespace yuzu_Early_Access_Launcher
     {
         static readonly Mutex mutex = new Mutex(true, "{29a9daa1-8bad-45c8-a05c-0d6724836e59}");
         [STAThread]
-        static void Main()
+        static int Main()
         {
-            String theme = "", version = "2.0.0-Preview-3", UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path = Path.GetDirectoryName(Application.ExecutablePath);
+            String theme = "", version = "2.0.0-Preview-4", UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path = Path.GetDirectoryName(Application.ExecutablePath);
             Directory.SetCurrentDirectory(path);
 
             if (mutex.WaitOne(TimeSpan.Zero, true))
@@ -81,6 +81,7 @@ namespace yuzu_Early_Access_Launcher
                     IntPtr.Zero,
                     IntPtr.Zero);
             }
+            return 0;
         }
     }
 }
