@@ -71,6 +71,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_yuzu
             // 
+            this.label_yuzu.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_yuzu.Font = new System.Drawing.Font("Microsoft Sans Serif", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_yuzu.Location = new System.Drawing.Point(275, 11);
             this.label_yuzu.Margin = new System.Windows.Forms.Padding(10);
@@ -81,6 +82,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_yuzuDesc1
             // 
+            this.label_yuzuDesc1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_yuzuDesc1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_yuzuDesc1.Location = new System.Drawing.Point(280, 85);
             this.label_yuzuDesc1.Margin = new System.Windows.Forms.Padding(10, 5, 10, 5);
@@ -93,6 +95,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_yuzuDesc2
             // 
+            this.label_yuzuDesc2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_yuzuDesc2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_yuzuDesc2.Location = new System.Drawing.Point(280, 140);
             this.label_yuzuDesc2.Margin = new System.Windows.Forms.Padding(10, 5, 10, 5);
@@ -105,6 +108,7 @@ namespace yuzu_Early_Access_Launcher
             // link_yuzuSite
             // 
             this.link_yuzuSite.AutoSize = true;
+            this.link_yuzuSite.Cursor = System.Windows.Forms.Cursors.Hand;
             this.link_yuzuSite.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.link_yuzuSite.Location = new System.Drawing.Point(281, 220);
             this.link_yuzuSite.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
@@ -118,6 +122,7 @@ namespace yuzu_Early_Access_Launcher
             // link_yuzuSource
             // 
             this.link_yuzuSource.AutoSize = true;
+            this.link_yuzuSource.Cursor = System.Windows.Forms.Cursors.Hand;
             this.link_yuzuSource.Location = new System.Drawing.Point(337, 220);
             this.link_yuzuSource.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
             this.link_yuzuSource.Name = "link_yuzuSource";
@@ -130,6 +135,7 @@ namespace yuzu_Early_Access_Launcher
             // link_yuzuContrib
             // 
             this.link_yuzuContrib.AutoSize = true;
+            this.link_yuzuContrib.Cursor = System.Windows.Forms.Cursors.Hand;
             this.link_yuzuContrib.Location = new System.Drawing.Point(416, 220);
             this.link_yuzuContrib.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
             this.link_yuzuContrib.Name = "link_yuzuContrib";
@@ -142,6 +148,7 @@ namespace yuzu_Early_Access_Launcher
             // link_yuzuLicense
             // 
             this.link_yuzuLicense.AutoSize = true;
+            this.link_yuzuLicense.Cursor = System.Windows.Forms.Cursors.Hand;
             this.link_yuzuLicense.Location = new System.Drawing.Point(489, 220);
             this.link_yuzuLicense.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
             this.link_yuzuLicense.Name = "link_yuzuLicense";
@@ -153,6 +160,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label1
             // 
+            this.label1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(281, 239);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
@@ -174,6 +182,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_Launcher
             // 
+            this.label_Launcher.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_Launcher.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Launcher.Location = new System.Drawing.Point(278, 289);
             this.label_Launcher.Margin = new System.Windows.Forms.Padding(10);
@@ -184,6 +193,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_LauncherDesc
             // 
+            this.label_LauncherDesc.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_LauncherDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_LauncherDesc.Location = new System.Drawing.Point(280, 361);
             this.label_LauncherDesc.Margin = new System.Windows.Forms.Padding(10, 5, 10, 5);
@@ -196,6 +206,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label2
             // 
+            this.label2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(281, 460);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
@@ -208,6 +219,7 @@ namespace yuzu_Early_Access_Launcher
             // linkLabel_FirmwareRepo
             // 
             this.linkLabel_FirmwareRepo.AutoSize = true;
+            this.linkLabel_FirmwareRepo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.linkLabel_FirmwareRepo.Location = new System.Drawing.Point(573, 441);
             this.linkLabel_FirmwareRepo.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
             this.linkLabel_FirmwareRepo.Name = "linkLabel_FirmwareRepo";
@@ -220,6 +232,7 @@ namespace yuzu_Early_Access_Launcher
             // linkLabel_prodRepo
             // 
             this.linkLabel_prodRepo.AutoSize = true;
+            this.linkLabel_prodRepo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.linkLabel_prodRepo.Location = new System.Drawing.Point(475, 441);
             this.linkLabel_prodRepo.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
             this.linkLabel_prodRepo.Name = "linkLabel_prodRepo";
@@ -232,6 +245,7 @@ namespace yuzu_Early_Access_Launcher
             // linkLabel_EARepo
             // 
             this.linkLabel_EARepo.AutoSize = true;
+            this.linkLabel_EARepo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.linkLabel_EARepo.Location = new System.Drawing.Point(360, 441);
             this.linkLabel_EARepo.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
             this.linkLabel_EARepo.Name = "linkLabel_EARepo";
@@ -244,6 +258,7 @@ namespace yuzu_Early_Access_Launcher
             // linkLabel_LauncherSource
             // 
             this.linkLabel_LauncherSource.AutoSize = true;
+            this.linkLabel_LauncherSource.Cursor = System.Windows.Forms.Cursors.Hand;
             this.linkLabel_LauncherSource.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabel_LauncherSource.Location = new System.Drawing.Point(281, 441);
             this.linkLabel_LauncherSource.Margin = new System.Windows.Forms.Padding(0, 30, 0, 0);
@@ -322,6 +337,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_LauncherVersion
             // 
+            this.label_LauncherVersion.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_LauncherVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.label_LauncherVersion.Location = new System.Drawing.Point(281, 334);
             this.label_LauncherVersion.Name = "label_LauncherVersion";

@@ -71,6 +71,7 @@ namespace yuzu_Early_Access_Launcher
             this.comboBox_Theme = new System.Windows.Forms.ComboBox();
             this.label_Theme = new System.Windows.Forms.Label();
             this.pictureBox_Refresh = new System.Windows.Forms.PictureBox();
+            this.toolTip_1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Logo)).BeginInit();
             this.groupBox_Progress.SuspendLayout();
             this.groupBox_Firmware.SuspendLayout();
@@ -93,6 +94,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Launch
             // 
+            this.button_Launch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Launch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Launch.Location = new System.Drawing.Point(12, 225);
             this.button_Launch.Name = "button_Launch";
@@ -105,6 +107,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Download
             // 
+            this.button_Download.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Download.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Download.Location = new System.Drawing.Point(368, 225);
             this.button_Download.Name = "button_Download";
@@ -133,6 +136,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Cancel
             // 
+            this.button_Cancel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Cancel.Location = new System.Drawing.Point(473, 80);
             this.button_Cancel.Name = "button_Cancel";
@@ -144,6 +148,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_Progress
             // 
+            this.label_Progress.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_Progress.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_Progress.Location = new System.Drawing.Point(6, 53);
             this.label_Progress.Name = "label_Progress";
@@ -154,6 +159,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_Speed
             // 
+            this.label_Speed.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_Speed.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_Speed.Location = new System.Drawing.Point(298, 54);
             this.label_Speed.Name = "label_Speed";
@@ -163,6 +169,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_Time
             // 
+            this.label_Time.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_Time.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
             this.label_Time.Location = new System.Drawing.Point(7, 79);
             this.label_Time.Name = "label_Time";
@@ -202,6 +209,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Firmware
             // 
+            this.button_Firmware.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Firmware.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Firmware.Location = new System.Drawing.Point(473, 21);
             this.button_Firmware.Name = "button_Firmware";
@@ -213,6 +221,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_Firmware
             // 
+            this.label_Firmware.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_Firmware.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Firmware.Location = new System.Drawing.Point(6, 21);
             this.label_Firmware.Name = "label_Firmware";
@@ -237,6 +246,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_RAMInfo
             // 
+            this.label_RAMInfo.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_RAMInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_RAMInfo.Location = new System.Drawing.Point(240, 40);
             this.label_RAMInfo.Name = "label_RAMInfo";
@@ -246,6 +256,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_CPUInfo
             // 
+            this.label_CPUInfo.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_CPUInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_CPUInfo.Location = new System.Drawing.Point(309, 17);
             this.label_CPUInfo.Name = "label_CPUInfo";
@@ -255,6 +266,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_RAMCapacity
             // 
+            this.label_RAMCapacity.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_RAMCapacity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_RAMCapacity.Location = new System.Drawing.Point(7, 40);
             this.label_RAMCapacity.Name = "label_RAMCapacity";
@@ -265,6 +277,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_CPUName
             // 
+            this.label_CPUName.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_CPUName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_CPUName.Location = new System.Drawing.Point(6, 17);
             this.label_CPUName.Name = "label_CPUName";
@@ -291,6 +304,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_FAQ
             // 
+            this.button_FAQ.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_FAQ.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_FAQ.Location = new System.Drawing.Point(239, 55);
             this.button_FAQ.Name = "button_FAQ";
@@ -302,6 +316,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_About
             // 
+            this.button_About.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_About.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_About.Location = new System.Drawing.Point(473, 55);
             this.button_About.Name = "button_About";
@@ -313,6 +328,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Compatibility
             // 
+            this.button_Compatibility.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Compatibility.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Compatibility.Location = new System.Drawing.Point(6, 55);
             this.button_Compatibility.Name = "button_Compatibility";
@@ -324,6 +340,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Report
             // 
+            this.button_Report.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Report.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Report.Location = new System.Drawing.Point(473, 19);
             this.button_Report.Name = "button_Report";
@@ -335,6 +352,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Support
             // 
+            this.button_Support.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Support.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Support.Location = new System.Drawing.Point(239, 19);
             this.button_Support.Name = "button_Support";
@@ -346,6 +364,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // button_Video
             // 
+            this.button_Video.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_Video.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_Video.Location = new System.Drawing.Point(6, 19);
             this.button_Video.Name = "button_Video";
@@ -369,6 +388,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_Info
             // 
+            this.label_Info.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_Info.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Info.Location = new System.Drawing.Point(12, 359);
             this.label_Info.Name = "label_Info";
@@ -396,6 +416,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             this.pictureBox_Settings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox_Settings.BackgroundImage")));
             this.pictureBox_Settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox_Settings.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_Settings.Location = new System.Drawing.Point(682, 359);
             this.pictureBox_Settings.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.pictureBox_Settings.Name = "pictureBox_Settings";
@@ -425,6 +446,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             this.checkBox_Exit.AutoSize = true;
             this.checkBox_Exit.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Exit.Cursor = System.Windows.Forms.Cursors.Default;
             this.checkBox_Exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Exit.Location = new System.Drawing.Point(357, 58);
             this.checkBox_Exit.Name = "checkBox_Exit";
@@ -439,6 +461,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             this.checkBox_DelFirm.AutoSize = true;
             this.checkBox_DelFirm.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_DelFirm.Cursor = System.Windows.Forms.Cursors.Default;
             this.checkBox_DelFirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_DelFirm.Location = new System.Drawing.Point(360, 40);
             this.checkBox_DelFirm.Name = "checkBox_DelFirm";
@@ -453,6 +476,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             this.checkBox_Delyuzu.AutoSize = true;
             this.checkBox_Delyuzu.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Delyuzu.Cursor = System.Windows.Forms.Cursors.Default;
             this.checkBox_Delyuzu.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox_Delyuzu.Location = new System.Drawing.Point(346, 22);
             this.checkBox_Delyuzu.Name = "checkBox_Delyuzu";
@@ -465,6 +489,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_ThemeInfo
             // 
+            this.label_ThemeInfo.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_ThemeInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_ThemeInfo.Location = new System.Drawing.Point(7, 56);
             this.label_ThemeInfo.Name = "label_ThemeInfo";
@@ -476,6 +501,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // comboBox_Theme
             // 
+            this.comboBox_Theme.Cursor = System.Windows.Forms.Cursors.Hand;
             this.comboBox_Theme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_Theme.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBox_Theme.FormattingEnabled = true;
@@ -493,6 +519,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             // label_Theme
             // 
+            this.label_Theme.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label_Theme.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_Theme.Location = new System.Drawing.Point(7, 25);
             this.label_Theme.Name = "label_Theme";
@@ -505,6 +532,7 @@ namespace yuzu_Early_Access_Launcher
             // 
             this.pictureBox_Refresh.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox_Refresh.BackgroundImage")));
             this.pictureBox_Refresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox_Refresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_Refresh.Location = new System.Drawing.Point(640, 359);
             this.pictureBox_Refresh.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.pictureBox_Refresh.Name = "pictureBox_Refresh";
@@ -524,13 +552,13 @@ namespace yuzu_Early_Access_Launcher
             this.Controls.Add(this.label_Info);
             this.Controls.Add(this.groupBox_HelpandSupport);
             this.Controls.Add(this.pictureBox_Logo);
+            this.Controls.Add(this.groupBox_Firmware);
             this.Controls.Add(this.button_Launch);
             this.Controls.Add(this.button_Download);
             this.Controls.Add(this.groupBox_Progress);
-            this.Controls.Add(this.groupBox_Firmware);
-            this.Controls.Add(this.label_Message);
             this.Controls.Add(this.groupBox_Settings);
             this.Controls.Add(this.groupBox_SystemInfo);
+            this.Controls.Add(this.label_Message);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -592,5 +620,6 @@ namespace yuzu_Early_Access_Launcher
         private System.Windows.Forms.CheckBox checkBox_Exit;
         private System.Windows.Forms.CheckBox checkBox_DelFirm;
         private System.Windows.Forms.CheckBox checkBox_Delyuzu;
+        private System.Windows.Forms.ToolTip toolTip_1;
     }
 }
