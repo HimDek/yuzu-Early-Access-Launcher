@@ -19,7 +19,7 @@ namespace yuzu_Early_Access_Launcher
     public partial class Form_yuzuEarlyAccessLauncher : Form
     {
         static readonly String path = Path.GetDirectoryName(Application.ExecutablePath), UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        String version = "", VersionName = "", theme= "", file = "", firfile = "", launcherlatest = "", lurl = "", lsize = "", latest = "", url = "", ysize = "", kurl = "", lfirm = "", furl = "", fsize = "", installed = "", firm = "", reg = "", xsdir = "";
+        String version = "", VersionName = "", branch = "", theme= "", file = "", firfile = "", launcherlatest = "", lurl = "", lsize = "", latest = "", url = "", ysize = "", kurl = "", lfirm = "", furl = "", fsize = "", installed = "", firm = "", reg = "", xsdir = "";
         bool Internet, Downloading = false, DeleteyuzuArchive = false, DeleteFirmwareArchive = false, ExitLauncher = true;
         long xdsize = 0;
         Color Back, Fore;
@@ -29,6 +29,54 @@ namespace yuzu_Early_Access_Launcher
         public Form_yuzuEarlyAccessLauncher(String ver, String Theme, Color BackColor, Color ForeColor, Color ConBack, Color ConBackBox)
         {
             InitializeComponent();
+
+            version = ver;
+            try
+            {
+                branch = version.Split('-')[1];
+            }
+            catch (Exception)
+            {
+                branch = "main";
+            }
+
+            if (branch != "Preview")
+            {
+                if (Application.ExecutablePath != UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe")
+                {
+                    if (path == UserProfile + "\\AppData\\Local\\Temp" || path.Split('\\').Last() == "Release" || !System.IO.File.Exists(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe"))
+                    {
+                        if (!Directory.Exists(UserProfile + "\\AppData\\Local\\yuzu"))
+                        {
+                            Directory.CreateDirectory(UserProfile + "\\AppData\\Local\\yuzu");
+                        }
+                        if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe"))
+                        {
+                            System.IO.File.Delete(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
+                        }
+                        System.IO.File.Copy(Path.GetFullPath(Application.ExecutablePath), UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
+                        Process.Start(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        Process.Start(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
+                        Environment.Exit(0);
+                    }
+                }
+                System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk");
+                System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk");
+                WshShell shell = new WshShell();
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk");
+                shortcut.Description = "Launch yuzu Early Access";
+                shortcut.TargetPath = UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe";
+                shortcut.Save();
+                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs"))
+                {
+                    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs");
+                }
+                System.IO.File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk", Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk");
+            }
 
             Back = BackColor;
             Fore = ForeColor;
@@ -51,6 +99,14 @@ namespace yuzu_Early_Access_Launcher
             button_FAQ.BackColor = ConBack;
             button_About.BackColor = ConBack;
             comboBox_Theme.BackColor = ConBackBox;
+
+            toolTip_1.SetToolTip(button_Video, "https://www.youtube.com/watch?v=nxNkwPrHAlo");
+            toolTip_1.SetToolTip(pictureBox_Refresh, "Refresh");
+            toolTip_1.SetToolTip(pictureBox_Settings, "Settings");
+            toolTip_1.SetToolTip(button_Report, "Report an Issue with this Launcher.");
+            toolTip_1.SetToolTip(button_Compatibility, "Check the Compatibiliy of different Games in yuzu as reported by Players using different hardwares from all over the World.");
+            toolTip_1.SetToolTip(button_FAQ, "Visit yuzu FAQ page to find the Solutions to Common Problems in yuzu.");
+            toolTip_1.SetToolTip(button_About, "More Information about yuzu and this Launcher.");
 
             if (ini.Read("DeleteyuzuArchive", "settings") == "true" || ini.Read("DeleteyuzuArchive", "settings") == "True")
             {
@@ -89,8 +145,8 @@ namespace yuzu_Early_Access_Launcher
             checkBox_Delyuzu.Checked = DeleteyuzuArchive;
             checkBox_DelFirm.Checked = DeleteFirmwareArchive;
             checkBox_Exit.Checked = ExitLauncher;
-
             log = System.IO.File.CreateText("Launcher.log");
+
             if (System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\config\\qt-config.ini"))
             {
                 Ini yini = new Ini(UserProfile + "\\AppData\\Roaming\\yuzu\\config\\qt-config.ini");
@@ -101,41 +157,6 @@ namespace yuzu_Early_Access_Launcher
                 reg = UserProfile + "\\AppData\\Roaming\\yuzu\\nand\\system\\Contents\\registered";
             }
 
-            version = ver;
-            if (version.Split('-')[1] != "Preview")
-            {
-                if (path != UserProfile + "\\AppData\\Local\\yuzu")
-                {
-                    if (path == UserProfile + "\\AppData\\Local\\Temp" || !System.IO.File.Exists(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe"))
-                    {
-                        if (!Directory.Exists(UserProfile + "\\AppData\\Local\\yuzu"))
-                        {
-                            Directory.CreateDirectory(UserProfile + "\\AppData\\Local\\yuzu");
-                        }
-                        System.IO.File.Copy(Path.GetFullPath(Application.ExecutablePath), UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
-                        Process.Start(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
-                        Environment.Exit(0);
-                    }
-                    else
-                    {
-                        Process.Start(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
-                        Environment.Exit(0);
-                    }
-                }
-                WshShell shell = new WshShell();
-                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk");
-                shortcut.Description = "Launch yuzu Early Access";
-                shortcut.TargetPath = UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe";
-                shortcut.Save();
-                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk"))
-                {
-                    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk");
-                }
-                shortcut = (IWshShortcut)shell.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk");
-                shortcut.Description = "Launch yuzu Early Access";
-                shortcut.TargetPath = UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe";
-                shortcut.Save();
-            }
             backgroundWorker_SystemInfo.RunWorkerAsync();
             backgroundWorker_Check.RunWorkerAsync();
         }
@@ -456,35 +477,24 @@ namespace yuzu_Early_Access_Launcher
         private void BackgroundWorker_Check_DoWork(object sender, DoWorkEventArgs e)
         {
             log.AutoFlush = true;
-            if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\Temp\\yuzu_Early_Access_Launcher.exe"))
+            if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\Temp\\yuzu Early Access Launcher.exe"))
             {
-                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\yuzu_Early_Access_Launcher.exe");
-            }
-            if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\Temp\\yuzulauncher.json"))
-            {
-                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\yuzulauncher.json");
-            }
-            if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\Temp\\yuzu.json"))
-            {
-                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\yuzu.json");
-            }
-            if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\Temp\\firm.inf"))
-            {
-                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\firm.inf");
+                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\yuzu Early Access Launcher.exe");
             }
 
             backgroundWorker_Check.ReportProgress(1);
+            String yuzulauncher = "", yuzu = "", firminf = "";
             try
             {
                 WebClient wc = new WebClient();
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
                 wc.Headers.Add("user-agent", "request");
-                wc.DownloadFile(new System.Uri("https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest"), UserProfile + "\\AppData\\Local\\Temp\\yuzulauncher.json");
+                yuzulauncher = wc.DownloadString(new System.Uri("https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest"));
                 wc.Headers.Add("user-agent", "request");
-                wc.DownloadFile(new System.Uri("https://api.github.com/repos/pineappleEA/pineapple-src/releases/latest"), UserProfile + "\\AppData\\Local\\Temp\\yuzu.json");
+                yuzu = wc.DownloadString(new System.Uri("https://api.github.com/repos/pineappleEA/pineapple-src/releases/latest"));
                 wc.Headers.Add("user-agent", "request");
-                wc.DownloadFile(new System.Uri("https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/firm.inf"), UserProfile + "\\AppData\\Local\\Temp\\firm.inf");
+                firminf = wc.DownloadString(new System.Uri("https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/index.json"));
                 Internet = true;
                 log.WriteLine(" Internet Connection is available");
             }
@@ -496,17 +506,11 @@ namespace yuzu_Early_Access_Launcher
 
             if (Internet)
             {
-                int count = 0;
-                String[] line = new string[4];
-                foreach (String lines in System.IO.File.ReadLines(UserProfile + "\\AppData\\Local\\Temp\\firm.inf"))
-                {
-                    line[count] = lines;
-                    count++;
-                }
-                lfirm = line[0];
-                fsize = line[1];
-                furl = line[2];
-                kurl = line[3];
+
+                lfirm = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("ver").ToString();
+                furl = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("url").ToString();
+                fsize = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("size").ToString();
+                kurl = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("keys").ToString() + "]").RootElement[0].GetProperty("url").ToString();
 
                 if (System.IO.File.Exists("prod.keys") || System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys"))
                 {
@@ -544,25 +548,21 @@ namespace yuzu_Early_Access_Launcher
 
                 backgroundWorker_Check.ReportProgress(5);
 
-                launcherlatest = JsonDocument.Parse("[ " + System.IO.File.ReadAllText(UserProfile + "\\AppData\\Local\\Temp\\yuzulauncher.json") + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('v')[1];
-                if (version.Split('-')[1] == "Preview")
+                launcherlatest = JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('v')[1];
+                if (branch == "Preview")
                 {
                     launcherlatest = version;
                 }
                 VersionName = "Version " + version;
 
-                lurl = JsonDocument.Parse(JsonDocument.Parse("[ " + System.IO.File.ReadAllText(UserProfile + "\\AppData\\Local\\Temp\\yuzulauncher.json") + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
-                lsize = JsonDocument.Parse(JsonDocument.Parse("[ " + System.IO.File.ReadAllText(UserProfile + "\\AppData\\Local\\Temp\\yuzulauncher.json") + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
-                latest = JsonDocument.Parse("[ " + System.IO.File.ReadAllText(UserProfile + "\\AppData\\Local\\Temp\\yuzu.json") + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('-').Last();
-                url = JsonDocument.Parse(JsonDocument.Parse("[ " + System.IO.File.ReadAllText(UserProfile + "\\AppData\\Local\\Temp\\yuzu.json") + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
-                ysize = JsonDocument.Parse(JsonDocument.Parse("[ " + System.IO.File.ReadAllText(UserProfile + "\\AppData\\Local\\Temp\\yuzu.json") + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
+                lurl = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
+                lsize = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
+                latest = JsonDocument.Parse("[ " + yuzu + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('-').Last();
+                url = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzu + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
+                ysize = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzu + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
 
                 log.WriteLine(" yuzu Early Access " + latest + " is the latest available");
                 log.WriteLine(" Switch Firmware " + lfirm + " is the latest available");
-
-                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\yuzulauncher.json");
-                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\yuzu.json");
-                System.IO.File.Delete(UserProfile + "\\AppData\\Local\\Temp\\firm.inf");
             }
 
             backgroundWorker_Check.ReportProgress(6);
@@ -813,6 +813,7 @@ namespace yuzu_Early_Access_Launcher
             {
                 button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Bold);
                 button_Launch.Text = "Launch yuzu Early Access " + installed;
+                toolTip_1.SetToolTip(button_Launch, path + "\\yuzu-windows-msvc-early-access\\yuzu.exe");
                 if (installed == "pre")
                 {
                     button_Launch.Text = "Launch yuzu Early Access";
@@ -826,15 +827,17 @@ namespace yuzu_Early_Access_Launcher
                     if (System.IO.File.Exists(file))
                     {
                         button_Download.Text = "Install yuzu Early Access " + latest;
+                        toolTip_1.SetToolTip(button_Download, path + "\\" + file);
                     }
                     else
                     {
                         button_Download.Text = "Download yuzu Early Access " + latest;
+                        toolTip_1.SetToolTip(button_Download, url);
                     }
                     button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
                     button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
                     button_Download.Size = new Size(706, 60);
-                    button_Download.Location = new Point(12, 225);
+                    button_Download.Location = button_Launch.Location;
                 }
                 else
                 {
@@ -843,10 +846,12 @@ namespace yuzu_Early_Access_Launcher
                         if (System.IO.File.Exists(file))
                         {
                             button_Download.Text = "ReInstall yuzu Early Access " + latest;
+                            toolTip_1.SetToolTip(button_Download, path + "\\" + file);
                         }
                         else
                         {
                             button_Download.Text = "ReDownload yuzu Early Access " + latest;
+                            toolTip_1.SetToolTip(button_Download, url);
                         }
                     }
                     else
@@ -854,10 +859,12 @@ namespace yuzu_Early_Access_Launcher
                         if (System.IO.File.Exists(file))
                         {
                             button_Download.Text = "Update to yuzu Early Access " + latest;
+                            toolTip_1.SetToolTip(button_Download, path + "\\" + file);
                         }
                         else
                         {
                             button_Download.Text = "Download yuzu Early Access " + latest;
+                            toolTip_1.SetToolTip(button_Download, url);
                         }
                         button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
                         button_Launch.Font = new Font(button_Launch.Font.Name, button_Launch.Font.Size, FontStyle.Regular);
@@ -873,10 +880,12 @@ namespace yuzu_Early_Access_Launcher
                     if (System.IO.File.Exists(firfile))
                     {
                         button_Firmware.Text = "Install Firmware " + lfirm;
+                        toolTip_1.SetToolTip(button_Firmware, path + "\\" + firfile);
                     }
                     else
                     {
                         button_Firmware.Text = "Download Firmware " + lfirm;
+                        toolTip_1.SetToolTip(button_Firmware, furl);
                     }
                     button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Bold);
                 }
@@ -887,16 +896,27 @@ namespace yuzu_Early_Access_Launcher
                         if (System.IO.File.Exists(firfile))
                         {
                             button_Firmware.Text = "ReInstall Firmware " + lfirm;
+                            toolTip_1.SetToolTip(button_Firmware, path + "\\" + firfile);
                         }
                         else
                         {
                             button_Firmware.Text = "ReDownload Firmware " + lfirm;
+                            toolTip_1.SetToolTip(button_Firmware, furl);
                         }
                     }
                     else
                     {
                         button_Firmware.Font = new Font(button_Firmware.Font.Name, button_Firmware.Font.Size, FontStyle.Bold);
-                        button_Firmware.Text = "Update Firmware to " + lfirm;
+                        if (System.IO.File.Exists(firfile))
+                        {
+                            button_Firmware.Text = "Update Firmware to " + lfirm;
+                            toolTip_1.SetToolTip(button_Firmware, path + "\\" + firfile);
+                        }
+                        else
+                        {
+                            button_Firmware.Text = "Download Firmware " + lfirm;
+                            toolTip_1.SetToolTip(button_Firmware, furl);
+                        }
                     }
                 }
             }
@@ -905,6 +925,8 @@ namespace yuzu_Early_Access_Launcher
 
             if (!Internet)
             {
+                toolTip_1.SetToolTip(button_Download, path + "\\" + file);
+
                 if (installed == "")
                 {
                     if (System.IO.File.Exists(file))
@@ -912,7 +934,7 @@ namespace yuzu_Early_Access_Launcher
                         button_Download.Font = new Font(button_Download.Font.Name, button_Download.Font.Size, FontStyle.Bold);
                         button_Download.Text = "Install yuzu Early Access " + latest;
                         button_Download.Size = new Size(706, 60);
-                        button_Download.Location = new Point(12, 225);
+                        button_Download.Location = button_Launch.Location;
                         button_Download.Visible = true;
                     }
                     else
@@ -966,9 +988,12 @@ namespace yuzu_Early_Access_Launcher
 
                 if (System.IO.File.Exists(firfile))
                 {
+                    toolTip_1.SetToolTip(button_Firmware, path + "\\" + firfile);
+
                     if (lfirm == firm)
                     {
                         button_Firmware.Text = "ReInstall Firmware " + lfirm;
+                        
                     }
                     else
                     {
