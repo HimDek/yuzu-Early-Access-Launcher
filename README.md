@@ -10,9 +10,7 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://github.com/emuworld/aio/blob/master/prod.keys">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
 
 
-<a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip"> <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" align="left" width="390"> </a>
-
-# Password for extracting the zip file is <b>yuzuEarlyAccess</b>
+<a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe"> <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" width="390"> </a>
 
 <br clear="left"/>
 
@@ -38,9 +36,8 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 <br clear="left"/>
 
 ## How to use:
-* Download the [yuzu_Early_Access_Launcher.zip](https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip) file.
-* Extract the downloaded file using the password ` yuzu Early Access `.
-* Then run the yuzu_Early_Access_Launcher.exe file and it will guide you through the rest of the process.
+* [Download yuzu_Early_Access_Launcher.exe](https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe).
+* Run the yuzu_Early_Access_Launcher.exe file and it will guide you through the rest of the process.
 
 ## System Requirements for yuzu:
 ### Minimum:
