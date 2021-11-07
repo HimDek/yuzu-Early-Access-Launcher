@@ -569,11 +569,14 @@ namespace yuzu_Early_Access_Launcher
 
             if (System.IO.File.Exists("prod.keys"))
             {
-                if (Directory.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys"))
+                if (!Directory.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys"))
                 {
-                    Directory.Delete(UserProfile + "\\AppData\\Roaming\\yuzu\\keys", true);
+                    Directory.CreateDirectory(UserProfile + "\\AppData\\Roaming\\yuzu\\keys");
                 }
-                Directory.CreateDirectory(UserProfile + "\\AppData\\Roaming\\yuzu\\keys");
+                if (System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys"))
+                {
+                    System.IO.File.Delete(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys");
+                }
                 log.WriteLine("Copying \"" + path + "\\prod.keys\" to \"" + UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys\"");
                 System.IO.File.Copy("prod.keys", UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys");
                 log.WriteLine(" Done");
@@ -588,9 +591,17 @@ namespace yuzu_Early_Access_Launcher
                 {
                     log.WriteLine(" Detected yuzu Early Access " + installed + " from \"" + path + "\\launcher.ini\"");
                 }
+                else
+                {
+                    log.WriteLine(" Not detected yuzu Early Access from \"" + path + "\\launcher.ini\"");
+                }
                 if (firm != "")
                 {
                     log.WriteLine(" Detected Switch Firmware " + firm + " from \"" + path + "\\launcher.ini\"");
+                }
+                else
+                {
+                    log.WriteLine(" Not detected Switch Firmware from \"" + path + "\\launcher.ini\"");
                 }
 
                 try
@@ -610,11 +621,15 @@ namespace yuzu_Early_Access_Launcher
 
             if (installed == "")
             {
-                log.WriteLine(" Checking for \"" + path + "\\yuzu-windows-msvc-early-access\\yuzu.exe\"");
+                log.WriteLine("Checking for \"" + path + "\\yuzu-windows-msvc-early-access\\yuzu.exe\"");
                 if (System.IO.File.Exists("yuzu-windows-msvc-early-access\\yuzu.exe"))
                 {
-                    log.WriteLine(" Preinstalled yuzu Early Access Detected");
+                    log.WriteLine(" Preinstalled yuzu Early Access found in \"" + path + "\\yuzu-windows-msvc-early-access\"");
                     installed = "pre";
+                }
+                else
+                {
+                    log.WriteLine(" Not found");
                 }
             }
             else
@@ -624,11 +639,19 @@ namespace yuzu_Early_Access_Launcher
                     log.WriteLine(" But yuzu Early Access is not installed in \"" + path + "\\yuzu-windows-msvc-early-access\"");
                     installed = "";
                 }
+                else
+                {
+                    log.WriteLine(" yuzu Early Access is installed in \"" + path + "\\yuzu-windows-msvc-early-access\"");
+                }
             }
 
             if (installed == "")
             {
                 installed = "0";
+            }
+            if (installed == "pre")
+            {
+                installed = "1";
             }
             if (firm == "")
             {
@@ -661,7 +684,7 @@ namespace yuzu_Early_Access_Launcher
                     {
                         latestfileVer = fVer.ToString();
                     }
-
+                    
                     if (int.Parse(latestfileVer) > int.Parse(latest) || int.Parse(latestfileVer) > int.Parse(installed) || !Internet)
                     {
                         latest = latestfileVer;
@@ -716,6 +739,10 @@ namespace yuzu_Early_Access_Launcher
             if (installed == "0")
             {
                 installed = "";
+            }
+            if (installed == "1")
+            {
+                installed = "pre";
             }
             if (firm == "0.0.0")
             {
@@ -845,12 +872,12 @@ namespace yuzu_Early_Access_Launcher
                     {
                         if (System.IO.File.Exists(file))
                         {
-                            button_Download.Text = "ReInstall yuzu Early Access " + latest;
+                            button_Download.Text = "Reinstall yuzu Early Access " + latest;
                             toolTip_1.SetToolTip(button_Download, path + "\\" + file);
                         }
                         else
                         {
-                            button_Download.Text = "ReDownload yuzu Early Access " + latest;
+                            button_Download.Text = "Redownload yuzu Early Access " + latest;
                             toolTip_1.SetToolTip(button_Download, url);
                         }
                     }
@@ -895,12 +922,12 @@ namespace yuzu_Early_Access_Launcher
                     {
                         if (System.IO.File.Exists(firfile))
                         {
-                            button_Firmware.Text = "ReInstall Firmware " + lfirm;
+                            button_Firmware.Text = "Reinstall Firmware " + lfirm;
                             toolTip_1.SetToolTip(button_Firmware, path + "\\" + firfile);
                         }
                         else
                         {
-                            button_Firmware.Text = "ReDownload Firmware " + lfirm;
+                            button_Firmware.Text = "Redownload Firmware " + lfirm;
                             toolTip_1.SetToolTip(button_Firmware, furl);
                         }
                     }
@@ -952,7 +979,7 @@ namespace yuzu_Early_Access_Launcher
                 {
                     if (latest == installed)
                     {
-                        button_Download.Text = "ReInstall yuzu Early Access " + latest;
+                        button_Download.Text = "Reinstall yuzu Early Access " + latest;
                     }
                     else
                     {
@@ -992,7 +1019,7 @@ namespace yuzu_Early_Access_Launcher
 
                     if (lfirm == firm)
                     {
-                        button_Firmware.Text = "ReInstall Firmware " + lfirm;
+                        button_Firmware.Text = "Reinstall Firmware " + lfirm;
                         
                     }
                     else
