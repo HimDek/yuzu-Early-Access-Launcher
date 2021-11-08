@@ -1,5 +1,5 @@
 # Generated Files
-.aps
+*.aps
 
 # Object files
 *.o
