@@ -14,7 +14,7 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 
 <br clear="left"/>
 
-## Jump to: <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#features">Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#additional-features">Additional Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#how-to-use">How to use</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#system-requirements-for-yuzu">System Requirements</a>
+## Jump to: <a href="#features">Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#additional-features">Additional Features</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#how-to-use">How to use</a> | <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/README.md#system-requirements-for-yuzu">System Requirements</a>
 
 ## Features:
 <img src="https://github.com/HiDe-Techno-Tips/Nintendo-Switch-Files/blob/main/yuzuEarlyAccessLauncherWindow.png" height="550" hspace="10" vspace="50" align="right"/>
