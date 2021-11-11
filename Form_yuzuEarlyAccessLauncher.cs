@@ -150,7 +150,7 @@ namespace yuzu_Early_Access_Launcher
             if (System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\config\\qt-config.ini"))
             {
                 Ini yini = new Ini(UserProfile + "\\AppData\\Roaming\\yuzu\\config\\qt-config.ini");
-                reg = Path.GetFullPath(yini.Read("nand_directory", "Data%20Storage").Replace("/", "\\") + "system\\Contents\\registered");
+                reg = Path.Combine(yini.Read("nand_directory", "Data%20Storage"), "system\\Contents\\registered");
             }
             if (reg == "")
             {
