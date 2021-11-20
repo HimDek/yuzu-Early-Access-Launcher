@@ -492,7 +492,7 @@ namespace yuzu_Early_Access_Launcher
                 wc.Headers.Add("user-agent", "request");
                 yuzulauncher = wc.DownloadString(new System.Uri("https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest"));
                 wc.Headers.Add("user-agent", "request");
-                yuzu = wc.DownloadString(new System.Uri("https://api.github.com/repos/pineappleEA/pineapple-src/releases/latest"));
+                yuzu = wc.DownloadString(new System.Uri("https://api.github.com/repos/pineappleEA/pineapple-src/releases"));
                 wc.Headers.Add("user-agent", "request");
                 firminf = wc.DownloadString(new System.Uri("https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/index.json"));
                 Internet = true;
@@ -506,7 +506,6 @@ namespace yuzu_Early_Access_Launcher
 
             if (Internet)
             {
-
                 lfirm = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("ver").ToString();
                 furl = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("url").ToString();
                 fsize = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("size").ToString();
@@ -555,11 +554,19 @@ namespace yuzu_Early_Access_Launcher
                 }
                 VersionName = "Version " + version;
 
+                for (int i = 0; true; i++)
+                {
+                    if (int.TryParse(JsonDocument.Parse(yuzu).RootElement[i].GetProperty("tag_name").ToString().Split('-').Last(), out int tag))
+                    {
+                        latest = JsonDocument.Parse("[ " + JsonDocument.Parse(yuzu).RootElement[i].ToString() + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('-').Last();
+                        url = JsonDocument.Parse(JsonDocument.Parse("[ " + JsonDocument.Parse(yuzu).RootElement[i].ToString() + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
+                        ysize = JsonDocument.Parse(JsonDocument.Parse("[ " + JsonDocument.Parse(yuzu).RootElement[i].ToString() + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
+                        break;
+                    }
+                }
+
                 lurl = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
                 lsize = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
-                latest = JsonDocument.Parse("[ " + yuzu + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('-').Last();
-                url = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzu + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
-                ysize = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzu + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
 
                 log.WriteLine(" yuzu Early Access " + latest + " is the latest available");
                 log.WriteLine(" Switch Firmware " + lfirm + " is the latest available");
