@@ -64,18 +64,24 @@ namespace yuzu_Early_Access_Launcher
                         Environment.Exit(0);
                     }
                 }
-                System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk");
-                System.IO.File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk");
-                WshShell shell = new WshShell();
-                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk");
-                shortcut.Description = "Launch yuzu Early Access";
-                shortcut.TargetPath = UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe";
-                shortcut.Save();
+
+                if (!System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk")) {
+                    WshShell shell = new WshShell();
+                    IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk");
+                    shortcut.Description = "Launch yuzu Early Access";
+                    shortcut.TargetPath = UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe";
+                    shortcut.Save();
+                }
+
                 if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs"))
                 {
                     Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs");
                 }
-                System.IO.File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk", Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk");
+
+                if (!System.IO.File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk"))
+                {
+                    System.IO.File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\yuzu Early Access Launcher.lnk", Environment.GetFolderPath(Environment.SpecialFolder.StartMenu) + "\\Programs\\yuzu Early Access Launcher.lnk");
+                }
             }
 
             Back = BackColor;
