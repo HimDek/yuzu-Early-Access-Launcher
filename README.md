@@ -14,9 +14,9 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 
 <br clear="left"/>
 
-## Jump to: <a href="#features">Features</a> | <a href="#additional-features">Additional Features</a> | <a href="#how-to-use">How to use</a> | <a href="#system-requirements-for-yuzu">System Requirements</a>
+## 🦘 Jump to: <a href="#-features">Features</a> | <a href="#additional-features">Additional Features</a> | <a href="#-how-to-use">How to use</a> | <a href="#️-system-requirements-for-yuzu">System Requirements</a>
 
-## Features:
+## ✨ Features:
 <img src="https://github.com/HiDe-Techno-Tips/Nintendo-Switch-Files/blob/main/yuzuEarlyAccessLauncherWindow.png" height="550" hspace="10" vspace="50" align="right"/>
 
 * Easy to Use and Straight Forward GUI.
@@ -35,11 +35,11 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 
 <br clear="left"/>
 
-## How to use:
+## ❓ How to use:
 * [Download yuzu_Early_Access_Launcher.exe](https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe).
 * Run the yuzu_Early_Access_Launcher.exe file and it will guide you through the rest of the process.
 
-## System Requirements for yuzu:
+## 🖥️ System Requirements for yuzu:
 ### Minimum:
 * CPU: At least a 64-bit Quad Core CPU clocked at 2.5GHz that supports FMA Instruction Set.
 * RAM: At least 8GB RAM
