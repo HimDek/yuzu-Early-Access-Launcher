@@ -1,16 +1,29 @@
 # yuzu Early Access Launcher
 <b>Get The Nintendo Switch Emulator, prod.keys and Firmware.</b>
 
-<img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/main/logo.png" height="200px" align="left"/>yuzu is an experimental open-source emulator for the Nintendo Switch Licensed under GPLv2.0.
+<div style="display: flex;">
+ <div style="display: flex;">
+  <img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/main/logo.png" height="200px" align="left"/>
+ </div>
+ 
+ <span style="display: block;">
+  <p>yuzu is an experimental open-source emulator for the Nintendo Switch Licensed under GPLv2.0.</p>
+  
+  <p>
+   <a href="https://yuzu-emu.org/">Website</a> | <a href="https://github.com/yuzu-emu">Source Code</a> | <a href="https://github.com/yuzu-emu/yuzu/graphs/contributors">Contributers</a> | <a href="https://github.com/yuzu-emu/yuzu/blob/master/license.txt">License</a>
+  </p>
+ 
+  <p>This Launcher can install and keep yuzu Early Access along with prod.key and Firmware updated for free.</p>
+ 
+  <p>
+   <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://github.com/emuworld/aio/blob/master/prod.keys">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
+  </p>
+ </span>
+</div>
 
-<a href="https://yuzu-emu.org/">Website</a> | <a href="https://github.com/yuzu-emu">Source Code</a> | <a href="https://github.com/yuzu-emu/yuzu/graphs/contributors">Contributers</a> | <a href="https://github.com/yuzu-emu/yuzu/blob/master/license.txt">License</a>
-
-This Launcher can install and keep yuzu Early Access along with prod.key and Firmware updated for free.
-
-<a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://github.com/emuworld/aio/blob/master/prod.keys">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
-
-
-<a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe"> <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" width="390"> </a>
+<div style="text-align:center">
+ <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe"><img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" width="390"></a>
+</div>
 
 <br clear="left"/>
 
