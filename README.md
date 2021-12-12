@@ -45,14 +45,14 @@
  </div>
  <br clear="right"/>
  <div>
-  <p><img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/yuzuEarlyAccessLauncherWindow.png" height="550" hspace="10" vspace="50" align="right"/></p>
+  <img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/yuzuEarlyAccessLauncherWindow.png" height="550" hspace="10" vspace="20" align="right"/>
  </div>
 </div>
 
 <div class="row">
  <br clear="left"/>
  <div>
-  <img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/Progress.png" height="500" hspace="10" vspace="50" align="left"/></li>
+  <img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/Progress.png" height="500" hspace="10" vspace="20" align="left"/></li>
  </div>
  <br clear="right"/>
  <div>
