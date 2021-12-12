@@ -76,7 +76,7 @@ fetch("https://api.github.com/users/Hide-techno-tips/repos").then(res => res.jso
 		if (out[i].name.toLowerCase() == out[i].owner.login.toLowerCase() || out[i].name.toLowerCase() == out[i].owner.login.toLowerCase() + ".github.io") {
 			continue;
 		}
-		if (out[i].name.toLowerCase() == "yuzu-Early-Access-Launcher") {
+		if (out[i].name.toLowerCase() == "yuzu-early-access-launcher") {
 			document.getElementById("stars").innerHTML = document.getElementById("stars").innerHTML + out[i].stargazers_count.toString();
 			document.getElementById("forks").innerHTML = document.getElementById("forks").innerHTML + out[i].forks.toString();
 		}
