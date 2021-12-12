@@ -1,7 +1,7 @@
 # yuzu Early Access Launcher
 <b>Get The Nintendo Switch Emulator, prod.keys and Firmware.</b>
 
-<img src="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/blob/main/logo.png" height="200px" align="left"/>yuzu is an experimental open-source emulator for the Nintendo Switch Licensed under GPLv2.0.
+<img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/main/logo.png" height="200px" align="left"/>yuzu is an experimental open-source emulator for the Nintendo Switch Licensed under GPLv2.0.
 
 <a href="https://yuzu-emu.org/">Website</a> | <a href="https://github.com/yuzu-emu">Source Code</a> | <a href="https://github.com/yuzu-emu/yuzu/graphs/contributors">Contributers</a> | <a href="https://github.com/yuzu-emu/yuzu/blob/master/license.txt">License</a>
 
@@ -17,7 +17,7 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 ## 🦘 Jump to: <a href="#-features">Features</a> | <a href="#additional-features">Additional Features</a> | <a href="#-how-to-use">How to use</a> | <a href="#️-system-requirements-for-yuzu">System Requirements</a>
 
 ## ✨ Features:
-<img src="https://github.com/HiDe-Techno-Tips/Nintendo-Switch-Files/blob/main/yuzuEarlyAccessLauncherWindow.png" height="550" hspace="10" vspace="50" align="right"/>
+<img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/yuzuEarlyAccessLauncherWindow.png" height="550" hspace="10" vspace="50" align="right"/>
 
 * Easy to Use and Straight Forward GUI.
 * Install and Update yuzu Early Access from the Repository [pineapple-src](https://github.com/pineappleEA/pineapple-src) by [pineappleEA](https://github.com/pineappleEA/).
@@ -25,7 +25,7 @@ This Launcher can install and keep yuzu Early Access along with prod.key and Fir
 * Can also Install and Update Firmware from [here](https://archive.org/download/nintendo-switch-global-firmwares/). (Not required for all Games)
 <br clear="right"/>
 <br>
-<img src="https://github.com/HiDe-Techno-Tips/Nintendo-Switch-Files/blob/main/Progress.png" height="500" hspace="10" vspace="50" align="left"/>
+<img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/Progress.png" height="500" hspace="10" vspace="50" align="left"/>
 
 ## Additional features:
 * Does not deletes the latest downloaded Early Access and Firmware archives, and are accessible by the user for future use and reinstalls. Deletes only the old ones.
