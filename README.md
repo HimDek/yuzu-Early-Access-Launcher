@@ -1,4 +1,5 @@
 <h1 id="yuzu-early-access-launcher">yuzu Early Access Launcher</h1>
+<a class="invisible" href="https://yuzu-early-access-launcher"><p align="center">View in Website</p></a>
 <p><b>Get The Nintendo Switch Emulator, prod.keys and Firmware.</b></p>
 
 <div class="row">
