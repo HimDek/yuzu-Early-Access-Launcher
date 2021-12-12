@@ -75,26 +75,36 @@
 
 <br clear="left"/>
 <h2 id="-system-requirements-for-yuzu-">🖥️ System Requirements for yuzu:</h2>
-<div class="row">
- <div>
-  <h3 id="minimum-">Minimum:</h3>
-  <ul>
-   <li>CPU: At least a 64-bit Quad Core CPU clocked at 2.5GHz that supports FMA Instruction Set.</li>
-   <li>RAM: At least 8GB RAM</li>
-   <li>GPU: GPU should fully support at least Open GL 4.6 or Vulkan 1.1.</li>
-  </ul>
- </div>
- <div>
-  <h3 id="recommended-">Recommended:</h3>
-  <ul>
-   <li>CPU: Intel Core i5-10400 / AMD Ryzen 5 3600 and higher.</li>
-   <li>RAM: 16GB or more.</li>
-   <li>GPU (Any one from the below must satisfy):
-    <ul>
-     <li>Dediated: NVIDIA GeForce GTX 1650 4GB / AMD Radeon RX Vega 56 8GB and higher.</li>
-     <li>Integrated: Intel UHD Graphics 750 / AMD Radeon Vega 7 and higher</li>
-    </ul>
-   </li>
-  </ul>
- </div>
-</div>
+<table>
+  <tr>
+    <th></th>
+    <th>Minumum</th>
+    <th>Recommended</th>
+  </tr>
+  <tr>
+    <th>CPU</th>
+    <td>At least a 64-bit Quad Core CPU clocked at 2.5GHz that supports FMA Instruction Set</td>
+    <td>Intel Core i5-10400 / AMD Ryzen 5 3600 and higher</td>
+  </tr>
+  <tr>
+    <th>RAM</th>
+    <td>At least 8GB RAM</td>
+    <td>16GB or more</td>
+  </tr>
+  <tr>
+    <th>GPU</th>
+    <td>GPU should fully support at least Open GL 4.6 or Vulkan 1.1</td>
+    <td style="padding: 0px; margin: 0px;">
+    	<table style="padding: 0px; margin: 0px;">
+        	<tr>
+                <th>Integrated</th>
+                <th>Dedicated</th>
+        	</tr>
+            <tr>
+            	<td>NVIDIA GeForce GTX 1650 4GB / AMD Radeon RX Vega 56 8GB and higher</td>
+                <td>Intel UHD Graphics 750 / AMD Radeon Vega 7 and higher</td>
+        	</tr>
+    	</table>
+    </td>
+  </tr>
+</table>
