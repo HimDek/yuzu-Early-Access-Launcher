@@ -102,8 +102,8 @@
                 <th>Dedicated</th>
         	</tr>
             <tr>
+             <td>Intel UHD Graphics 750 / AMD Radeon Vega 7 and higher</td>
             	<td>NVIDIA GeForce GTX 1650 4GB / AMD Radeon RX Vega 56 8GB and higher</td>
-                <td>Intel UHD Graphics 750 / AMD Radeon Vega 7 and higher</td>
         	</tr>
     	</table>
     </td>
