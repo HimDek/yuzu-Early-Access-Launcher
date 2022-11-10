@@ -1117,7 +1117,7 @@ namespace yuzu_Early_Access_Launcher
                         Directory.Delete("Temp", true);
                     }
                     Directory.CreateDirectory("Temp");
-                    await Extract1(path + "\\" + file, path + "\\Temp");
+                    await Extract(path + "\\" + file, path + "\\Temp");
                     log.WriteLine("Moving \"" + path + "\\Temp\\yuzu-windows-msvc-early-access\" to \"" + path + "\\yuzu-windows-msvc-early-access\"");
                     Directory.Move("Temp\\yuzu-windows-msvc-early-access", path + "\\yuzu-windows-msvc-early-access");
                     log.WriteLine(" Done");
