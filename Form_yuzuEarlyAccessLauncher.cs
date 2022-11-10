@@ -685,7 +685,7 @@ namespace yuzu_Early_Access_Launcher
             log.WriteLine("Checking Files");
             for (int i = 0; i < 2; i++)
             {
-                foreach (string f in Directory.EnumerateFiles(path, "Windows-Yuzu-EA-*.7z"))
+                foreach (string f in Directory.EnumerateFiles(path, "Windows-Yuzu-EA-*.zip"))
                 {
                     int fVer = int.Parse(f.Split('\\').Last().Split('-', '.')[3]);
 
@@ -770,16 +770,16 @@ namespace yuzu_Early_Access_Launcher
                 lfirm = "";
             }
 
-            file = "Windows-Yuzu-EA-" + latest + ".7z";
+            file = "Windows-Yuzu-EA-" + latest + ".zip";
             firfile = "Switch-Firmware-" + lfirm + ".zip";
 
             if (System.IO.File.Exists(file))
             {
-                log.WriteLine(" Latest found yuzu Early Access file: \"" + path + "\\Windows-Yuzu-EA-" + latest + ".7z\"");
+                log.WriteLine(" Latest found yuzu Early Access file: \"" + path + "\\Windows-Yuzu-EA-" + latest + ".zip\"");
             }
             else
             {
-                log.WriteLine(" Not found file \"" + path + "\\Windows-Yuzu-EA-" + latest + ".7z\"");
+                log.WriteLine(" Not found file \"" + path + "\\Windows-Yuzu-EA-" + latest + ".zip\"");
             }
             if (System.IO.File.Exists(firfile))
             {
@@ -1091,13 +1091,13 @@ namespace yuzu_Early_Access_Launcher
             {
                 if (!System.IO.File.Exists(file))
                 {
-                    foreach (string f in Directory.EnumerateFiles(UserProfile + "\\AppData\\Local\\Temp\\", "Windows-Yuzu-EA-*.7z"))
+                    foreach (string f in Directory.EnumerateFiles(UserProfile + "\\AppData\\Local\\Temp\\", "Windows-Yuzu-EA-*.zip"))
                     {
                         System.IO.File.Delete(f);
                     }
                     if (await Download(url, ysize, UserProfile + "\\AppData\\Local\\Temp\\" + file) == 0)
                     {
-                        foreach (string f in Directory.EnumerateFiles(path, "Windows-Yuzu-EA-*.7z"))
+                        foreach (string f in Directory.EnumerateFiles(path, "Windows-Yuzu-EA-*.zip"))
                         {
                             System.IO.File.Delete(f);
                         }
