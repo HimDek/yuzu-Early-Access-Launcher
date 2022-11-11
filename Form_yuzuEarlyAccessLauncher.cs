@@ -562,11 +562,11 @@ namespace yuzu_Early_Access_Launcher
 
                 for (int i = 0; true; i++)
                 {
-                    if (int.TryParse(JsonDocument.Parse(yuzu).RootElement[i].GetProperty("tag_name").ToString().Split('-').Last(), out int tag))
+                    latest = JsonDocument.Parse(yuzu).RootElement[0].GetProperty("tag_name").ToString().Split('-').Last();
+                    if (JsonDocument.Parse(JsonDocument.Parse(yuzu).RootElement[0].GetProperty("assets").ToString()).RootElement[i].GetProperty("name").ToString().Split('-').First() == "Windows")
                     {
-                        latest = JsonDocument.Parse("[ " + JsonDocument.Parse(yuzu).RootElement[i].ToString() + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('-').Last();
-                        url = JsonDocument.Parse(JsonDocument.Parse("[ " + JsonDocument.Parse(yuzu).RootElement[i].ToString() + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
-                        ysize = JsonDocument.Parse(JsonDocument.Parse("[ " + JsonDocument.Parse(yuzu).RootElement[i].ToString() + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
+                        url = JsonDocument.Parse(JsonDocument.Parse(yuzu).RootElement[0].GetProperty("assets").ToString()).RootElement[i].GetProperty("browser_download_url").ToString();
+                        ysize = JsonDocument.Parse(JsonDocument.Parse(yuzu).RootElement[0].GetProperty("assets").ToString()).RootElement[i].GetProperty("size").ToString();
                         break;
                     }
                 }
