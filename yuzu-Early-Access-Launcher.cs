@@ -12,7 +12,7 @@ namespace yuzu_Early_Access_Launcher
         [STAThread]
         static int Main()
         {
-            String theme = "", version = "2.0.2", UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path = Path.GetDirectoryName(Application.ExecutablePath);
+            String theme = "", version = "2.0.3", UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path = Path.GetDirectoryName(Application.ExecutablePath);
             Directory.SetCurrentDirectory(path);
 
             if (mutex.WaitOne(TimeSpan.Zero, true))
