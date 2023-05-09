@@ -500,7 +500,7 @@ namespace yuzu_Early_Access_Launcher
                 wc.Headers.Add("user-agent", "request");
                 yuzu = wc.DownloadString(new System.Uri("https://api.github.com/repos/pineappleEA/pineapple-src/releases"));
                 wc.Headers.Add("user-agent", "request");
-                firminf = wc.DownloadString(new System.Uri("https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/index.json"));
+                firminf = wc.DownloadString(new System.Uri("https://raw.githubusercontent.com/HiDe-Techno-Tips/Nothing/main/info.json"));
                 Internet = true;
                 log.WriteLine(" Internet Connection is available");
             }
