@@ -1,6 +1,9 @@
 <h1 id="yuzu-early-access-launcher" align="center">yuzu Early Access Launcher</h1>
+
 <a class="invisible" href="https://github.himdek.com/yuzu-Early-Access-Launcher"><p align="center">View in Website</p></a>
 <p align="center"><b>Gets you yuzu Early Access, prod.keys and Firmware dumped from the Nintendo Switch.</b></p>
+
+<h3>Notice: If you are stuck on version 2.0.3 and its saying "Check your Internet Connection", read <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/issues/14#issuecomment-1546850042">this</a></h3>
 
 <div class="row">
  <br clear="left"/>
