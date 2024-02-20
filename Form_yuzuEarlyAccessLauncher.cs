@@ -13,6 +13,12 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using System.Collections.Generic;
+using static System.Net.WebRequestMethods;
+using System.Data.SqlTypes;
+using System.Xml;
+using System.Drawing.Drawing2D;
 
 namespace yuzu_Early_Access_Launcher
 {
@@ -58,7 +64,7 @@ namespace yuzu_Early_Access_Launcher
                         Process.Start(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
                         Environment.Exit(0);
                     }
-                    else
+                    else if (path.Split('\\').Last() != "Debug")
                     {
                         Process.Start(UserProfile + "\\AppData\\Local\\yuzu\\yuzu Early Access Launcher.exe");
                         Environment.Exit(0);
@@ -489,7 +495,7 @@ namespace yuzu_Early_Access_Launcher
             }
 
             backgroundWorker_Check.ReportProgress(1);
-            String yuzulauncher = "", yuzu = "", firminf = "";
+            String yuzulauncher = "", yuzu = "", /*firminf = "",*/ firmdata = "", keysdata = "", lfirmfile = "";
             try
             {
                 WebClient wc = new WebClient();
@@ -500,7 +506,9 @@ namespace yuzu_Early_Access_Launcher
                 wc.Headers.Add("user-agent", "request");
                 yuzu = wc.DownloadString(new System.Uri("https://api.github.com/repos/pineappleEA/pineapple-src/releases"));
                 wc.Headers.Add("user-agent", "request");
-                firminf = wc.DownloadString(new System.Uri("https://raw.githubusercontent.com/HiDe-Techno-Tips/Nothing/main/info.json"));
+                firmdata = wc.DownloadString(new System.Uri("https://archive.org/download/nintendo-switch-global-firmwares/nintendo-switch-global-firmwares_files.xml"));
+                wc.Headers.Add("user-agent", "request");
+                keysdata = wc.DownloadString(new System.Uri("https://archive.org/download/prod.keys/prod.keys_files.xml"));
                 Internet = true;
                 log.WriteLine(" Internet Connection is available");
             }
@@ -512,10 +520,16 @@ namespace yuzu_Early_Access_Launcher
 
             if (Internet)
             {
-                lfirm = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("ver").ToString();
-                furl = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("url").ToString();
-                fsize = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("firmware").ToString() + "]").RootElement[0].GetProperty("size").ToString();
-                kurl = JsonDocument.Parse("[" + JsonDocument.Parse("[ " + firminf + " ]").RootElement[0].GetProperty("keys").ToString() + "]").RootElement[0].GetProperty("url").ToString();
+                string[] firmparts = GetLatestFirmwareFileName(firmdata).Split(',');
+                fsize = firmparts[0];
+                lfirmfile = firmparts[1];
+                lfirm = lfirmfile.Replace(".zip", "").Replace("Firmware ", "");
+                furl = "https://archive.org/download/nintendo-switch-global-firmwares/Firmware%20" + lfirm + ".zip";
+                kurl = "https://archive.org/download/prod.keys/" + GetLatestKeysVersion(keysdata) + ".x.x/prod.keys";
+
+                log.WriteLine("Latest Firmware: " + furl);
+                log.WriteLine(" Size: " + fsize);
+                log.WriteLine("Latest Keys: " + kurl);
 
                 if (System.IO.File.Exists("prod.keys") || System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys"))
                 {
@@ -1326,6 +1340,103 @@ namespace yuzu_Early_Access_Launcher
                 size += DirSize(di);
             }
             return size;
+        }
+        
+        private string GetLatestFirmwareFileName(string xmlString)
+        {
+            string latestFirmwareName = "";
+            int size = 0;
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(xmlString);
+
+            // Select the file node with the latest mtime
+            XmlNodeList fileNodes = xmlDoc.SelectNodes("//file");
+                if (fileNodes.Count > 0)
+                {
+                    XmlNode latestFileNode = GetLatestFirmware(fileNodes);
+
+                    if (latestFileNode != null)
+                    {
+                        latestFirmwareName = latestFileNode.Attributes["name"].Value;
+                        size = int.Parse(latestFileNode.SelectSingleNode("size").InnerText);
+
+                        log.WriteLine($"Latest Firmware Name: {latestFirmwareName}, Size: {size}");
+                    }
+                    else
+                    {
+                       log.WriteLine("No firmware files found.");
+                    }
+                }
+                else
+                {
+                    log.WriteLine("No firmware files found.");
+                }
+
+            return size + "," + latestFirmwareName;
+        }
+
+        static XmlNode GetLatestFirmware(XmlNodeList fileNodes)
+        {
+            XmlNode latestFileNode = null;
+            Version latestVersion = new Version(0, 0);
+
+            foreach (XmlNode fileNode in fileNodes)
+            {
+                Version currentVersion;
+                string name = fileNode.Attributes["name"].Value;
+                if (name.EndsWith(".zip") && name.StartsWith("Firmware ") && !name.Contains("("))
+                {
+                    string versionString = name.Replace("Firmware ", "").Replace(".zip", "");
+                    if (versionString != null)
+                        currentVersion = new Version(versionString);
+                    else
+                        currentVersion = new Version(0, 0);
+
+                    if (currentVersion > latestVersion)
+                    {
+                        latestVersion = currentVersion;
+                        latestFileNode = fileNode;
+                    }
+                }
+            }
+
+            return latestFileNode;
+        }
+
+        private string GetLatestKeysVersion(string xmlString)
+        {
+            int latestVersion = 0;
+
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(xmlString);
+
+                // Select the file node with the latest mtime
+                XmlNodeList FileNodes = xmlDoc.SelectNodes("//file");
+
+                foreach(XmlNode fileNode in FileNodes)
+                {
+                    string name = fileNode.Attributes["name"].Value;
+                    if (name.EndsWith(".keys"))
+                    {
+                        string versionString = name.Split('.')[0];
+                        int currentVersion = int.Parse(versionString);
+
+                        if (currentVersion > latestVersion)
+                        {
+                            latestVersion = currentVersion;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteLine("Error: " + ex.Message);
+            }
+
+            return latestVersion.ToString();
         }
     }
 }
