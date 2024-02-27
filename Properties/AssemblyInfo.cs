@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("yuzu Early Access Launcher")]
-[assembly: AssemblyDescription("Install and keep yuzu Early Access, Switch Firmware and prod.keys updated for free.")]
+[assembly: AssemblyDescription("Install and update yuzu Early Access, Switch Firmware and prod.keys for free.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HiDe Techno Tips")]
+[assembly: AssemblyCompany("Himprakash Deka")]
 [assembly: AssemblyProduct("yuzu Early Access Launcher")]
-[assembly: AssemblyCopyright("Copyright ©  2022")]
+[assembly: AssemblyCopyright("Copyright © 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.5.0")]
-[assembly: AssemblyFileVersion("2.0.5.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.1.0.0")]

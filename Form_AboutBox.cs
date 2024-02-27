@@ -34,7 +34,7 @@ namespace yuzu_Early_Access_Launcher
 
         private void linkLabel_LauncherSource_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher");
+            Process.Start("https://github.com/HimDek/yuzu-Early-Access-Launcher");
         }
 
         private void linkLabel_EARepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -44,7 +44,7 @@ namespace yuzu_Early_Access_Launcher
 
         private void linkLabel_prodRepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://github.com/HiDe-Techno-Tips/Nintendo-Switch-Files");
+            Process.Start("https://archive.org/download/prod.keys/");
         }
 
         private void linkLabel_FirmwareRepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -12,7 +12,7 @@ namespace yuzu_Early_Access_Launcher
         [STAThread]
         static int Main()
         {
-            String theme = "", version = "2.0.5", UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path = Path.GetDirectoryName(Application.ExecutablePath);
+            String theme = "", version = "2.1.0", UserProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), path = Path.GetDirectoryName(Application.ExecutablePath);
             Directory.SetCurrentDirectory(path);
 
             if (mutex.WaitOne(TimeSpan.Zero, true))
@@ -66,7 +66,7 @@ namespace yuzu_Early_Access_Launcher
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Form yuzuEarlyAccessLauncher = new Form_yuzuEarlyAccessLauncher(version, theme, Back, Fore, ConBack, ConBackBox);
-                yuzuEarlyAccessLauncher.Text = "yuzu Early Access Launcher Version " + version.Replace('-', ' ');
+                yuzuEarlyAccessLauncher.Text = "yuzu Early Access Launcher Version " + version.Replace('-', ' ') + " by Himprakash Deka";
                 yuzuEarlyAccessLauncher.BackColor = Back;
                 yuzuEarlyAccessLauncher.ForeColor = Fore;
                 Application.Run(yuzuEarlyAccessLauncher);

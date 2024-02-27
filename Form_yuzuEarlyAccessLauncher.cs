@@ -330,7 +330,7 @@ namespace yuzu_Early_Access_Launcher
 
         private void Button_Report_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/issues/new");
+            Process.Start("https://github.com/HimDek/yuzu-Early-Access-Launcher/issues/new");
         }
 
         private void Button_Compatibility_Click(object sender, EventArgs e)
@@ -501,8 +501,18 @@ namespace yuzu_Early_Access_Launcher
                 WebClient wc = new WebClient();
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-                wc.Headers.Add("user-agent", "request");
-                yuzulauncher = wc.DownloadString(new System.Uri("https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest"));
+                try
+                {
+                    wc.Headers.Add("user-agent", "request");
+                    yuzulauncher = wc.DownloadString(new System.Uri("https://api.github.com/repos/HimDek/yuzu-Early-Access-Launcher/releases/latest"));
+                    backgroundWorker_Check.ReportProgress(2);
+                }
+                catch
+                {
+                    wc.Headers.Add("user-agent", "request");
+                    yuzulauncher = wc.DownloadString(new System.Uri("https://api.github.com/repos/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest"));
+                    backgroundWorker_Check.ReportProgress(2);
+                }
                 wc.Headers.Add("user-agent", "request");
                 yuzu = wc.DownloadString(new System.Uri("https://api.github.com/repos/pineappleEA/pineapple-src/releases"));
                 wc.Headers.Add("user-agent", "request");
@@ -520,53 +530,6 @@ namespace yuzu_Early_Access_Launcher
 
             if (Internet)
             {
-                string[] firmparts = GetLatestFirmwareFileName(firmdata).Split(',');
-                fsize = firmparts[0];
-                lfirmfile = firmparts[1];
-                lfirm = lfirmfile.Replace(".zip", "").Replace("Firmware ", "");
-                furl = "https://archive.org/download/nintendo-switch-global-firmwares/Firmware%20" + lfirm + ".zip";
-                kurl = "https://archive.org/download/prod.keys/" + GetLatestKeysVersion(keysdata) + ".x.x/prod.keys";
-
-                log.WriteLine("Latest Firmware: " + furl);
-                log.WriteLine(" Size: " + fsize);
-                log.WriteLine("Latest Keys: " + kurl);
-
-                if (System.IO.File.Exists("prod.keys") || System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys"))
-                {
-                    backgroundWorker_Check.ReportProgress(2);
-                }
-                else
-                {
-                    backgroundWorker_Check.ReportProgress(3);
-                }
-
-                try
-                {
-                    WebClient wc = new WebClient();
-                    ServicePointManager.Expect100Continue = true;
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-                    wc.Headers.Add("user-agent", "request");
-                    wc.DownloadFile(new System.Uri(kurl), UserProfile + "\\AppData\\Local\\Temp\\prod.keys");
-                    log.WriteLine(" Done");
-                }
-                catch (Exception)
-                {
-                    backgroundWorker_Check.ReportProgress(4);
-                }
-
-                if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\Temp\\prod.keys"))
-                {
-                    if (System.IO.File.Exists("prod.keys"))
-                    {
-                        System.IO.File.Delete("prod.keys");
-                    }
-                    log.WriteLine("Moving \"" + UserProfile + "\\AppData\\Local\\Temp\\prod.keys\" to \"" + path + "\\prod.keys\"");
-                    System.IO.File.Move(UserProfile + "\\AppData\\Local\\Temp\\prod.keys", "prod.keys");
-                    log.WriteLine(" Done");
-                }
-
-                backgroundWorker_Check.ReportProgress(5);
-
                 launcherlatest = JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("tag_name").ToString().Split('v')[1];
                 if (branch == "Preview")
                 {
@@ -588,8 +551,56 @@ namespace yuzu_Early_Access_Launcher
                 lurl = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("browser_download_url").ToString();
                 lsize = JsonDocument.Parse(JsonDocument.Parse("[ " + yuzulauncher + " ]").RootElement[0].GetProperty("assets").ToString()).RootElement[0].GetProperty("size").ToString();
 
-                log.WriteLine(" yuzu Early Access " + latest + " is the latest available");
-                log.WriteLine(" Switch Firmware " + lfirm + " is the latest available");
+                string[] firmparts = GetLatestFirmwareFileName(firmdata).Split(',');
+                fsize = firmparts[0];
+                lfirmfile = firmparts[1];
+                lfirm = lfirmfile.Replace(".zip", "").Replace("Firmware ", "");
+                furl = "https://archive.org/download/nintendo-switch-global-firmwares/Firmware%20" + lfirm + ".zip";
+                kurl = "https://archive.org/download/prod.keys/" + GetLatestKeysVersion(keysdata) + ".x.x/prod.keys";
+
+                log.WriteLine(" Latest Keys: " + kurl);
+                log.WriteLine(" Latest yuzu Early Access Launcher:");
+                log.WriteLine("     Version: " + launcherlatest);
+                log.WriteLine("     Size: " + lsize);
+                log.WriteLine("     URL: " + lurl);
+                log.WriteLine(" Latest yuzu Early Access:");
+                log.WriteLine("     Version: " + latest);
+                log.WriteLine("     Size: " + ysize);
+                log.WriteLine("     URL: " + url);
+
+                if (System.IO.File.Exists("prod.keys") || System.IO.File.Exists(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys"))
+                {
+                    backgroundWorker_Check.ReportProgress(3);
+                }
+                else
+                {
+                    backgroundWorker_Check.ReportProgress(4);
+                }
+
+                try
+                {
+                    WebClient wc = new WebClient();
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+                    wc.Headers.Add("user-agent", "request");
+                    wc.DownloadFile(new System.Uri(kurl), UserProfile + "\\AppData\\Local\\Temp\\prod.keys");
+                    log.WriteLine(" Done");
+                }
+                catch (Exception)
+                {
+                    backgroundWorker_Check.ReportProgress(5);
+                }
+
+                if (System.IO.File.Exists(UserProfile + "\\AppData\\Local\\Temp\\prod.keys"))
+                {
+                    if (System.IO.File.Exists("prod.keys"))
+                    {
+                        System.IO.File.Delete("prod.keys");
+                    }
+                    log.WriteLine("\nMoving \"" + UserProfile + "\\AppData\\Local\\Temp\\prod.keys\" to \"" + path + "\\prod.keys\"");
+                    System.IO.File.Move(UserProfile + "\\AppData\\Local\\Temp\\prod.keys", "prod.keys");
+                    log.WriteLine(" Done");
+                }
             }
 
             backgroundWorker_Check.ReportProgress(6);
@@ -604,14 +615,14 @@ namespace yuzu_Early_Access_Launcher
                 {
                     System.IO.File.Delete(UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys");
                 }
-                log.WriteLine("Copying \"" + path + "\\prod.keys\" to \"" + UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys\"");
+                log.WriteLine("\nCopying \"" + path + "\\prod.keys\" to \"" + UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys\"");
                 System.IO.File.Copy("prod.keys", UserProfile + "\\AppData\\Roaming\\yuzu\\keys\\prod.keys");
                 log.WriteLine(" Done");
             }
 
             if (System.IO.File.Exists("launcher.ini"))
             {
-                log.WriteLine("Reading \"" + path + "\\launcher.ini\"");
+                log.WriteLine("\nReading \"" + path + "\\launcher.ini\"");
                 installed = ini.Read("version", "installed");
                 firm = ini.Read("firm", "installed");
                 if (installed != "")
@@ -648,7 +659,7 @@ namespace yuzu_Early_Access_Launcher
 
             if (installed == "")
             {
-                log.WriteLine("Checking for \"" + path + "\\yuzu-windows-msvc-early-access\\yuzu.exe\"");
+                log.WriteLine("\nChecking for \"" + path + "\\yuzu-windows-msvc-early-access\\yuzu.exe\"");
                 if (System.IO.File.Exists("yuzu-windows-msvc-early-access\\yuzu.exe"))
                 {
                     log.WriteLine(" Preinstalled yuzu Early Access found in \"" + path + "\\yuzu-windows-msvc-early-access\"");
@@ -696,7 +707,7 @@ namespace yuzu_Early_Access_Launcher
             String latestfileVer = installed;
             String latestfirfileVer = firm;
 
-            log.WriteLine("Checking Files");
+            log.WriteLine("\nChecking Files");
             for (int i = 0; i < 2; i++)
             {
                 foreach (string f in Directory.EnumerateFiles(path, "Windows-Yuzu-EA-*.zip"))
@@ -820,39 +831,39 @@ namespace yuzu_Early_Access_Launcher
             label_Message.Size = new Size(728, 194);
             if (e.ProgressPercentage == 1)
             {
-                log.WriteLine("Checking Internet Connection");
+                log.WriteLine("\nChecking Internet Connection");
                 label_Message.Text = "Checking Internet Connection!";
                 label_Message.Visible = true;
             }
-            if (e.ProgressPercentage == 2)
+            else if (e.ProgressPercentage == 2)
             {
-                log.WriteLine("Retrieving latest \"prod.keys\" from \"" + kurl + "\" to \"" + UserProfile + "\\AppData\\Local\\Temp\\prod.keys\"");
+                log.WriteLine("\nChecking for Updates");
+                label_Message.Text = "Checking for Updates!";
+                label_Message.Visible = true;
+            }
+            else if (e.ProgressPercentage == 3)
+            {
+                log.WriteLine("\nRetrieving latest \"prod.keys\" from \"" + kurl + "\" to \"" + UserProfile + "\\AppData\\Local\\Temp\\prod.keys\"");
                 label_Message.Text = "Downloading prod.keys!";
                 label_Message.Visible = true;
             }
-            if (e.ProgressPercentage == 3)
+            else if (e.ProgressPercentage == 4)
             {
-                log.WriteLine("Downloading \"" + UserProfile + "\\AppData\\Local\\Temp\\prod.keys\" from \"" + kurl + "\"");
+                log.WriteLine("\nDownloading \"" + UserProfile + "\\AppData\\Local\\Temp\\prod.keys\" from \"" + kurl + "\"");
                 label_Message.Text = "Retrieving Latest prod.keys!";
                 label_Message.Visible = true;
             }
-            if (e.ProgressPercentage == 4)
+            else if (e.ProgressPercentage == 5)
             {
                 log.WriteLine(" Failed Downloading \"" + path + "\\prod.keys\" from \"" + kurl + "\"");
                 label_Info.Text = "Could not download latest prod.keys!";
             }
-            if (e.ProgressPercentage == 5)
+            else if (e.ProgressPercentage == 6)
             {
-                log.WriteLine("Checking for Updates");
-                label_Message.Text = "Checking for Updates!";
+                label_Message.Text = "\nReading Metadata!";
                 label_Message.Visible = true;
             }
-            if (e.ProgressPercentage == 6)
-            {
-                label_Message.Text = "Reading Metadata!";
-                label_Message.Visible = true;
-            }
-            if (e.ProgressPercentage == 7)
+            else if (e.ProgressPercentage == 7)
             {
                 backgroundWorker_Download.RunWorkerAsync(1);
             }
@@ -860,7 +871,7 @@ namespace yuzu_Early_Access_Launcher
 
         private void BackgroundWorker_Check_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            log.WriteLine("Updating UI");
+            log.WriteLine("\nUpdating UI");
             label_Message.Visible = false;
 
             if (installed != "")
@@ -1115,7 +1126,7 @@ namespace yuzu_Early_Access_Launcher
                         {
                             System.IO.File.Delete(f);
                         }
-                        log.WriteLine("Moving \"" + UserProfile + "\\AppData\\Local\\Temp\\" + file + "\" to \"" + path + "\\" + file + "\"");
+                        log.WriteLine("\nMoving \"" + UserProfile + "\\AppData\\Local\\Temp\\" + file + "\" to \"" + path + "\\" + file + "\"");
                         System.IO.File.Move(UserProfile + "\\AppData\\Local\\Temp\\" + file, file);
                         log.WriteLine(" Done");
                     }
@@ -1132,7 +1143,7 @@ namespace yuzu_Early_Access_Launcher
                     }
                     Directory.CreateDirectory("Temp");
                     await Extract(path + "\\" + file, path + "\\Temp");
-                    log.WriteLine("Moving \"" + path + "\\Temp\\yuzu-windows-msvc-early-access\" to \"" + path + "\\yuzu-windows-msvc-early-access\"");
+                    log.WriteLine("\nMoving \"" + path + "\\Temp\\yuzu-windows-msvc-early-access\" to \"" + path + "\\yuzu-windows-msvc-early-access\"");
                     Directory.Move("Temp\\yuzu-windows-msvc-early-access", path + "\\yuzu-windows-msvc-early-access");
                     log.WriteLine(" Done");
                     Directory.Delete("Temp", true);
@@ -1153,7 +1164,7 @@ namespace yuzu_Early_Access_Launcher
                         {
                             System.IO.File.Delete(f);
                         }
-                        log.WriteLine("Moving \"" + UserProfile + "\\AppData\\Local\\Temp\\" + firfile + "\" to \"" + path + "\\" + firfile + "\"");
+                        log.WriteLine("\nMoving \"" + UserProfile + "\\AppData\\Local\\Temp\\" + firfile + "\" to \"" + path + "\\" + firfile + "\"");
                         System.IO.File.Move(UserProfile + "\\AppData\\Local\\Temp\\" + firfile, firfile);
                         log.WriteLine(" Done");
                     }
@@ -1186,7 +1197,7 @@ namespace yuzu_Early_Access_Launcher
         {
             try
             {
-                log.WriteLine("Downloading \"" + dsave + "\" from \"" + durl + "\"");
+                log.WriteLine("\nDownloading \"" + dsave + "\" from \"" + durl + "\"");
                 label_Message.Visible = false;
                 button_Launch.Visible = false;
                 button_Download.Visible = false;
@@ -1260,7 +1271,7 @@ namespace yuzu_Early_Access_Launcher
 
         private async Task<int> Extract(String xfile, String xdir)
         {
-            log.WriteLine("Extracting \"" + xfile + "\" to \"" + xdir + "\"");
+            log.WriteLine("\nExtracting \"" + xfile + "\" to \"" + xdir + "\"");
             label_Message.Visible = false;
             button_Launch.Visible = false;
             button_Download.Visible = false;
@@ -1344,7 +1355,7 @@ namespace yuzu_Early_Access_Launcher
         
         private string GetLatestFirmwareFileName(string xmlString)
         {
-            string latestFirmwareName = "";
+            string latestFirmwareName = "", version="", url="";
             int size = 0;
 
                 XmlDocument xmlDoc = new XmlDocument();
@@ -1360,17 +1371,21 @@ namespace yuzu_Early_Access_Launcher
                     {
                         latestFirmwareName = latestFileNode.Attributes["name"].Value;
                         size = int.Parse(latestFileNode.SelectSingleNode("size").InnerText);
-
-                        log.WriteLine($"Latest Firmware Name: {latestFirmwareName}, Size: {size}");
+                        version = latestFirmwareName.Replace(".zip", "").Replace("Firmware ", "");
+                        url = "https://archive.org/download/nintendo-switch-global-firmwares/Firmware%20" + version + ".zip";
+                        log.WriteLine(" Latest Switch Firmware:");
+                        log.WriteLine("     Version: " + version);
+                        log.WriteLine("     size: " + size);
+                        log.WriteLine("     URL: " + url); ;
                     }
                     else
                     {
-                       log.WriteLine("No firmware files found.");
+                       log.WriteLine("  No firmware files found.");
                     }
                 }
                 else
                 {
-                    log.WriteLine("No firmware files found.");
+                    log.WriteLine("  No firmware files found.");
                 }
 
             return size + "," + latestFirmwareName;
