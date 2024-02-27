@@ -12,7 +12,7 @@
         <img src="https://raw.githubusercontent.com/HimDek/yuzu-Early-Access-Launcher/main/logo.png" width="280px"/>
     </div>
     <div>
-        <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">
+        <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu.Early.Access.Launcher.exe">
             <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" width="280"/>
         </a>
      </div>
@@ -27,7 +27,7 @@
   <p>This Launcher can install and keep yuzu Early Access along with prod.key and Firmware updated for free.</p>
 
   <p>
-   <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://archive.org/download/prod.keys/">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
+   <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu.Early.Access.Launcher.exe">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://archive.org/download/prod.keys/">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
   </p>
  </div>
 </div>
@@ -73,8 +73,8 @@
 <br clear="left"/>
 <h2 id="-how-to-use-">❓ How to use:</h2>
 <ul>
-<li><a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">Download yuzu_Early_Access_Launcher.exe</a>.</li>
-<li>Run the yuzu_Early_Access_Launcher.exe file and it will guide you through the rest of the process.</li>
+<li><a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu.Early.Access.Launcher.exe">Download yuzu.Early.Access.Launcher.exe</a>.</li>
+<li>Run the yuzu.Early.Access.Launcher.exe file and it will guide you through the rest of the process.</li>
 </ul>
 
 <br clear="left"/>
