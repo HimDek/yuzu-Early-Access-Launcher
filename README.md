@@ -1,18 +1,18 @@
 <h1 id="yuzu-early-access-launcher" align="center">yuzu Early Access Launcher</h1>
 
-<p align="center"><a class="invisible" href="https://github.himdek.com/yuzu-Early-Access-Launcher">View in Website</a></p>
+<p align="center"><a class="invisible" href="https://himdek.com/yuzu-Early-Access-Launcher">View in Website</a></p>
 <p align="center"><b>Gets you yuzu Early Access, prod.keys and Firmware dumped from the Nintendo Switch.</b></p>
 
-<h3>Notice: If you are stuck on version 2.0.3 and its saying "Check your Internet Connection", read <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/issues/14#issuecomment-1546850042">this</a></h3>
+<h3>Notice: If you are stuck on version 2.0.3 and its saying "Check your Internet Connection", read <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/issues/14#issuecomment-1546850042">this</a></h3>
 
 <div class="row">
  <br clear="left"/>
  <div style="text-align:center">
      <div>
-        <img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/main/logo.png" width="280px"/>
+        <img src="https://raw.githubusercontent.com/HimDek/yuzu-Early-Access-Launcher/main/logo.png" width="280px"/>
     </div>
     <div>
-        <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">
+        <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">
             <img src="https://user-images.githubusercontent.com/61367380/119500767-c8143680-bd85-11eb-802d-4c5b750c349a.png" width="280"/>
         </a>
      </div>
@@ -27,7 +27,7 @@
   <p>This Launcher can install and keep yuzu Early Access along with prod.key and Firmware updated for free.</p>
 
   <p>
-   <a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.zip">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://github.com/emuworld/aio/blob/master/prod.keys">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
+   <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">Download</a> | <a href="https://github.com/pineappleEA/pineapple-src/releases">Early Access Source</a> | <a href="https://archive.org/download/prod.keys/">prod.keys Source</a> | <a href="https://archive.org/download/nintendo-switch-global-firmwares/">Firmware Source</a>
   </p>
  </div>
 </div>
@@ -49,14 +49,14 @@
  </div>
  <br clear="right"/>
  <div>
-  <img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/yuzuEarlyAccessLauncherWindow.png" height="500" vspace="20" hspace="10" align="right"/>
+  <img src="https://raw.githubusercontent.com/HimDek/Nintendo-Switch-Files/main/yuzuEarlyAccessLauncherWindow.png" height="500" vspace="20" hspace="10" align="right"/>
  </div>
 </div>
 
 <div class="row">
  <br clear="left"/>
  <div>
-  <img src="https://raw.githubusercontent.com/HiDe-Techno-Tips/Nintendo-Switch-Files/main/Progress.png" height="500" vspace="20" hspace="10" align="left"/></li>
+  <img src="https://raw.githubusercontent.com/HimDek/Nintendo-Switch-Files/main/Progress.png" height="500" vspace="20" hspace="10" align="left"/></li>
  </div>
  <br clear="right"/>
  <div>
@@ -73,7 +73,7 @@
 <br clear="left"/>
 <h2 id="-how-to-use-">❓ How to use:</h2>
 <ul>
-<li><a href="https://github.com/HiDe-Techno-Tips/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">Download yuzu_Early_Access_Launcher.exe</a>.</li>
+<li><a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/releases/latest/download/yuzu_Early_Access_Launcher.exe">Download yuzu_Early_Access_Launcher.exe</a>.</li>
 <li>Run the yuzu_Early_Access_Launcher.exe file and it will guide you through the rest of the process.</li>
 </ul>
 
