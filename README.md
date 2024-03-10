@@ -1,9 +1,8 @@
-﻿<h1 id="yuzu-early-access-launcher" align="center">yuzu Early Access Launcher</h1>
+﻿<h1 id="repo-title" align="center">yuzu Early Access Launcher</h1>
 
-<p align="center"><a class="invisible" href="https://himdek.com/yuzu-Early-Access-Launcher">View in Website</a></p>
-<p align="center"><b>Gets you yuzu Early Access, prod.keys and Firmware dumped from the Nintendo Switch.</b></p>
-
-<h3>Notice: If you are stuck on version 2.0.3 and its saying "Check your Internet Connection", read <a href="https://github.com/HimDek/yuzu-Early-Access-Launcher/issues/14#issuecomment-1546850042">this</a></h3>
+<p align="center" class="d-none"><a href="https://himdek.com/yuzu-Early-Access-Launcher">View in Website</a></p>
+<p id="repo-subtitle" align="center"><b>Gets you latest version of yuzu Early Access ready to go for free</b></p>
+<p id="repo-desc">yuzu was discontinued after its developer was sued by Nintendo. However, you can still use this launcher to set up the latest version of yuzu Early Access. Just don't pirate games.</p>
 
 <div class="row">
  <br clear="left"/>
@@ -24,6 +23,8 @@
    <a href="https://yuzu-emu.org/">Website</a> | <a href="https://github.com/yuzu-emu">Source Code</a> | <a href="https://github.com/yuzu-emu/yuzu/graphs/contributors">Contributers</a> | <a href="https://github.com/yuzu-emu/yuzu/blob/master/license.txt">License</a>
   </p>
  <br/>
+
+  <h4 id="repo-name">yuzu-Early-Access-Launcher</h4>
   <p>This Launcher can install and keep yuzu Early Access along with prod.key and Firmware updated for free.</p>
 
   <p>
